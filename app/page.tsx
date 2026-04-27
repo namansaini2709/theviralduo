@@ -7,6 +7,7 @@ import Navigation from "@/components/global/Navigation";
 import Loader from "@/components/sections/Loader";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
+import ServicesIntro from "@/components/sections/ServicesIntro";
 import Services from "@/components/sections/Services";
 import Marquee from "@/components/sections/Marquee";
 import MovieReel from "@/components/sections/MovieReel";
@@ -50,6 +51,7 @@ export default function Home() {
       <main className="relative z-10">
         <Hero />
         <About />
+        <ServicesIntro />
         <Services />
         <Marquee />
         <MovieReel />

@@ -65,7 +65,7 @@ export default function Polaroids() {
     document.head.appendChild(script);
   }, []);
 
-  if (!mounted) return <section id="testimonials" className="bg-background min-h-[60vh]" />;
+  if (!mounted) return <section id="testimonials" className="min-h-[60vh]" />;
 
   const mediaCollage = createElement(
     "media-collage",
@@ -92,7 +92,7 @@ export default function Polaroids() {
   );
 
   return (
-    <section id="testimonials" className="bg-background py-0 md:py-20 overflow-hidden relative isolate">
+    <section id="testimonials" className="py-0 md:py-20 overflow-hidden relative isolate">
       <div className="mb-8 px-6 text-center md:mb-16">
         <h2 className="font-display text-5xl font-bold tracking-tighter md:text-8xl">
           THE <span className="italic text-accent">FEEDBACK</span>

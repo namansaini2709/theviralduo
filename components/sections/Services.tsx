@@ -29,7 +29,7 @@ const services: Service[] = [
     fullDesc: "Our cinematic approach to short-form content captures attention in the first 0.5 seconds. We craft scroll-stopping reels, TikToks, and Shorts designed for massive organic reach and engagement. By treating every vertical video as a professional production, we elevate your brand above the noise.",
     image: "/assets/services/clapboard.png",
     color: "#FF8C42",
-    yPos: 15,
+    yPos: 10,
     xPos: "80%",
   },
   {
@@ -39,7 +39,7 @@ const services: Service[] = [
     fullDesc: "Our methodical approach combines deep market analysis with creative storytelling. We build iconic identities designed for long-term recognition and trust. We don't just design logos; we craft the visual and narrative soul of your company, ensuring every touchpoint resonates with your core audience.",
     image: "/assets/services/palette.png",
     color: "#00E5FF",
-    yPos: 35,
+    yPos: 30,
     xPos: "20%",
   },
   {
@@ -49,7 +49,7 @@ const services: Service[] = [
     fullDesc: "Data-driven growth strategies that turn followers into communities and impressions into impact. We provide dedicated strategists and real-time data visualizations to ensure your campaigns are scaling efficiently. Our management style is proactive, focused on the metrics that actually drive revenue.",
     image: "/assets/services/charts.png",
     color: "#FFD700",
-    yPos: 55,
+    yPos: 50,
     xPos: "80%",
   },
   {
@@ -59,7 +59,7 @@ const services: Service[] = [
     fullDesc: "We bridge the gap between brands and creators. By fostering authentic partnerships and managing complex multi-creator orchestrations, we ensure your message is amplified by the right voices. We handle the physical links and logistics so you can focus on the vision.",
     image: "/assets/services/links.png",
     color: "#ADFF2F",
-    yPos: 75,
+    yPos: 70,
     xPos: "20%",
   },
   {
@@ -69,7 +69,7 @@ const services: Service[] = [
     fullDesc: "Strategic paid amplification that multiplies your organic wins into scalable growth. We optimize every dollar for maximum ROI, using advanced targeting and high-converting creative. Our goal is to turn your marketing budget into a predictable engine for customer acquisition.",
     image: "/assets/services/money.png",
     color: "#FF1493",
-    yPos: 95,
+    yPos: 90,
     xPos: "80%",
   },
 ];
@@ -125,34 +125,14 @@ export default function Services() {
     <section 
       id="services" 
       ref={containerRef} 
-      className="relative min-h-[450vh] bg-black overflow-hidden select-none"
+      className="relative min-h-[450vh] overflow-hidden select-none"
     >
-      {/* 1. Sticky Reveal Background Logo */}
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center pointer-events-none z-0 overflow-hidden">
-        <motion.div 
-          style={{ y: bgLogoSlideY }}
-          className="w-[55vw] max-w-[700px] opacity-35"
-        >
-          <Image 
-            src="/assets/services/services-we-provide.png" 
-            alt="Services We Provide" 
-            width={700}
-            height={400}
-            className="w-full h-auto object-contain"
-            quality={60}
-            priority
-          />
-        </motion.div>
-      </div>
+      {/* 1. Sticky Background (Removed Logo) */}
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center pointer-events-none z-0 overflow-hidden" />
 
       {/* 2. Scrolling Foreground Content */}
-      <div className="absolute top-0 left-0 w-full h-full z-10 pt-32 pb-[20vh]">
+      <div className="absolute top-0 left-0 w-full h-full z-10 pt-10 pb-[20vh]">
         
-        {/* Sticky Section Header (Subtle) */}
-        <div className="sticky top-24 left-0 w-full flex justify-center z-20 opacity-10 pointer-events-none">
-          <Image src="/assets/services/header.png" alt="" width={400} height={200} className="h-48 w-auto object-contain filter blur-md" />
-        </div>
-
         {/* The Abstract Pathway & Service Objects Wrapper */}
         <div className="relative w-full h-full max-w-7xl mx-auto">
           
@@ -222,7 +202,7 @@ export default function Services() {
                 position: "absolute",
                 transform: "translate(-50%, -50%)"
               }}
-              className="w-[35vw] max-w-[450px] z-30"
+              className="w-[28vw] max-w-[380px] z-30"
             >
               <ServiceObject 
                 service={service} 
@@ -343,9 +323,9 @@ function ServiceObject({ service, isHovered, isActive, onHover, onLeave, onClick
         </AnimatePresence>
       </motion.div>
 
-      <div className="mt-8 text-center glass-container py-4 px-6 rounded-2xl backdrop-blur-md border border-white/5">
+      <div className="mt-6 text-center glass-container py-3 px-5 rounded-2xl backdrop-blur-md border border-white/5">
         <motion.h3 
-          className="font-serif text-3xl md:text-5xl text-white/95 tracking-tighter drop-shadow-2xl italic leading-none"
+          className="font-serif text-2xl md:text-4xl text-white/95 tracking-tighter drop-shadow-2xl italic leading-none"
           animate={{ 
             letterSpacing: (isHovered || isActive) ? "0.02em" : "-0.02em",
             y: (isHovered || isActive) ? -5 : 0

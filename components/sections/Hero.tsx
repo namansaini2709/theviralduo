@@ -23,12 +23,11 @@ export default function Hero() {
       isMobile: "(max-width: 767px)"
     }, (context) => {
       const { isDesktop } = context.conditions as { isDesktop: boolean };
-
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: "+=300%", 
+          end: "+=260%", 
           scrub: 1.5,
           pin: true,
         }
@@ -59,44 +58,35 @@ export default function Hero() {
         1.0
       );
 
-      // 2. THE MORPH: Transition Hero into Navbar Capsule
-      tl.to(stickyDivRef.current, {
-        width: isDesktop ? "900px" : "90vw",
-        height: "64px",
-        top: "20px",
-        borderRadius: "100px",
-        backgroundColor: "rgba(5, 5, 5, 0.8)",
-        backdropFilter: "blur(20px)",
-        border: "1px solid rgba(255, 255, 255, 0.1)",
-        duration: 1.2,
-        ease: "power4.inOut"
-      }, 2.5);
-
-      tl.to(".black-hole", { opacity: 0, duration: 0.4 }, 2.5);
-      tl.to(".subtext", { opacity: 0, y: -20, duration: 0.3 }, 2.5);
-      tl.to(ctaRef.current, { opacity: 0, scale: 0.8, duration: 0.3 }, 2.5);
+      // 2. Reference-style exit: the hero panel recedes upward while the real navbar stays pinned.
+      tl.to(".black-hole", { opacity: 0, duration: 0.45 }, 2.25);
+      tl.to(".subtext", { opacity: 0, y: -24, duration: 0.45 }, 2.25);
+      tl.to(ctaRef.current, { opacity: 0, scale: 0.86, y: -20, duration: 0.45 }, 2.25);
 
       tl.to(mergedTextRef.current, {
-        scale: isDesktop ? 0.08 : 0.12, 
-        x: isDesktop ? -360 : -100, 
-        y: 0,
-        duration: 1.2,
-        ease: "power4.inOut"
-      }, 2.5);
+        y: isDesktop ? -150 : -90,
+        scale: isDesktop ? 0.86 : 0.9,
+        opacity: 0.18,
+        filter: "blur(4px)",
+        duration: 1.25,
+        ease: "power3.inOut"
+      }, 2.35);
 
-      tl.to(".nav-links-container", {
-        display: isDesktop ? "flex" : "none", 
-        opacity: isDesktop ? 1 : 0,
-        x: 0,
-        duration: 0.8,
-        ease: "power2.out"
-      }, 3.0);
+      tl.to(stickyDivRef.current, {
+        y: isDesktop ? "-72vh" : "-66vh",
+        scale: isDesktop ? 0.78 : 0.86,
+        opacity: 0.42,
+        borderRadius: isDesktop ? "2.5rem" : "2rem",
+        duration: 1.35,
+        ease: "power3.inOut"
+      }, 2.35);
 
       tl.to(stickyDivRef.current, {
         opacity: 0,
-        duration: 0.5,
+        y: isDesktop ? "-92vh" : "-86vh",
+        duration: 0.55,
         ease: "power2.in"
-      }, 3.8);
+      }, 3.5);
 
       return () => {
         tl.kill();
@@ -141,29 +131,9 @@ export default function Hero() {
   return (
     <section 
       ref={containerRef} 
-      className="relative min-h-screen bg-[#020202] overflow-hidden"
+      className="relative min-h-screen overflow-hidden"
       onMouseMove={handleParallax}
     >
-      {/* Background Cosmic Star Field */}
-      <div 
-        className="absolute inset-0 pointer-events-none z-0"
-        style={{
-          backgroundImage: `
-            radial-gradient(circle at 20% 30%, rgba(255,255,255,0.7) 1px, transparent 1.5px),
-            radial-gradient(circle at 70% 60%, rgba(255,255,255,0.5) 0.5px, transparent 1px),
-            radial-gradient(circle at 40% 80%, rgba(255,255,255,0.4) 1px, transparent 2px),
-            radial-gradient(circle at 10% 10%, rgba(255,255,255,0.3) 1.5px, transparent 3px),
-            radial-gradient(circle at 90% 90%, rgba(255,255,255,0.5) 1px, transparent 1.5px),
-            radial-gradient(circle at 50% 50%, rgba(255,255,255,0.6) 0.5px, transparent 1px),
-            radial-gradient(circle at 30% 70%, rgba(6,182,212,0.4) 1px, transparent 2px),
-            radial-gradient(circle at 80% 20%, rgba(234,88,12,0.4) 1px, transparent 2px)
-          `,
-          backgroundSize: '250px 250px',
-          filter: 'blur(3px)', 
-          opacity: 0.6
-        }}
-      />
-
       <div className="pointer-events-none fixed inset-0 z-50 opacity-[0.03] mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}></div>
 
       <div 
@@ -238,22 +208,6 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="nav-links-container absolute right-12 hidden items-center space-x-12 opacity-0 pointer-events-auto z-50">
-          {[
-            { label: "Work", href: "#movie-reel" },
-            { label: "Process", href: "#services" },
-            { label: "Nexus", href: "#about" },
-            { label: "Studio", href: "#contact" }
-          ].map((item, i) => (
-            <a 
-              key={i} 
-              href={item.href} 
-              className="font-display text-[11px] uppercase tracking-[0.4em] text-white/50 hover:text-white transition-all duration-300 hover:tracking-[0.5em]"
-            >
-              {item.label}
-            </a>
-          ))}
-        </div>
       </div>
 
       <div className="pointer-events-none fixed inset-0 z-40 mix-blend-color-dodge opacity-30" style={{ background: 'radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(6, 182, 212, 0.3), rgba(234, 88, 12, 0.15), transparent 80%)' }} />

@@ -142,14 +142,14 @@ export default function MovieReel() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="movie-reel" className="relative h-screen bg-background overflow-hidden perspective-2000">
+    <section ref={sectionRef} id="movie-reel" className="relative h-screen overflow-hidden perspective-2000">
       {/* Dynamic Background */}
       <div className="absolute inset-0 z-0">
         <div 
           className="absolute inset-0 transition-colors duration-1000 opacity-20 blur-[100px]" 
           style={{ backgroundColor: activeFrame >= 0 ? projects[activeFrame].color : 'transparent' }} 
         />
-        <div className="absolute inset-0 bg-[#080808]/80" />
+        <div className="absolute inset-0 bg-[#080808]/45" />
       </div>
 
       {/* SVG Movie Reel Intro */}
