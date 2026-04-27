@@ -17,9 +17,10 @@ const config: Config = {
         "film-cream": "#F5F0E8",
       },
       fontFamily: {
-        display: ["var(--font-space-grotesk)", "sans-serif"],
+        display: ["var(--font-outfit)", "sans-serif"],
         body: ["var(--font-dm-sans)", "sans-serif"],
         handwritten: ["var(--font-caveat)", "cursive"],
+        serif: ["var(--font-fraunces)", "serif"],
       },
       animation: {
         "spin-slow": "spin 20s linear infinite",

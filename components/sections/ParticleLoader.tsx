@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
+const TEXT_POINTS = generateTextPoints();
+
 export default function ParticleLoader() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [phase, setPhase] = useState<"intro" | "flash" | "particles" | "settle" | "done">("intro");
@@ -39,7 +41,7 @@ export default function ParticleLoader() {
 
     // 3. Particle Explosion (Star-like burst)
     timeline.add(() => {
-      setPhase("particles");
+      setPhase("flash"); // Ensure state is correct
       // Hide camera during flash
       gsap.set(".loader-camera", { display: "none" });
     });
@@ -67,8 +69,8 @@ export default function ParticleLoader() {
 
     // 4. Condense to Text
     timeline.to(".particle", {
-      x: (i) => textPoints[i % textPoints.length].x,
-      y: (i) => textPoints[i % textPoints.length].y,
+      x: (i) => TEXT_POINTS[i % TEXT_POINTS.length].x,
+      y: (i) => TEXT_POINTS[i % TEXT_POINTS.length].y,
       scale: 1,
       duration: 2,
       stagger: { amount: 1, from: "center" },
@@ -93,10 +95,6 @@ export default function ParticleLoader() {
   }, []);
 
   if (phase === "done") return null;
-
-  // Generate a grid of points that spell "VIRAL DUO"
-  // For simplicity, we'll use a pre-calculated mapping or a stylized block layout
-  const textPoints = generateTextPoints();
 
   return (
     <div ref={containerRef} className="fixed inset-0 z-[9990] bg-[#080808] flex items-center justify-center overflow-hidden">

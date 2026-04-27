@@ -90,16 +90,6 @@ export default function About() {
   return (
     <section ref={sectionRef} id="about" className="relative min-h-screen flex items-center justify-center py-24 px-6">
       <div className="max-w-4xl mx-auto">
-        {/* Centered logo card */}
-        <div
-          ref={cardRef}
-          className="w-32 h-32 mx-auto mb-12 border border-foreground/10 rounded-lg flex items-center justify-center bg-background/50 backdrop-blur-sm"
-        >
-          <span className="font-display text-2xl font-bold">
-            VIRAL<span className="text-accent">DUO</span>
-          </span>
-        </div>
-
         {/* About text */}
         <div className="text-center mb-16">
           <h2 className="font-display text-3xl md:text-4xl font-bold mb-6">Who We Are</h2>

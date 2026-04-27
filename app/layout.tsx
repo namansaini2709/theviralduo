@@ -1,11 +1,23 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, DM_Sans, Caveat } from "next/font/google";
+import { Space_Grotesk, DM_Sans, Caveat, Outfit, Fraunces } from "next/font/google";
 import "./globals.css";
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-fraunces",
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space-grotesk",
   weight: ["400", "500", "600", "700"],
+});
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 const dmSans = DM_Sans({
@@ -42,7 +54,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${spaceGrotesk.variable} ${dmSans.variable} ${caveat.variable} antialiased film-grain`}
+        className={`${spaceGrotesk.variable} ${dmSans.variable} ${caveat.variable} ${outfit.variable} ${fraunces.variable} antialiased film-grain`}
       >
         {children}
       </body>

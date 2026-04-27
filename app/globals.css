@@ -19,34 +19,27 @@
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  color: var(--foreground);
+  color: #FFFFFF;
   background: var(--background);
   font-family: var(--font-dm-sans), system-ui, sans-serif;
   overflow-x: hidden;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Film grain overlay */
-.film-grain::before {
-  content: "";
-  position: fixed;
-  top: -50%;
-  left: -50%;
-  right: -50%;
-  bottom: -50%;
-  width: 200%;
-  height: 200%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  animation: grain 0.5s steps(1) infinite;
-  opacity: 0.035;
-  pointer-events: none;
-  z-index: 9999;
+.glass-container {
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+h1, h2, h3, h4, h5, h6, p, span, div {
+  color: #FFFFFF;
 }
 
 /* Custom scrollbar */
@@ -68,3 +61,4 @@ body {
   background: var(--accent);
   color: var(--foreground);
 }
+

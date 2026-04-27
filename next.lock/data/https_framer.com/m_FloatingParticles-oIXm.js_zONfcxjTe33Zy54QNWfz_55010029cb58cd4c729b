@@ -1,0 +1,8 @@
+/*
+ * FloatingParticles
+ *
+ * Learn More: https://www.framer.com/asset-urls
+ */
+
+export * from "https://framerusercontent.com/modules/EFK2PEsPS4rYAA227zwv/zONfcxjTe33Zy54QNWfz/FloatingParticles.js"
+export { default } from "https://framerusercontent.com/modules/EFK2PEsPS4rYAA227zwv/zONfcxjTe33Zy54QNWfz/FloatingParticles.js"
