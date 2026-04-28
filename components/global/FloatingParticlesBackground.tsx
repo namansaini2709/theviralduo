@@ -168,7 +168,7 @@ export default function FloatingParticlesBackground({
       pointer.y += (pointer.targetY - pointer.y) * settings.cursorEase;
 
       ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = "#020202";
+      ctx.fillStyle = "#080808";
       ctx.fillRect(0, 0, width, height);
 
       const centerX = width * 0.5;

@@ -134,8 +134,8 @@ export default function About() {
       id="about"
       className="relative min-h-screen overflow-hidden px-5 py-16 text-white"
     >
-      <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black to-transparent" />
+      <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#080808] to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#080808] to-transparent" />
 
       <div className="relative z-10 mx-auto flex min-h-[calc(100vh-8rem)] w-full max-w-6xl flex-col items-center justify-center">
         <motion.div 

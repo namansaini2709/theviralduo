@@ -59,11 +59,27 @@ export default function ServicesIntro() {
   };
 
   const taglineVariants = {
-    hidden: { opacity: 0, y: 10 },
+    hidden: { 
+      opacity: 0, 
+      y: 10,
+      color: "#ffffff",
+      textShadow: "0 0 0px rgba(230, 57, 70, 0)"
+    },
     visible: { 
-      opacity: 0.9, 
+      opacity: 1, 
       y: 0,
-      transition: { duration: 0.8, delay: 0.1 }
+      color: ["#ffffff", "#E63946", "#ffffff"],
+      textShadow: [
+        "0 0 0px rgba(230, 57, 70, 0)",
+        "0 0 20px rgba(230, 57, 70, 0.8), 0 0 40px rgba(230, 57, 70, 0.4)",
+        "0 0 0px rgba(230, 57, 70, 0)"
+      ],
+      transition: { 
+        duration: 2.5,
+        times: [0, 0.3, 1],
+        delay: 1.2,
+        ease: "easeInOut"
+      }
     }
   };
 

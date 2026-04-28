@@ -140,11 +140,11 @@ export default function Navigation() {
         variants={containerVariants}
         style={{ 
           height: isScrolled ? 56 : 84,
-          width: isScrolled ? "min(1100px, 95vw)" : "100%",
+          width: isScrolled ? "min(880px, 92vw)" : "100%",
           backgroundColor: isScrolled ? "rgba(8, 8, 8, 0.65)" : "rgba(8, 8, 8, 0.15)",
           backdropFilter: "blur(20px)",
         }}
-        className={`fixed top-0 left-1/2 z-[100] flex items-center justify-between px-6 md:px-10 transition-all duration-700 ease-[cubic-bezier(0.22, 1, 0.36, 1)] ${
+        className={`fixed top-0 left-1/2 z-[100] flex items-center justify-between pl-4 pr-6 md:pl-6 md:pr-10 transition-all duration-700 ease-[cubic-bezier(0.22, 1, 0.36, 1)] ${
           isScrolled ? "top-4 rounded-full border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)]" : "border-b border-white/10"
         }`}
       >
@@ -181,7 +181,7 @@ export default function Navigation() {
           className="flex items-center gap-2.5 cursor-pointer group z-10"
           onClick={() => scrollTo("#top", "Home")}
         >
-          <div className="relative w-7 h-7 md:w-9 md:h-9 rounded-lg overflow-hidden border border-white/10 group-hover:border-accent/50 transition-colors duration-500 shadow-lg">
+          <div className="relative w-7 h-7 md:w-9 md:h-9 rounded-full overflow-hidden border border-white/10 group-hover:border-accent/50 transition-colors duration-500 shadow-lg">
             <Image 
               src="/logo-v2.png" 
               alt="The Viral Duo" 

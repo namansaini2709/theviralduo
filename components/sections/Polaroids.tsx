@@ -54,6 +54,8 @@ const feedbackItems = [
 
 export default function Polaroids() {
   const [mounted, setMounted] = React.useState(false);
+  const [mousePos, setMousePos] = React.useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = React.useState(false);
 
   React.useEffect(() => {
     setMounted(true);
@@ -65,7 +67,7 @@ export default function Polaroids() {
     document.head.appendChild(script);
   }, []);
 
-  if (!mounted) return <section id="testimonials" className="min-h-[60vh]" />;
+  if (!mounted) return <section id="testimonials" className="min-h-[60vh] bg-black" />;
 
   const mediaCollage = createElement(
     "media-collage",
@@ -77,11 +79,11 @@ export default function Polaroids() {
       "scroll-speed": "1.0",
       style: collageStyle,
     },
-    [...feedbackItems, ...feedbackItems].map((item, index) =>
-      createElement("img", {
+    // Duplicate items 8 times to reach 40 items total (since there are 5 unique items).
+    // 20 items = 360 degrees, so 40 items allows a perfect 360 degree loop without hitting edges.
+    [...Array(8)].flatMap(() => feedbackItems).map((item, index) =>
+      createElement("media-collage-item", {
         key: `${item.title}-${index}`,
-        src: item.image,
-        alt: `${item.title} campaign`,
         "data-title": item.title,
         "data-subtitle": item.quote,
         "data-color": item.color,
@@ -92,21 +94,43 @@ export default function Polaroids() {
   );
 
   return (
-    <section id="testimonials" className="py-0 md:py-20 overflow-hidden relative isolate">
-      <div className="mb-8 px-6 text-center md:mb-16">
-        <h2 className="font-display text-5xl font-bold tracking-tighter md:text-8xl">
+    <section 
+      id="testimonials" 
+      className="py-0 md:py-20 overflow-hidden relative isolate bg-black"
+      onMouseMove={(e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        setMousePos({
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top,
+        });
+      }}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+    >
+      {/* Red glow effect that follows the mouse */}
+      <div 
+        className="pointer-events-none absolute inset-0 z-20 transition-opacity duration-500"
+        style={{
+          opacity: isHovering ? 1 : 0,
+          background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(230, 57, 70, 0.15), transparent 60%)`,
+          mixBlendMode: "screen"
+        }}
+      />
+
+      <div className="relative z-10 mb-2 px-6 text-center md:mb-2">
+        <h2 className="font-display text-5xl font-bold tracking-tighter md:text-8xl text-white">
           THE <span className="italic text-accent">FEEDBACK</span>
         </h2>
-        <div className="mx-auto mt-5 flex max-w-2xl items-center justify-center gap-4">
-          <div className="h-px w-12 bg-foreground/20" />
-          <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/40">
+        <div className="mx-auto mt-2 flex max-w-2xl items-center justify-center gap-4">
+          <div className="h-px w-12 bg-white/20" />
+          <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-white/40">
             Scroll to unlock the cylinder
           </p>
-          <div className="h-px w-12 bg-foreground/20" />
+          <div className="h-px w-12 bg-white/20" />
         </div>
       </div>
 
-      <div className="px-0 md:px-4">
+      <div className="relative z-10 px-0 md:px-4">
         {mediaCollage}
       </div>
     </section>

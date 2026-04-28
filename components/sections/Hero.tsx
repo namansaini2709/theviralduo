@@ -148,7 +148,7 @@ export default function Hero() {
         <div ref={shockwaveRef} className="absolute left-1/2 top-1/2 w-48 h-48 -ml-24 -mt-24 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,1)_0%,rgba(6,182,212,0.9)_30%,rgba(234,88,12,0.7)_60%,transparent_100%)] opacity-0 mix-blend-screen blur-[15px] z-20 pointer-events-none" />
 
         {/* Cinematic Deep Black Reveal Atmosphere */}
-        <div className="black-hole absolute inset-0 bg-black opacity-0 z-25 pointer-events-none" />
+        <div className="black-hole absolute inset-0 bg-[#080808] opacity-0 z-25 pointer-events-none" />
 
         <div className="absolute inset-0 flex items-center justify-center z-30 flex-col perspective-[1000px]">
             <div ref={mergedTextRef} className="flex flex-col items-center justify-center will-change-transform">

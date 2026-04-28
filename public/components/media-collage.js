@@ -56,8 +56,6 @@
       this._scrollRaf = 0;
       this._hasAutoScrolled = false;
 
-      this._onPointerMove = this._onPointerMove.bind(this);
-      this._onPointerLeave = this._onPointerLeave.bind(this);
       this._onWindowScroll = this._onWindowScroll.bind(this);
       this._autoScrollLoop = this._autoScrollLoop.bind(this);
       
@@ -106,9 +104,27 @@
         const cards = this.shadowRoot.querySelectorAll('.card');
         if (cards.length < 2) return;
 
-        // Use pure math matching our CSS constraints to avoid mid-transition DOM reading bugs
         const vw = document.documentElement.clientWidth / 100;
         const gap = Math.min(240, Math.max(140, 16 * vw)); 
+        
+        // Manual scrolling seamless jump logic
+        const jumpWidth = 20 * gap;
+        if (root.scrollLeft > jumpWidth * 1.8) {
+           const carousel = this.shadowRoot.querySelector('.carousel');
+           if (carousel) carousel.style.transition = 'none';
+           root.scrollLeft -= jumpWidth;
+           requestAnimationFrame(() => requestAnimationFrame(() => {
+             if (carousel) carousel.style.transition = '';
+           }));
+        } else if (root.scrollLeft < jumpWidth * 0.2 && this._hasAutoScrolled) {
+           const carousel = this.shadowRoot.querySelector('.carousel');
+           if (carousel) carousel.style.transition = 'none';
+           root.scrollLeft += jumpWidth;
+           requestAnimationFrame(() => requestAnimationFrame(() => {
+             if (carousel) carousel.style.transition = '';
+           }));
+        }
+
         const scrollIndex = root.scrollLeft / gap;
 
         cards.forEach((card, i) => {
@@ -117,19 +133,6 @@
 
           card.style.setProperty('--scroll-offset', offset.toFixed(3));
           card.style.setProperty('--scroll-abs-offset', absOffset.toFixed(3));
-
-          // Auto-flip with hysteresis so cards do not chatter around the center line.
-          if (absOffset < AUTO_FLIP_ENTER_OFFSET) {
-            card.setAttribute('data-auto-flipped', 'true');
-            if (!card.classList.contains('flipped')) card.classList.add('flipped');
-          } else if (
-            absOffset > AUTO_FLIP_EXIT_OFFSET &&
-            card.hasAttribute('data-auto-flipped') &&
-            !card.hasAttribute('data-hovered')
-          ) {
-            card.removeAttribute('data-auto-flipped');
-            if (card.classList.contains('flipped')) card.classList.remove('flipped');
-          }
         });
         
         // Pass the raw scroll value natively up so the camera layer can track correctly 
@@ -150,15 +153,33 @@
         root.scrollLeft += speed;
         
         // Seamless Looping logic:
-        // We calculate the width of the "original" set of items (half the total if we duplicated them)
+        // A full circle is 360 degrees. Each item is 18 degrees, so 20 items make a full circle.
+        // We want to jump by exactly a full circle to be completely seamless.
         const vw = document.documentElement.clientWidth / 100;
         const gap = Math.min(240, Math.max(140, 16 * vw));
-        const totalItems = this._readItems().length;
-        const halfContentWidth = (totalItems / 2) * gap;
+        const jumpWidth = 20 * gap; // 360 degrees rotation jump
         
-        // If we've scrolled past the first set, seamlessly jump back to maintain the loop
-        if (root.scrollLeft >= halfContentWidth) {
-           root.scrollLeft -= halfContentWidth;
+        // If we've scrolled far enough to the right, jump back by one full circle
+        if (root.scrollLeft > jumpWidth * 1.8) {
+           const carousel = this.shadowRoot.querySelector('.carousel');
+           if (carousel) carousel.style.transition = 'none';
+           
+           root.scrollLeft -= jumpWidth;
+           
+           // Instantly update CSS variables so there's no visual stutter
+           const scrollIndex = root.scrollLeft / gap;
+           this.style.setProperty('--scroll-left', `${root.scrollLeft}px`);
+           this.style.setProperty('--scroll-index', scrollIndex.toFixed(4));
+           
+           // Restore transition after the DOM has updated
+           requestAnimationFrame(() => {
+             requestAnimationFrame(() => {
+               if (carousel) carousel.style.transition = '';
+             });
+           });
+        } else if (root.scrollLeft < jumpWidth * 0.2 && this._hasAutoScrolled) {
+           // Allow seamless scrolling backwards as well
+           // root.scrollLeft += jumpWidth; // This can cause issues with auto-scroll pushing right, so we'll just handle right-scrolling overflow.
         }
       }
 
@@ -212,8 +233,8 @@
           .root {
             position: relative;
             overflow: hidden;
-            min-height: clamp(560px, 78vw, 860px);
-            padding: clamp(20px, 4vw, 56px);
+            min-height: clamp(400px, 60vw, 700px);
+            padding: clamp(10px, 2vw, 30px);
             background: var(--media-collage-bg);
             isolation: isolate;
           }
@@ -294,24 +315,6 @@
             /* Active state specific overrides if any, currently handled by CSS variables */
           }
 
-          .card {
-            --tilt-x: 0deg;
-            --tilt-y: 0deg;
-            --lift: 0px;
-            --flip: 0deg;
-            position: absolute;
-            left: var(--x);
-            top: var(--y);
-            z-index: var(--z);
-            width: min(var(--w), calc(100% - 24px));
-            min-width: 220px;
-            aspect-ratio: var(--ratio);
-            display: block;
-            padding: 0;
-            perspective: 1000px;
-            cursor: pointer;
-          }
-
           .card-inner {
             position: relative;
             width: 100%;
@@ -323,36 +326,24 @@
             will-change: transform;
           }
 
-          .card.flipped .card-inner {
-            transform: translateZ(0) rotateY(180deg);
-          }
-
-          .card-front, .card-back {
+          .card-content {
             position: absolute;
             inset: 0;
             width: 100%;
             height: 100%;
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
             border-radius: inherit;
             overflow: hidden;
-            background: #050505;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
-            transform: translateZ(0.01px);
-          }
-
-          .card-back {
-            transform: rotateY(180deg) translateZ(0.01px);
             background: linear-gradient(135deg, #080808, #121212);
-            padding: 2.5rem;
+            padding: 0.8rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
             border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+            transform: translateZ(0.01px);
           }
 
-          .card-back::before {
+          .card-content::before {
             content: "";
             position: absolute;
             inset: 0;
@@ -363,28 +354,38 @@
 
           .feedback-text {
             color: #fff;
-            font: 400 1.2rem/1.6 ui-serif, Georgia, serif;
+            font: 400 1rem/1.5 ui-serif, Georgia, serif;
             font-style: italic;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             opacity: 0.9;
           }
 
           .key-points {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.75rem;
+            gap: 0.5rem;
           }
 
           .point {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: var(--card-bg, #fff);
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            padding: 0.5rem 1rem;
+            letter-spacing: 0.05em;
+            padding: 0.35rem 0.75rem;
             border-radius: 100px;
+          }
+
+          .author {
+            margin-top: 1.5rem;
+            align-self: flex-end;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.55rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-weight: 700;
           }
 
           .card {
@@ -396,13 +397,13 @@
             left: 50%;
             top: 50%;
             width: min(var(--active-w), calc(100% - 24px));
-            aspect-ratio: 0.65;
+            aspect-ratio: 0.8;
             z-index: calc(100 - var(--scroll-abs-offset, 0));
             display: block;
             padding: 0;
             perspective: 1000px;
             cursor: pointer;
-            opacity: 1;
+            opacity: calc(1 - clamp(0, (var(--scroll-abs-offset, 0) - 6), 4) / 4);
             transform-style: preserve-3d;
             transform-origin: center;
             transform:
@@ -415,8 +416,8 @@
               scale(calc(1.4 - clamp(0, var(--scroll-abs-offset, 10), 1) * 0.4));
             transition:
               transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
-              opacity 0.8s ease;
-            will-change: transform;
+              opacity 0.4s ease;
+            will-change: transform, opacity;
           }
 
           :host([active]) .card {
@@ -562,7 +563,7 @@
         </style>
 
         <section class="root" part="root" aria-label="${escapeAttr(label)}">
-          <div class="stage" part="stage" style="--total: ${items.length}; --gap: clamp(160px, 18vw, 250px);">
+          <div class="stage" part="stage" style="--total: ${items.length}; --gap: clamp(140px, 14vw, 220px);">
             <div class="camera">
               <div class="carousel">
                 ${items.map((item, index) => this._cardTemplate(item, index)).join("")}
@@ -584,7 +585,7 @@
       const color = item.color || DEFAULT_ITEMS[index % DEFAULT_ITEMS.length].color;
 
       // Active state layout - Rigid 3D wheel physics
-      const activeW = "clamp(160px, 20vw, 320px)";
+      const activeW = "clamp(140px, 16vw, 280px)";
       const theta = 18; // degrees
       const radius = 1400; // cylinder push
       const fixedRotateY = `${index * theta}deg`;
@@ -602,20 +603,12 @@
           "
         >
           <div class="card-inner">
-            <div class="card-front">
-              <div class="media" part="media">
-                ${this._mediaTemplate(item, title)}
-              </div>
-              <div class="copy" part="copy">
-                <h3 class="title" part="title">${escapeAttr(title)}</h3>
-                <p class="subtitle" part="subtitle">${escapeAttr(subtitle)}</p>
-              </div>
-            </div>
-            <div class="card-back">
+            <div class="card-content">
               <div class="feedback-text">${escapeAttr(item.feedback || "Exceptional performance and cinematic vision. The Viral Duo transformed our digital presence.")}</div>
               <div class="key-points">
                 ${(item.points || "Growth, Viral, Strategy").split(',').map(p => `<span class="point">${escapeAttr(p.trim())}</span>`).join('')}
               </div>
+              <div class="author" part="author">Review by ${escapeAttr(title)}</div>
             </div>
           </div>
         </article>
@@ -820,42 +813,15 @@
 
     _bindCardMotion() {
       this.shadowRoot.querySelectorAll(".card").forEach((card) => {
-        card.addEventListener("pointermove", this._onPointerMove);
-        card.addEventListener("pointerleave", this._onPointerLeave);
         card.addEventListener("mouseenter", () => {
           card.setAttribute('data-hovered', 'true');
-          card.classList.add('flipped');
           this._isUserInteracting = true;
         });
         card.addEventListener("mouseleave", () => {
           card.removeAttribute('data-hovered');
-          // Only remove flipped if not in the auto-flip zone
-          const absOffset = parseFloat(card.style.getPropertyValue('--scroll-abs-offset')) || 1;
-          if (absOffset > AUTO_FLIP_EXIT_OFFSET) {
-            card.removeAttribute('data-auto-flipped');
-            card.classList.remove('flipped');
-          }
           this._isUserInteracting = Array.from(this.shadowRoot.querySelectorAll('.card[data-hovered]')).length > 0;
         });
       });
-    }
-
-    _onPointerMove(event) {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-      const card = event.currentTarget;
-      const rect = card.getBoundingClientRect();
-      const x = (event.clientX - rect.left) / rect.width - 0.5;
-      const y = (event.clientY - rect.top) / rect.height - 0.5;
-
-      card.style.setProperty("--tilt-x", `${clamp(y * -9, -8, 8)}deg`);
-      card.style.setProperty("--tilt-y", `${clamp(x * 10, -9, 9)}deg`);
-    }
-
-    _onPointerLeave(event) {
-      const card = event.currentTarget;
-      card.style.setProperty("--tilt-x", "0deg");
-      card.style.setProperty("--tilt-y", "0deg");
     }
 
     _setActive(isActive) {
