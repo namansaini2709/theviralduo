@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function Contact() {
   const [formState, setFormState] = useState({
@@ -11,163 +12,180 @@ export default function Contact() {
     message: "",
   });
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [notifyMe, setNotifyMe] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("submitting");
 
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formState),
-      });
-
-      if (res.ok) {
-        setStatus("success");
-        setFormState({ name: "", brand: "", need: "", message: "" });
-      } else {
-        setStatus("error");
-      }
+      // Mocking submission
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      setStatus("success");
+      setFormState({ name: "", brand: "", need: "", message: "" });
     } catch {
       setStatus("error");
     }
   };
 
-  const socials = [
-    { name: "Instagram", icon: "📸", href: "#" },
-    { name: "LinkedIn", icon: "💼", href: "#" },
-    { name: "TikTok", icon: "🎵", href: "#" },
-  ];
-
   return (
-    <section id="contact" className="py-24 px-6">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="font-display text-4xl md:text-5xl font-bold text-center mb-16">Let&apos;s Create</h2>
+    <section id="contact" className="py-24 px-6 relative">
+      {/* Decorative Icons */}
+      <div className="absolute top-10 left-10 flex items-center gap-4 opacity-50">
+        <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
+          <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
+        </div>
+        <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+            <circle cx="18" cy="8" r="3" fill="#E63946" stroke="none" />
+          </svg>
+        </div>
+      </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Contact Form */}
+
+
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-16 relative">
+          <span className="text-white/40 text-sm font-body tracking-[0.2em] uppercase mb-2 block">
+            Let&apos;s Create
+          </span>
+          <h2 className="font-serif text-5xl md:text-6xl font-medium text-white mb-6 leading-tight">
+            Let&apos;s Create <br />
+            <span className="text-[#E63946]">Something Viral.</span>
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+          {/* Form Side */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
+            className="space-y-8"
           >
-            {status === "success" ? (
-              <div className="h-full flex items-center justify-center bg-accent/10 rounded-xl p-8">
-                <div className="text-center">
-                  <div className="text-5xl mb-4">🎬</div>
-                  <h3 className="font-display text-2xl font-bold mb-2">That&apos;s a wrap!</h3>
-                  <p className="font-body text-foreground/70">
-                    We&apos;ll be in touch within 24 hours. Get ready to go viral.
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label className="block font-body text-sm text-foreground/60 mb-2">Name</label>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <label className="block font-body text-sm text-white/60">Name</label>
+                <div className="relative group">
                   <input
                     type="text"
                     required
                     value={formState.name}
                     onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                    className="w-full bg-background border border-foreground/20 rounded-lg px-4 py-3 font-body text-foreground focus:outline-none focus:border-accent transition-colors"
+                    className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3.5 font-body text-white focus:outline-none focus:border-red-500/50 transition-all duration-300 placeholder:text-white/20 focus:shadow-[0_0_15px_rgba(255,50,50,0.4)]"
                     placeholder="Your name"
                   />
                 </div>
+              </div>
 
-                <div>
-                  <label className="block font-body text-sm text-foreground/60 mb-2">Brand / Company</label>
-                  <input
-                    type="text"
-                    required
-                    value={formState.brand}
-                    onChange={(e) => setFormState({ ...formState, brand: e.target.value })}
-                    className="w-full bg-background border border-foreground/20 rounded-lg px-4 py-3 font-body text-foreground focus:outline-none focus:border-accent transition-colors"
-                    placeholder="Your brand or company"
-                  />
-                </div>
+              <div className="space-y-2">
+                <label className="block font-body text-sm text-white/60">Brand / Company</label>
+                <input
+                  type="text"
+                  required
+                  value={formState.brand}
+                  onChange={(e) => setFormState({ ...formState, brand: e.target.value })}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-body text-white focus:outline-none focus:border-red-500/50 transition-all duration-300 placeholder:text-white/20 focus:shadow-[0_0_15px_rgba(255,50,50,0.4)]"
+                  placeholder="Your brand or company"
+                />
+              </div>
 
-                <div>
-                  <label className="block font-body text-sm text-foreground/60 mb-2">What do you need?</label>
+              <div className="space-y-2">
+                <label className="block font-body text-sm text-white/60">What do you need?</label>
+                <div className="relative">
                   <select
                     required
                     value={formState.need}
                     onChange={(e) => setFormState({ ...formState, need: e.target.value })}
-                    className="w-full bg-background border border-foreground/20 rounded-lg px-4 py-3 font-body text-foreground focus:outline-none focus:border-accent transition-colors"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-body text-white focus:outline-none focus:border-red-500/50 transition-all duration-300 appearance-none cursor-pointer focus:shadow-[0_0_15px_rgba(255,50,50,0.4)]"
                   >
-                    <option value="">Select a service</option>
-                    <option value="content">Content Creation</option>
-                    <option value="strategy">Brand Strategy</option>
-                    <option value="growth">Growth Management</option>
-                    <option value="ads">Paid Advertising</option>
-                    <option value="other">Something else</option>
+                    <option value="" className="bg-[#080808]">Select a service</option>
+                    <option value="content" className="bg-[#080808]">Content Creation</option>
+                    <option value="strategy" className="bg-[#080808]">Brand Strategy</option>
+                    <option value="growth" className="bg-[#080808]">Growth Management</option>
+                    <option value="ads" className="bg-[#080808]">Paid Advertising</option>
                   </select>
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none opacity-40">
+                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
+                      <path d="M1 1L6 6L11 1" stroke="white" strokeWidth="2" />
+                    </svg>
+                  </div>
                 </div>
+              </div>
 
-                <div>
-                  <label className="block font-body text-sm text-foreground/60 mb-2">Message</label>
-                  <textarea
-                    required
-                    rows={4}
-                    value={formState.message}
-                    onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                    className="w-full bg-background border border-foreground/20 rounded-lg px-4 py-3 font-body text-foreground focus:outline-none focus:border-accent transition-colors resize-none"
-                    placeholder="Tell us about your project..."
-                  />
-                </div>
+              <div className="space-y-2">
+                <label className="block font-body text-sm text-white/60">Message</label>
+                <textarea
+                  required
+                  rows={4}
+                  value={formState.message}
+                  onChange={(e) => setFormState({ ...formState, message: e.target.value })}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 font-body text-white focus:outline-none focus:border-red-500/50 transition-all duration-300 resize-none placeholder:text-white/20 focus:shadow-[0_0_15px_rgba(255,50,50,0.4)]"
+                  placeholder="Tell us about your project..."
+                />
+              </div>
 
-                <button
-                  type="submit"
-                  disabled={status === "submitting"}
-                  className="w-full py-4 bg-accent text-background font-display font-semibold rounded-full hover:bg-accent-warm transition-colors disabled:opacity-50"
-                >
+              <button
+                type="submit"
+                disabled={status === "submitting"}
+                className="w-full py-4 bg-gradient-to-r from-[#E63946] to-[#D62828] text-white font-display font-semibold rounded-full hover:shadow-[0_0_30px_rgba(230,57,70,0.4)] transition-all duration-500 disabled:opacity-50 relative overflow-hidden group"
+              >
+                <span className="relative z-10 text-lg">
                   {status === "submitting" ? "Sending..." : "Let's Talk"}
-                </button>
-
-                {status === "error" && (
-                  <p className="text-red-500 text-sm text-center">Something went wrong. Try again.</p>
-                )}
-              </form>
-            )}
+                </span>
+                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </button>
+            </form>
           </motion.div>
 
-          {/* Cal.com embed placeholder */}
+          {/* Booking Card Side */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="bg-background/30 rounded-xl p-8 border border-foreground/10"
+            className="glass-container rounded-3xl p-6 md:p-8 border border-white/10 flex flex-col h-full"
           >
-            <h3 className="font-display text-xl font-semibold mb-4">Book a Discovery Call</h3>
-            <p className="font-body text-foreground/60 mb-6">
-              Prefer to chat live? Schedule a 30-minute call to discuss your project.
+            <h3 className="font-serif text-3xl font-medium text-white mb-3">Book a Discovery Call</h3>
+            <p className="font-body text-white/60 text-lg max-w-md leading-relaxed">
+              Got a vision? We&apos;ve got the tools to make it a reality.
             </p>
-            {/* Placeholder for Cal.com embed */}
-            <div className="aspect-[4/3] bg-foreground/5 rounded-lg flex items-center justify-center border border-dashed border-foreground/20">
-              <div className="text-center">
-                <div className="text-4xl mb-2">📅</div>
-                <p className="font-body text-sm text-foreground/40">Calendar coming soon</p>
-                <p className="font-body text-xs text-foreground/30 mt-1">
-                  In the meantime, use the form
-                </p>
+            
+            <div className="flex-grow flex flex-col items-center justify-center space-y-6 bg-white/[0.02] rounded-2xl p-6 border border-dashed border-white/10 relative overflow-hidden">
+              {/* Soft Glow behind icon */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-red-500/10 blur-3xl rounded-full" />
+              
+              <div className="relative w-32 h-32 drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+                <Image 
+                  src="/calendar-final.png" 
+                  alt="Calendar" 
+                  width={128}
+                  height={128}
+                  className="w-full h-full object-contain mix-blend-screen"
+                />
+              </div>
+              
+              <div className="text-center relative z-10">
+                <p className="font-serif text-white/80 text-lg mb-0.5">Calendar coming soon</p>
+                <p className="font-body text-white/40 text-xs">In the meantime, use the form</p>
+              </div>
+
+              <button className="w-full max-w-[220px] py-4 bg-gradient-to-b from-white/10 to-white/5 hover:from-white/15 hover:to-white/10 border border-white/10 rounded-full text-white font-body text-base font-medium transition-all duration-300 backdrop-blur-md shadow-lg relative z-10">
+                Join Waitlist
+              </button>
+
+              <div className="flex items-center gap-3 pt-1 relative z-10">
+                <span className="text-white/40 text-xs font-body">Notify Me</span>
+                <button 
+                  onClick={() => setNotifyMe(!notifyMe)}
+                  className={`w-10 h-5 rounded-full transition-colors duration-300 relative ${notifyMe ? 'bg-white/30' : 'bg-white/10'}`}
+                >
+                  <div className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white transition-transform duration-300 ${notifyMe ? 'translate-x-5' : 'translate-x-0'}`} />
+                </button>
               </div>
             </div>
           </motion.div>
-        </div>
-
-        {/* Social links */}
-        <div className="flex justify-center gap-8 mt-16">
-          {socials.map((social) => (
-            <a
-              key={social.name}
-              href={social.href}
-              className="flex items-center gap-2 text-foreground/60 hover:text-accent transition-colors group"
-            >
-              <span className="text-2xl group-hover:scale-110 transition-transform">{social.icon}</span>
-              <span className="font-body text-sm">{social.name}</span>
-            </a>
-          ))}
         </div>
       </div>
     </section>

@@ -1,0 +1,35 @@
+/* Hide the default cursor globally */
+body {
+  cursor: none !important;
+}
+
+/* Make sure interactive elements also hide the default cursor */
+a, button, .interactive, [role="button"] {
+  cursor: none !important;
+}
+
+/* Main Red Dot Base Styles */
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0.75rem; /* 12px */
+  height: 0.75rem; /* 12px */
+  background-color: #dc2626; /* red-600 */
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Outer Trailing Ring Base Styles */
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 2.5rem; /* 40px */
+  height: 2.5rem; /* 40px */
+  border: 1px solid rgba(220, 38, 38, 0.5); /* red-600 with 50% opacity */
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 9998;
+}

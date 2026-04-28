@@ -69,6 +69,7 @@ export default function MovieReel() {
   const [activeFrame, setActiveFrame] = useState(0);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
     gsap.registerPlugin(ScrollTrigger);
 
     const section = sectionRef.current;
@@ -76,17 +77,21 @@ export default function MovieReel() {
     const spinningReel = spinningReelRef.current;
     if (!section || !horizontalReel || !spinningReel) return;
 
-    const totalWidth = horizontalReel.scrollWidth;
-    const viewportWidth = window.innerWidth;
+    // Use a function to get the latest width during scroll calculations
+    const getScrollAmount = () => {
+      const horizontalWidth = horizontalReel.scrollWidth;
+      return -(horizontalWidth - window.innerWidth + 400);
+    };
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: section,
         start: "top top",
-        end: () => `+=${totalWidth + 1500}`,
-        scrub: 1,
+        end: () => `+=${horizontalReel.scrollWidth + 1500}`,
+        scrub: 1.5,
         pin: true,
         anticipatePin: 1,
+        invalidateOnRefresh: true, // Crucial for dynamic width updates
         onUpdate: (self) => {
           const progress = self.progress;
           if (progress > 0.3) {
@@ -123,25 +128,28 @@ export default function MovieReel() {
 
     // 3. Horizontal Scroll through projects
     tl.to(horizontalReel, {
-      x: () => -(totalWidth - viewportWidth + 400),
+      x: getScrollAmount,
       ease: "none",
       duration: 1.5,
     });
 
     return () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill());
+      tl.kill();
+      ScrollTrigger.getAll().forEach((t) => {
+        if (t.trigger === section) t.kill();
+      });
     };
   }, []);
 
   return (
-    <section ref={sectionRef} id="movie-reel" className="relative h-screen bg-background overflow-hidden perspective-2000">
+    <section ref={sectionRef} id="movie-reel" className="relative h-screen overflow-hidden perspective-2000">
       {/* Dynamic Background */}
       <div className="absolute inset-0 z-0">
         <div 
           className="absolute inset-0 transition-colors duration-1000 opacity-20 blur-[100px]" 
           style={{ backgroundColor: activeFrame >= 0 ? projects[activeFrame].color : 'transparent' }} 
         />
-        <div className="absolute inset-0 bg-[#080808]/80" />
+        <div className="absolute inset-0 bg-[#080808]/45" />
       </div>
 
       {/* SVG Movie Reel Intro */}
@@ -215,7 +223,17 @@ export default function MovieReel() {
   );
 }
 
-function FilmFrame({ project, index, isActive }: { project: any, index: number, isActive: boolean }) {
+interface Project {
+  id: number;
+  client: string;
+  platform: string;
+  views: string;
+  color: string;
+  gradient: string;
+  thumbnail: string;
+}
+
+function FilmFrame({ project, index, isActive }: { project: Project, index: number, isActive: boolean }) {
   return (
     <motion.div 
       className="flex-shrink-0 relative w-[450px] h-[600px]"
