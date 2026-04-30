@@ -8,27 +8,30 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const pillars = [
   {
-    title: "Spot",
+    title: "Strategic",
     copy: "We find the cultural signals, creator angles, and scroll patterns your audience already wants.",
     image: "/assets/services/what-we-are.png",
+    video: "/assets/videos/stratgic 2.mp4",
     accent: "from-cyan-500/22 via-cyan-300/10 to-cyan-100/[0.03]",
     tint: "bg-cyan-400/[0.18] group-hover:bg-cyan-300/[0.34]",
     border: "border-cyan-200/[0.22] group-hover:border-cyan-200/[0.48]",
     shadow: "shadow-cyan-500/10 group-hover:shadow-cyan-400/20",
   },
   {
-    title: "Shape",
+    title: "Productive",
     copy: "We turn ideas into sharp hooks, repeatable formats, and fast-moving edits built for retention.",
     image: "/assets/services/clapboard.png",
     accent: "from-red-500/22 via-orange-300/10 to-red-100/[0.03]",
     tint: "bg-red-500/[0.18] group-hover:bg-red-400/[0.34]",
+    video: "/assets/videos/productive_poster.png",
     border: "border-red-200/[0.22] group-hover:border-red-200/[0.48]",
     shadow: "shadow-red-500/10 group-hover:shadow-red-400/25",
   },
   {
-    title: "Scale",
+    title: "Creative",
     copy: "We read the data, double down on winners, and keep the content machine compounding.",
     image: "/assets/services/charts.png",
+    video: "/assets/videos/creative.mp4",
     accent: "from-amber-400/22 via-lime-300/10 to-yellow-100/[0.03]",
     tint: "bg-amber-300/[0.18] group-hover:bg-amber-300/[0.34]",
     border: "border-amber-100/[0.22] group-hover:border-amber-100/[0.48]",
@@ -39,6 +42,69 @@ const pillars = [
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, index: number) => {
+    const card = cardsRef.current[index];
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    // Tilt from opposite direction logic (Tilting AWAY from mouse)
+    const rX = (centerY - y) / 12;
+    const rY = (x - centerX) / 12;
+
+    gsap.to(card, {
+      rotateX: rX,
+      rotateY: rY,
+      duration: 0.6,
+      ease: "power2.out",
+      overwrite: "auto",
+    });
+
+    const glare = card.querySelector(".card-glare") as HTMLDivElement;
+    if (glare) {
+      gsap.to(glare, {
+        opacity: 0.5,
+        x: x - rect.width / 2,
+        y: y - rect.height / 2,
+        duration: 0.4,
+      });
+    }
+  };
+
+  const handleMouseLeave = (index: number) => {
+    const card = cardsRef.current[index];
+    if (!card) return;
+    gsap.to(card, {
+      rotateX: 0,
+      rotateY: 0,
+      duration: 1,
+      ease: "power4.out",
+      overwrite: "auto",
+    });
+    
+    const glare = card.querySelector(".card-glare") as HTMLDivElement;
+    if (glare) {
+      gsap.to(glare, {
+        opacity: 0,
+        duration: 0.4,
+      });
+    }
+  };
+
+  useEffect(() => {
+    videoRefs.current.forEach((video) => {
+      if (video) {
+        video.play().catch((err) => {
+          console.warn("Autoplay prevented:", err);
+        });
+      }
+    });
+  }, []);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -184,31 +250,66 @@ export default function About() {
           </motion.p>
         </motion.div>
 
-        <div className="grid w-full max-w-7xl grid-cols-1 gap-5 [perspective:1200px] md:grid-cols-3 md:gap-8">
+        <div className="grid w-full max-w-6xl grid-cols-1 gap-5 [perspective:1200px] md:grid-cols-3 md:gap-8">
           {pillars.map((pillar, index) => (
             <div
               key={pillar.title}
               ref={(el) => {
                 cardsRef.current[index] = el;
               }}
-              className={`group relative min-h-[340px] overflow-hidden rounded-2xl border bg-gradient-to-br ${pillar.accent} ${pillar.border} p-5 shadow-[0_30px_90px_rgba(0,0,0,0.38)] ${pillar.shadow} backdrop-blur-[7px] transition-[border-color,box-shadow,background-color] duration-500 md:min-h-[430px] md:p-7`}
+              onMouseMove={(e) => handleMouseMove(e, index)}
+              onMouseLeave={() => handleMouseLeave(index)}
+              className={`group relative min-h-[340px] overflow-hidden rounded-2xl border bg-gradient-to-br ${pillar.accent} ${pillar.border} shadow-[0_30px_90px_rgba(0,0,0,0.38)] ${pillar.shadow} backdrop-blur-[7px] transition-[border-color,box-shadow,background-color] duration-500 md:min-h-[440px] [transform-style:preserve-3d]`}
             >
+              <div className="card-glare pointer-events-none absolute inset-0 z-50 opacity-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.12)_0%,transparent_80%)] blur-2xl" />
               <div className={`absolute inset-0 ${pillar.tint} opacity-80 mix-blend-screen transition-colors duration-500`} />
               <div className="absolute inset-0 bg-black/8" />
               <div className="absolute inset-0 opacity-35 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.22),transparent_52%)]" />
 
               <div className="relative z-10 flex h-full flex-col">
-                <div className="mb-8 flex aspect-[1.75] items-center justify-center overflow-hidden rounded-xl border border-white/12 bg-black/8 transition-colors duration-500 group-hover:border-white/24 group-hover:bg-white/[0.035]">
-                  <Image
-                    src={pillar.image}
-                    alt=""
-                    width={420}
-                    height={260}
-                    className="h-full w-full object-contain p-6 transition-transform duration-700 group-hover:scale-105"
-                  />
+                <div className="relative flex aspect-[1.6] items-center justify-center overflow-hidden bg-black/8 transition-colors duration-500 group-hover:bg-white/[0.035]">
+                  {pillar.video ? (
+                    pillar.video.match(/\.(mp4|webm|ogg)$/) ? (
+                      <video
+                        ref={(el) => {
+                          videoRefs.current[index] = el;
+                        }}
+                        poster={pillar.image}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        preload="auto"
+                        className="absolute inset-0 h-full w-full object-cover transition-all duration-700"
+                        style={{ objectFit: 'cover' }}
+                      >
+                        <source src={pillar.video} type="video/mp4" />
+                      </video>
+                    ) : (
+                      <motion.div
+                        className="absolute inset-0 h-full w-full overflow-hidden"
+                        initial={{ scale: 1 }}
+                      >
+                        <Image
+                          src={pillar.video}
+                          alt=""
+                          fill
+                          className="object-cover"
+                        />
+                      </motion.div>
+                    )
+                  ) : pillar.image ? (
+                    <Image
+                      src={pillar.image}
+                      alt=""
+                      width={420}
+                      height={260}
+                      className="h-full w-full object-contain p-6 transition-transform duration-700 group-hover:scale-105"
+                    />
+                  ) : null}
                 </div>
 
-                <div className="mt-auto">
+                <div className="mt-auto p-6 md:p-8">
                   <h3 className="font-serif text-4xl font-black italic leading-none text-white md:text-5xl">
                     {pillar.title}
                   </h3>

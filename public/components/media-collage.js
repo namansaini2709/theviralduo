@@ -237,6 +237,8 @@
             padding: clamp(10px, 2vw, 30px);
             background: var(--media-collage-bg);
             isolation: isolate;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
           }
 
           :host([active]) .root {
@@ -245,18 +247,7 @@
           }
 
           .root::-webkit-scrollbar {
-            height: clamp(6px, 1vw, 10px);
-          }
-          .root::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.03); 
-            border-radius: 10px;
-          }
-          .root::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.15); 
-            border-radius: 10px;
-          }
-          .root::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.3); 
+            display: none;
           }
 
           .root::before {
@@ -307,8 +298,7 @@
             transition: transform 900ms cubic-bezier(0.18, 0.95, 0.2, 1);
             transform: 
               translateZ(calc(var(--radius, 1400px) * -1)) 
-              rotateY(calc(var(--scroll-index, 0) * 18deg * -1)) 
-              rotateX(calc(var(--media-collage-scroll-spin, 0deg) * 0.1));
+              rotateY(calc(var(--scroll-index, 0) * 18deg * -1));
           }
 
           :host([active]) .carousel {
@@ -815,11 +805,9 @@
       this.shadowRoot.querySelectorAll(".card").forEach((card) => {
         card.addEventListener("mouseenter", () => {
           card.setAttribute('data-hovered', 'true');
-          this._isUserInteracting = true;
         });
         card.addEventListener("mouseleave", () => {
           card.removeAttribute('data-hovered');
-          this._isUserInteracting = Array.from(this.shadowRoot.querySelectorAll('.card[data-hovered]')).length > 0;
         });
       });
     }

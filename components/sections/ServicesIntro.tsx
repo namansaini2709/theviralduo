@@ -103,23 +103,27 @@ export default function ServicesIntro() {
           If it&apos;s not viral then its not us
         </p>
         
-        <div ref={textRef} className="flex flex-wrap justify-center gap-x-[1.2em] gap-y-12">
+        <div ref={textRef} className="relative flex flex-row items-center justify-center">
           {words.map((word, wordIdx) => (
             <div 
               key={wordIdx} 
-              className={`inline-block whitespace-nowrap ${
-                word === "SERVICES" ? "-translate-y-4 md:-translate-y-8" : 
-                word === "PROVIDE" ? "translate-y-4 md:translate-y-8" : ""
+              className={`inline-block whitespace-nowrap relative ${
+                word === "SERVICES" ? "-translate-x-4 -translate-y-12 md:-translate-x-8 md:-translate-y-20 z-0" : 
+                word === "PROVIDE" ? "translate-x-4 translate-y-12 md:translate-x-8 md:translate-y-20 z-0" : 
+                "z-10 mx-[-0.05em]" 
               }`}
             >
               {word.split("").map((char, charIdx) => {
                 const charIndex = words.slice(0, wordIdx).join("").length + charIdx;
+                const isWe = word === "WE";
                 return (
                   <span
                     key={charIdx}
                     ref={(el) => { charRefs.current[charIndex] = el; }}
-                    className={`inline-block font-serif text-[11vw] md:text-[8vw] lg:text-[7rem] font-black italic leading-[0.75] tracking-[-0.04em] uppercase drop-shadow-[0_20px_60px_rgba(230,57,70,0.35)] ${
-                      word === "WE" ? "text-white" : "text-[#E63946]"
+                    className={`inline-block font-serif font-black italic leading-[0.7] tracking-[-0.05em] uppercase drop-shadow-[0_20px_70px_rgba(230,57,70,0.4)] ${
+                      isWe 
+                        ? "text-white text-[18vw] md:text-[14vw] lg:text-[13rem]" 
+                        : "text-[#E63946] text-[8vw] md:text-[6vw] lg:text-[5rem] opacity-90"
                     }`}
                   >
                     {char}
