@@ -72,14 +72,19 @@ export default function Footer() {
           
           <div className="flex flex-col gap-4">
             <h4 className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 mb-2">Socials</h4>
-            <a href="#" className="text-white/70 hover:text-white font-body text-sm transition-colors flex items-center gap-2 group">
+            <a 
+              href="https://www.instagram.com/theviralduo" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/70 hover:text-white font-body text-sm transition-colors flex items-center gap-2 group"
+            >
               Instagram <ArrowUpRight size={14} className="opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
             </a>
             <a href="#" className="text-white/70 hover:text-white font-body text-sm transition-colors flex items-center gap-2 group">
-              TikTok <ArrowUpRight size={14} className="opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
+              Twitter <ArrowUpRight size={14} className="opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
             </a>
             <a href="#" className="text-white/70 hover:text-white font-body text-sm transition-colors flex items-center gap-2 group">
-              Twitter <ArrowUpRight size={14} className="opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
+              LinkedIn <ArrowUpRight size={14} className="opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
             </a>
           </div>
 
