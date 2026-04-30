@@ -188,7 +188,7 @@ export default function Navigation() {
         <motion.div 
           variants={itemVariants}
           className="flex items-center gap-2.5 cursor-pointer group z-10"
-          onClick={() => scrollTo("#top", "Home")}
+          onClick={() => window.open("https://www.instagram.com/theviralduo", "_blank")}
         >
           <div className={`relative rounded-full overflow-hidden border border-white/10 group-hover:border-accent/50 transition-all duration-500 shadow-lg ${
             isScrolled ? "w-7 h-7" : "w-8 h-8 md:w-9 md:h-9"
