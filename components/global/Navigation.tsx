@@ -8,9 +8,9 @@ import { useRouter, usePathname } from "next/navigation";
 
 const NAV_LINKS = [
   { label: "Home", href: "#top" },
-  { label: "Work", href: "#movie-reel" },
-  { label: "Services", href: "#services" },
   { label: "About", href: "#about" },
+  { label: "Services", href: "#services" },
+  { label: "Work", href: "#movie-reel" },
 ];
 
 const BEZIER: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -34,7 +34,7 @@ const itemVariants: Variants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: BEZIER } },
 };
 
-function MagneticLink({ children, onClick, active }: { children: React.ReactNode; onClick: () => void; active: boolean }) {
+function MagneticLink({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -68,13 +68,17 @@ function MagneticLink({ children, onClick, active }: { children: React.ReactNode
       onClick={onClick}
     >
       <motion.span
-        className={`relative z-10 text-sm font-medium transition-colors duration-300 ${
-          active ? "text-white" : "text-white/70 group-hover:text-white"
-        }`}
-        animate={{ scale: active ? 1.05 : 1 }}
+        className="relative z-10 text-sm font-medium transition-colors duration-300 text-white/80 group-hover:text-white"
       >
         {children}
       </motion.span>
+      
+      {/* Hover Glow Pill */}
+      <motion.div
+        className="absolute inset-0 z-0 bg-white/5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        initial={false}
+        whileHover={{ scale: 1.1 }}
+      />
     </motion.div>
   );
 }
@@ -86,6 +90,7 @@ export default function Navigation() {
   const [activeSection, setActiveSection] = useState("Home");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -115,7 +120,6 @@ export default function Navigation() {
     setActiveSection(label);
 
     if (href.startsWith("#")) {
-      // If we are not on the home page, navigate home first
       if (pathname !== "/") {
         router.push("/" + href);
         return;
@@ -139,33 +143,46 @@ export default function Navigation() {
   return (
     <>
       <motion.nav
+        ref={navRef}
         initial="hidden"
         animate="visible"
         variants={containerVariants}
         style={{ 
-          height: isScrolled ? 48 : 64,
+          height: isScrolled ? 56 : 84,
           width: isScrolled ? "min(880px, 92vw)" : "100%",
-          backgroundColor: isScrolled ? "rgba(8, 8, 8, 0.75)" : "rgba(8, 8, 8, 0.45)",
-          backdropFilter: isScrolled ? "blur(14px)" : "blur(8px)",
+          backgroundColor: isScrolled ? "rgba(8, 8, 8, 0.65)" : "rgba(8, 8, 8, 0.15)",
+          backdropFilter: "blur(20px)",
         }}
-        className={`fixed top-0 left-1/2 z-[100] flex items-center justify-between pl-4 pr-5 md:pl-6 md:pr-8 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          isScrolled ? "top-3 rounded-full border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)]" : "border-b border-white/5"
+        className={`fixed top-0 left-1/2 z-[100] flex items-center justify-between pl-4 pr-6 md:pl-6 md:pr-10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          isScrolled ? "top-4 rounded-full border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)]" : "border-b border-white/10"
         }`}
       >
         {/* Premium Animated Gradient Line (only when not scrolled) */}
         {!isScrolled && (
           <motion.div 
-            className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-accent/30 to-transparent"
+            className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-accent/50 to-transparent"
             animate={{
               x: ["-100%", "100%"],
             }}
             transition={{
-              duration: 4,
+              duration: 3,
               repeat: Infinity,
               ease: "linear",
             }}
           />
         )}
+
+        {/* Glow Follower Effect */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-full">
+          <motion.div
+            className="absolute w-40 h-40 bg-accent/15 blur-[80px] rounded-full"
+            animate={{
+              x: hoveredIndex !== null ? (hoveredIndex * 80) + 220 : -400,
+              opacity: hoveredIndex !== null ? 1 : 0
+            }}
+            transition={{ type: "spring", stiffness: 120, damping: 25 }}
+          />
+        </div>
 
         {/* Logo Section */}
         <motion.div 
@@ -191,20 +208,6 @@ export default function Navigation() {
 
         {/* Desktop Links Container */}
         <div className="hidden md:flex items-center gap-0.5 bg-white/5 px-1.5 py-1 rounded-full border border-white/5 backdrop-blur-md z-10 shadow-inner relative overflow-hidden">
-          {/* Shared Layout Hover Pill */}
-          <AnimatePresence>
-            {hoveredIndex !== null && (
-              <motion.div
-                layoutId="nav-hover"
-                className="absolute inset-0 bg-white/10 rounded-full -z-10"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              />
-            )}
-          </AnimatePresence>
-          
           {NAV_LINKS.map((link, i) => (
             <motion.div
               key={link.label}
@@ -213,7 +216,6 @@ export default function Navigation() {
               onMouseLeave={() => setHoveredIndex(null)}
             >
               <MagneticLink
-                active={activeSection === link.label}
                 onClick={() => scrollTo(link.href, link.label)}
               >
                 {link.label}
@@ -228,9 +230,7 @@ export default function Navigation() {
           whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(230,57,70,0.3)" }}
           whileTap={{ scale: 0.95 }}
           onClick={() => scrollTo("#contact", "Contact")}
-          className={`hidden md:flex items-center gap-2 bg-white text-black rounded-full font-bold text-xs transition-all duration-300 z-10 border border-white/20 ${
-            isScrolled ? "px-4 py-2" : "px-6 py-2.5"
-          }`}
+          className="hidden md:flex items-center gap-2 bg-white text-black px-5 py-2 rounded-full font-bold text-xs transition-all duration-300 z-10 border border-white/20"
         >
           <UserRound size={14} strokeWidth={2.5} />
           LET&apos;S TALK
@@ -274,9 +274,7 @@ export default function Navigation() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1, duration: 0.4 }}
                   onClick={() => scrollTo(link.href, link.label)}
-                  className={`text-3xl font-display font-bold text-left transition-all ${
-                    activeSection === link.label ? "text-accent translate-x-2" : "text-white/40 hover:text-white"
-                  }`}
+                  className="text-3xl font-display font-bold text-left transition-all text-white/50 hover:text-white"
                 >
                   {link.label}
                 </motion.button>
