@@ -27,7 +27,7 @@ export default function Hero() {
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: "+=260%", 
+          end: "+=150%", 
           scrub: 1.5,
           pin: true,
         }
@@ -108,9 +108,6 @@ export default function Hero() {
       x: -xPos * 1.5, y: -yPos * 1.5,
       ease: "power2.out", duration: 1.5
     });
-
-    containerRef.current?.style.setProperty('--mouse-x', `${e.clientX}px`);
-    containerRef.current?.style.setProperty('--mouse-y', `${e.clientY}px`);
   };
 
   const handleCTAMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -131,10 +128,11 @@ export default function Hero() {
   return (
     <section 
       ref={containerRef} 
+      id="top"
       className="relative min-h-screen overflow-hidden"
       onMouseMove={handleParallax}
     >
-      <div className="pointer-events-none fixed inset-0 z-50 opacity-[0.03] mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}></div>
+      <div className="pointer-events-none absolute inset-0 z-50 opacity-[0.03] mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}></div>
 
       <div 
         ref={stickyDivRef}
@@ -152,7 +150,7 @@ export default function Hero() {
 
         <div className="absolute inset-0 flex items-center justify-center z-30 flex-col perspective-[1000px]">
             <div ref={mergedTextRef} className="flex flex-col items-center justify-center will-change-transform">
-              <div className="flex flex-col md:flex-row items-center md:items-baseline space-y-4 md:space-y-0 md:space-x-6 font-display font-black text-6xl md:text-[11vw] uppercase tracking-[-0.05em] leading-[0.8] filter drop-shadow-[0_0_80px_rgba(255,255,255,0.1)]">
+              <div className="flex flex-col md:flex-row items-center md:items-baseline space-y-2 md:space-y-0 md:space-x-6 font-display font-black text-5xl md:text-[11vw] uppercase tracking-[-0.05em] leading-[0.8] filter drop-shadow-[0_0_80px_rgba(255,255,255,0.1)]">
                 <div className="flex overflow-hidden pb-2 md:pb-4">
                   {"THE".split("").map((char, cIdx) => (
                     <span 
@@ -191,11 +189,7 @@ export default function Hero() {
                  We Engineer Virality
               </p>
 
-              <div className="subtext mt-8 flex items-center justify-center opacity-0">
-                <div className="w-8 h-8 rounded-full border border-red-500/20 flex items-center justify-center">
-                  <div className="w-1.5 h-1.5 rounded-full bg-red-600 shadow-[0_0_12px_rgba(220,38,38,0.8)] animate-pulse" />
-                </div>
-              </div>
+
             </div>
 
           <div ref={ctaRef} onMouseMove={handleCTAMouseMove} onMouseLeave={handleCTAMouseLeave} className="absolute bottom-16 md:bottom-24 pointer-events-auto opacity-0">
@@ -210,7 +204,6 @@ export default function Hero() {
 
       </div>
 
-      <div className="pointer-events-none fixed inset-0 z-40 mix-blend-color-dodge opacity-30" style={{ background: 'radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(6, 182, 212, 0.3), rgba(234, 88, 12, 0.15), transparent 80%)' }} />
     </section>
   );
 }

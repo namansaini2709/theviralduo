@@ -1,20 +1,40 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useScroll, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useSpring, Variants } from "framer-motion";
 import Image from "next/image";
 import { UserRound } from "lucide-react";
+import { useRouter, usePathname } from "next/navigation";
 
 const NAV_LINKS = [
   { label: "Home", href: "#top" },
-  { label: "Work", href: "#movie-reel" },
-  { label: "Services", href: "#services" },
   { label: "About", href: "#about" },
+  { label: "Services", href: "#services" },
+  { label: "Work", href: "#movie-reel" },
 ];
 
-const BEZIER = [0.22, 1, 0.36, 1];
+const BEZIER: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-function MagneticLink({ children, onClick, active }: { children: React.ReactNode; onClick: () => void; active: boolean }) {
+const containerVariants: Variants = {
+  hidden: { opacity: 0, y: -20, x: "-50%" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    x: "-50%",
+    transition: {
+      duration: 0.6,
+      ease: BEZIER,
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: -10 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: BEZIER } },
+};
+
+function MagneticLink({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -48,16 +68,11 @@ function MagneticLink({ children, onClick, active }: { children: React.ReactNode
       onClick={onClick}
     >
       <motion.span
-        className={`relative z-10 text-sm font-medium transition-colors duration-300 ${
-          active ? "text-white" : "text-white/70 group-hover:text-white"
-        }`}
-        animate={{ scale: active ? 1.05 : 1 }}
+        className="relative z-10 text-sm font-medium transition-colors duration-300 text-white/80 group-hover:text-white"
       >
         {children}
       </motion.span>
       
-      {/* Active Indicator Removed */}
-
       {/* Hover Glow Pill */}
       <motion.div
         className="absolute inset-0 z-0 bg-white/5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -69,65 +84,69 @@ function MagneticLink({ children, onClick, active }: { children: React.ReactNode
 }
 
 export default function Navigation() {
+  const router = useRouter();
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [activeSection, setActiveSection] = useState("Home");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 739);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => {
-      // Stay full-width until we've scrolled past the initial hero phase
-      // 600px is a good threshold for the pinned hero animation
       setIsScrolled(window.scrollY > 600);
       
-      // Update active section based on scroll position
-      const sections = NAV_LINKS.map(link => link.href.replace("#", ""));
-      for (const section of sections.reverse()) {
-        const element = document.getElementById(section);
-        if (element && window.scrollY >= element.offsetTop - 200) {
-          setActiveSection(NAV_LINKS.find(l => l.href === `#${section}`)?.label || "Home");
-          break;
+      if (pathname === "/") {
+        const sections = NAV_LINKS.map(link => link.href.replace("#", ""));
+        const currentSections = [...sections].reverse();
+        
+        for (const section of currentSections) {
+          const element = document.getElementById(section);
+          if (element && window.scrollY >= element.offsetTop - 200) {
+            setActiveSection(NAV_LINKS.find(l => l.href === `#${section}`)?.label || "Home");
+            break;
+          }
         }
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initial check
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const containerVariants = {
-    hidden: { opacity: 0, y: -20, x: "-50%" },
-    visible: {
-      opacity: 1,
-      y: 0,
-      x: "-50%",
-      transition: {
-        duration: 0.6,
-        ease: BEZIER,
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: -10 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: BEZIER } },
-  };
+  }, [pathname]);
 
   const scrollTo = (href: string, label: string) => {
     setIsMobileMenuOpen(false);
     setActiveSection(label);
-    if (href === "#top") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      const element = document.querySelector(href);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      } else {
-        window.dispatchEvent(new CustomEvent("page-transition", { detail: href }));
+
+    if (href.startsWith("#")) {
+      if (pathname !== "/") {
+        router.push("/" + href);
+        return;
       }
+
+      if (href === "#top") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        const element = document.querySelector(href);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        } else {
+          window.dispatchEvent(new CustomEvent("page-transition", { detail: href } as any));
+        }
+      }
+    } else {
+      router.push(href);
     }
   };
 
@@ -139,13 +158,13 @@ export default function Navigation() {
         animate="visible"
         variants={containerVariants}
         style={{ 
-          height: isScrolled ? 56 : 84,
-          width: isScrolled ? "min(880px, 92vw)" : "100%",
-          backgroundColor: isScrolled ? "rgba(8, 8, 8, 0.65)" : "rgba(8, 8, 8, 0.15)",
+          height: isMobile ? 64 : (isScrolled ? 56 : 84),
+          width: (isScrolled && !isMobile) ? "min(880px, 92vw)" : "100%",
+          backgroundColor: isScrolled ? "rgba(8, 8, 8, 0.9)" : "rgba(8, 8, 8, 0.15)",
           backdropFilter: "blur(20px)",
         }}
-        className={`fixed top-0 left-1/2 z-[100] flex items-center justify-between pl-4 pr-6 md:pl-6 md:pr-10 transition-all duration-700 ease-[cubic-bezier(0.22, 1, 0.36, 1)] ${
-          isScrolled ? "top-4 rounded-full border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)]" : "border-b border-white/10"
+        className={`fixed top-0 left-1/2 z-[100] flex items-center justify-between pl-4 pr-6 md:pl-6 md:pr-10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          isScrolled && !isMobile ? "top-4 rounded-full border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)]" : "border-b border-white/10"
         }`}
       >
         {/* Premium Animated Gradient Line (only when not scrolled) */}
@@ -179,13 +198,16 @@ export default function Navigation() {
         <motion.div 
           variants={itemVariants}
           className="flex items-center gap-2.5 cursor-pointer group z-10"
-          onClick={() => scrollTo("#top", "Home")}
+          onClick={() => window.open("https://www.instagram.com/theviralduo", "_blank")}
         >
-          <div className="relative w-7 h-7 md:w-9 md:h-9 rounded-full overflow-hidden border border-white/10 group-hover:border-accent/50 transition-colors duration-500 shadow-lg">
+          <div className={`relative rounded-full overflow-hidden border border-white/10 group-hover:border-accent/50 transition-all duration-500 shadow-lg ${
+            isScrolled ? "w-7 h-7" : "w-8 h-8 md:w-9 md:h-9"
+          }`}>
             <Image 
               src="/logo-v2.png" 
               alt="The Viral Duo" 
               fill 
+              sizes="36px"
               className="object-cover group-hover:scale-110 transition-transform duration-500"
             />
           </div>
@@ -195,7 +217,7 @@ export default function Navigation() {
         </motion.div>
 
         {/* Desktop Links Container */}
-        <div className="hidden md:flex items-center gap-0.5 bg-white/5 px-1.5 py-1 rounded-full border border-white/5 backdrop-blur-md z-10 shadow-inner">
+        <div className="hidden md:flex items-center gap-0.5 bg-white/5 px-1.5 py-1 rounded-full border border-white/5 backdrop-blur-md z-10 shadow-inner relative overflow-hidden">
           {NAV_LINKS.map((link, i) => (
             <motion.div
               key={link.label}
@@ -204,7 +226,6 @@ export default function Navigation() {
               onMouseLeave={() => setHoveredIndex(null)}
             >
               <MagneticLink
-                active={activeSection === link.label}
                 onClick={() => scrollTo(link.href, link.label)}
               >
                 {link.label}
@@ -229,7 +250,8 @@ export default function Navigation() {
         <motion.button
           variants={itemVariants}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="flex md:hidden flex-col gap-1.5 p-2 z-50"
+          className="flex md:hidden flex-col gap-1.5 p-2 z-[110]"
+          aria-label="Toggle Menu"
         >
           <motion.div 
             animate={isMobileMenuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
@@ -253,7 +275,7 @@ export default function Navigation() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -20 }}
               transition={{ duration: 0.4, ease: BEZIER }}
-              className="absolute top-full left-0 right-0 mt-4 mx-4 bg-zinc-900/98 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-8 flex flex-col gap-6 md:hidden z-40 shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+              className="fixed top-20 left-4 right-4 bg-zinc-900/98 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-8 flex flex-col gap-6 md:hidden z-[105] shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
             >
               {NAV_LINKS.map((link, i) => (
                 <motion.button
@@ -262,9 +284,7 @@ export default function Navigation() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1, duration: 0.4 }}
                   onClick={() => scrollTo(link.href, link.label)}
-                  className={`text-3xl font-display font-bold text-left transition-all ${
-                    activeSection === link.label ? "text-accent translate-x-2" : "text-white/40 hover:text-white"
-                  }`}
+                  className="text-3xl font-display font-bold text-left transition-all text-white/50 hover:text-white"
                 >
                   {link.label}
                 </motion.button>

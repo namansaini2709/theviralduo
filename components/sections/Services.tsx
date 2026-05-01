@@ -1,357 +1,261 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence, useScroll, useSpring, useTransform } from "framer-motion";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight, Play, Target, BarChart3, Users, Zap, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 interface Service {
   id: string;
   title: string;
-  shortDesc: string;
-  fullDesc: string;
-  image: string;
+  description: string;
+  icon: React.ReactNode;
   color: string;
-  yPos: number; // Percentage
-  xPos: string;
+  gradient: string;
+  image: string;
 }
 
 const services: Service[] = [
   {
     id: "short-form",
     title: "Short-Form Content",
-    shortDesc: "Client A: 50M views across 10 TikTok campaigns.",
-    fullDesc: "Our cinematic approach to short-form content captures attention in the first 0.5 seconds. We craft scroll-stopping reels, TikToks, and Shorts designed for massive organic reach and engagement. By treating every vertical video as a professional production, we elevate your brand above the noise.",
-    image: "/assets/services/clapboard.png",
+    description: "Our cinematic approach captures attention in 0.5 seconds. We craft scroll-stopping reels and TikToks.",
+    icon: <Play className="w-6 h-6" />,
     color: "#FF8C42",
-    yPos: 10,
-    xPos: "80%",
+    gradient: "from-[#FF8C42]/40 to-transparent",
+    image: "https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=800&auto=format&fit=crop",
   },
   {
     id: "brand-strategy",
     title: "Brand Strategy",
-    shortDesc: "Brand X saw a 300% lift in brand equity.",
-    fullDesc: "Our methodical approach combines deep market analysis with creative storytelling. We build iconic identities designed for long-term recognition and trust. We don't just design logos; we craft the visual and narrative soul of your company, ensuring every touchpoint resonates with your core audience.",
-    image: "/assets/services/palette.png",
+    description: "Methodical analysis meets creative storytelling. We build iconic identities designed for recognition.",
+    icon: <Target className="w-6 h-6" />,
     color: "#00E5FF",
-    yPos: 30,
-    xPos: "20%",
+    gradient: "from-[#00E5FF]/40 to-transparent",
+    image: "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=800&auto=format&fit=crop",
   },
   {
     id: "growth",
-    title: "Growth & Account Management",
-    shortDesc: "E-commerce store Z scaled to $1M ARR in 6 months.",
-    fullDesc: "Data-driven growth strategies that turn followers into communities and impressions into impact. We provide dedicated strategists and real-time data visualizations to ensure your campaigns are scaling efficiently. Our management style is proactive, focused on the metrics that actually drive revenue.",
-    image: "/assets/services/charts.png",
+    title: "Growth & Management",
+    description: "Data-driven strategies that turn followers into communities and impressions into impact.",
+    icon: <BarChart3 className="w-6 h-6" />,
     color: "#FFD700",
-    yPos: 50,
-    xPos: "80%",
+    gradient: "from-[#FFD700]/40 to-transparent",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop",
   },
   {
     id: "influencer",
     title: "Influencer Coordination",
-    shortDesc: "Campaign A trended #1 on Twitter for 24 hours.",
-    fullDesc: "We bridge the gap between brands and creators. By fostering authentic partnerships and managing complex multi-creator orchestrations, we ensure your message is amplified by the right voices. We handle the physical links and logistics so you can focus on the vision.",
-    image: "/assets/services/links.png",
+    description: "Bridging the gap between brands and creators. We manage complex multi-creator orchestrations.",
+    icon: <Users className="w-6 h-6" />,
     color: "#ADFF2F",
-    yPos: 70,
-    xPos: "20%",
+    gradient: "from-[#ADFF2F]/40 to-transparent",
+    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop",
   },
   {
     id: "paid-ads",
     title: "Paid Ads & Boosting",
-    shortDesc: "Brand B reduced CAC by 50% while doubling volume.",
-    fullDesc: "Strategic paid amplification that multiplies your organic wins into scalable growth. We optimize every dollar for maximum ROI, using advanced targeting and high-converting creative. Our goal is to turn your marketing budget into a predictable engine for customer acquisition.",
-    image: "/assets/services/money.png",
+    description: "Strategic amplification that multiplies organic wins. We optimize every dollar for maximum ROI.",
+    icon: <Zap className="w-6 h-6" />,
     color: "#FF1493",
-    yPos: 90,
-    xPos: "80%",
+    gradient: "from-[#FF1493]/40 to-transparent",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop",
   },
 ];
 
+const BEZIER = [0.22, 1, 0.36, 1];
+
 export default function Services() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const pathRef = useRef<SVGPathElement>(null);
-  const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const [activeId, setActiveId] = useState<string | null>(null);
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
-
-  const pathLength = useSpring(scrollYProgress, { stiffness: 400, damping: 90 });
-
-  // Vertical sliding effect synchronized with scroll
-  const bgLogoSlideY = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 60%",
-          end: "bottom 20%",
-        },
-      });
-
-      tl.fromTo(pathRef.current, 
-        { strokeDashoffset: 6000, strokeDasharray: 6000 },
-        { strokeDashoffset: 0, duration: 3, ease: "power2.inOut" }
-      );
-
-      itemsRef.current.forEach((item) => {
-        if (!item) return;
-        tl.from(item, {
-          opacity: 0,
-          scale: 0,
-          y: 50,
-          duration: 0.8,
-          ease: "back.out(1.7)",
-        }, "-=0.6");
-      });
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, []);
+  const next = () => setActiveIndex((prev) => (prev + 1) % services.length);
+  const prev = () => setActiveIndex((prev) => (prev - 1 + services.length) % services.length);
 
   return (
-    <section 
-      id="services" 
-      ref={containerRef} 
-      className="relative min-h-[450vh] overflow-hidden select-none"
-    >
-      {/* 1. Sticky Background (Removed Logo) */}
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center pointer-events-none z-0 overflow-hidden" />
-
-      {/* 2. Scrolling Foreground Content */}
-      <div className="absolute top-0 left-0 w-full h-full z-10 pt-10 pb-[20vh]">
-        
-        {/* The Abstract Pathway & Service Objects Wrapper */}
-        <div className="relative w-full h-full max-w-7xl mx-auto">
-          
-          {/* SVG Path */}
-          <div className="absolute inset-0 z-0 opacity-40">
-            <svg className="w-full h-full" viewBox="0 0 1000 4500" preserveAspectRatio="none">
-              <defs>
-                <linearGradient id="pathGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="rgba(0, 229, 255, 0.2)" />
-                  <stop offset="25%" stopColor="rgba(255, 140, 66, 0.3)" />
-                  <stop offset="50%" stopColor="rgba(255, 215, 0, 0.4)" />
-                  <stop offset="75%" stopColor="rgba(173, 255, 47, 0.3)" />
-                  <stop offset="100%" stopColor="rgba(255, 20, 147, 0.2)" />
-                </linearGradient>
-                <filter id="strong-glow">
-                  <feGaussianBlur stdDeviation="25" result="blur" />
-                  <feComponentTransfer>
-                    <feFuncA type="linear" slope="2" />
-                  </feComponentTransfer>
-                  <feMerge>
-                    <feMergeNode />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
-              </defs>
-              
-              <path
-                ref={pathRef}
-                d="M 500 0 
-                   C 500 200, 850 200, 850 450 
-                   C 850 900, 150 900, 150 1350 
-                   C 150 1800, 850 1800, 850 2250 
-                   C 850 2700, 150 2700, 150 3150 
-                   C 150 3600, 850 3600, 850 4050 
-                   L 500 4500"
-                fill="none"
-                stroke="url(#pathGradient)"
-                strokeWidth="4"
-              />
-
-              <motion.path
-                d="M 500 0 
-                   C 500 200, 850 200, 850 450 
-                   C 850 900, 150 900, 150 1350 
-                   C 150 1800, 850 1800, 850 2250 
-                   C 850 2700, 150 2700, 150 3150 
-                   C 150 3600, 850 3600, 850 4050 
-                   L 500 4500"
-                fill="none"
-                stroke="white"
-                strokeWidth="5"
-                filter="url(#strong-glow)"
-                style={{ pathLength }}
-                className="opacity-60"
-              />
-            </svg>
-          </div>
-
-          {/* Service Objects */}
-          {services.map((service, index) => (
-            <div
-              key={service.id}
-              ref={(el) => { itemsRef.current[index] = el; }}
-              style={{ 
-                top: `${service.yPos}%`, 
-                left: service.xPos, 
-                position: "absolute",
-                transform: "translate(-50%, -50%)"
-              }}
-              className="w-[28vw] max-w-[380px] z-30"
-            >
-              <ServiceObject 
-                service={service} 
-                isHovered={hoveredId === service.id}
-                isActive={activeId === service.id}
-                onHover={() => setHoveredId(service.id)}
-                onLeave={() => setHoveredId(null)}
-                onClick={() => setActiveId(service.id)}
-              />
-            </div>
-          ))}
-        </div>
+    <section id="services" className="relative min-h-screen bg-transparent flex flex-col items-center justify-center py-24 overflow-hidden">
+      {/* Background Atmosphere */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vh] bg-accent/5 blur-[150px] rounded-full opacity-30" />
       </div>
 
-      {/* 3. Description Overlay Pane */}
-      <AnimatePresence>
-        {activeId && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, backdropFilter: "blur(0px)" }}
-            animate={{ opacity: 1, scale: 1, backdropFilter: "blur(25px)" }}
-            exit={{ opacity: 0, scale: 0.9, backdropFilter: "blur(0px)" }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-8 pointer-events-none"
-          >
-            <div className="max-w-2xl w-full glass-container p-12 rounded-[40px] border border-white/10 relative overflow-hidden pointer-events-auto shadow-[0_0_100px_rgba(0,0,0,0.8)]">
-              <div 
-                className="absolute -top-32 -right-32 w-80 h-80 blur-[120px] rounded-full opacity-50"
-                style={{ backgroundColor: services.find(s => s.id === activeId)?.color }}
-              />
-              
-              <h2 className="font-serif text-5xl text-white mb-8 tracking-tight italic leading-tight">
-                {services.find(s => s.id === activeId)?.title}
-              </h2>
-              
-              <div className="space-y-8">
-                <p className="font-body text-white/30 uppercase tracking-[0.4em] text-[10px] font-black">
-                  Service Strategy & impact
-                </p>
-                <p className="font-body text-xl text-white/90 leading-relaxed font-light">
-                  {services.find(s => s.id === activeId)?.fullDesc}
-                </p>
-                
-                <div className="pt-10 flex items-center gap-8 border-t border-white/5">
-                  <div 
-                    className="h-12 w-[3px] rounded-full shadow-[0_0_15px_currentColor]" 
-                    style={{ backgroundColor: services.find(s => s.id === activeId)?.color, color: services.find(s => s.id === activeId)?.color }}
-                  />
-                  <div className="space-y-2">
-                    <p className="text-white/40 text-[10px] uppercase tracking-[0.2em] font-black">Success Metric</p>
-                    <p className="text-white font-serif text-2xl italic tracking-tight">{services.find(s => s.id === activeId)?.shortDesc}</p>
-                  </div>
-                </div>
-              </div>
 
-              <div className="mt-16 flex justify-end">
-                <button 
-                  onClick={() => setActiveId(null)}
-                  className="group relative px-10 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-white text-xs uppercase tracking-[0.3em] font-black transition-all overflow-hidden"
-                >
-                  <span className="relative z-10">Close Space</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </section>
-  );
-}
-
-function ServiceObject({ service, isHovered, isActive, onHover, onLeave, onClick }: { 
-  service: Service, 
-  isHovered: boolean, 
-  isActive: boolean, 
-  onHover: () => void, 
-  onLeave: () => void, 
-  onClick: () => void 
-}) {
-  return (
-    <div 
-      className="relative group cursor-pointer"
-      onMouseEnter={onHover}
-      onMouseLeave={onLeave}
-      onClick={onClick}
-    >
-      <motion.div
-        animate={{ 
-          scale: (isHovered || isActive) ? 1.1 : 1,
-          filter: (isHovered || isActive) ? "brightness(1.2) contrast(1.1) drop-shadow(0 0 30px currentColor)" : "brightness(1) contrast(1)"
-        }}
+      {/* Slider Container with Viewport Entrance Animation */}
+      <motion.div 
+        initial={{ opacity: 0, y: 100, scale: 0.95, filter: "blur(10px)" }}
+        whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+        viewport={{ once: false, amount: 0.2 }}
         transition={{ 
-          type: "spring", stiffness: 300, damping: 20
+          duration: 1.2, 
+          ease: [0.22, 1, 0.36, 1],
+          staggerChildren: 0.1
         }}
-        style={{ color: service.color }}
-        className="relative z-10"
+        className="relative w-full max-w-7xl h-[460px] flex items-center justify-center px-4"
       >
-        <Image 
-          src={service.image} 
-          alt={service.title} 
-          width={450}
-          height={450}
-          className="w-full h-auto object-contain drop-shadow-[0_0_50px_rgba(0,0,0,0.9)]"
-          loading="lazy"
-          quality={75}
-        />
+        
+        {/* Navigation Arrows */}
+        <button 
+          onClick={prev}
+          className="absolute left-4 md:left-12 z-50 p-4 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all text-white/50 hover:text-white"
+        >
+          <ChevronLeft size={24} />
+        </button>
 
-        <AnimatePresence>
-          {(isHovered || isActive) && (
-            <motion.div
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 2.5, opacity: [0, 0.4, 0] }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
-              className="absolute inset-0 m-auto w-48 h-48 border-[2px] border-white/20 rounded-full"
-              style={{ boxShadow: `0 0 60px ${service.color}66` }}
-            />
-          )}
-        </AnimatePresence>
+        <button 
+          onClick={next}
+          className="absolute right-4 md:right-12 z-50 p-4 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all text-white/50 hover:text-white"
+        >
+          <ChevronRight size={24} />
+        </button>
+
+        {/* Carousel Content */}
+        <div className="relative w-full h-full flex items-center justify-center [perspective:1500px]">
+          <AnimatePresence mode="popLayout">
+            {services.map((service, index) => {
+              const position = index - activeIndex;
+              const isCenter = position === 0;
+              const isLeft = position === -1 || (activeIndex === 0 && index === services.length - 1);
+              const isRight = position === 1 || (activeIndex === services.length - 1 && index === 0);
+
+              if (!isCenter && !isLeft && !isRight) return null;
+
+              // Determine stagger delay: Center first, then side cards quickly after
+              const staggerDelay = isCenter ? 0.05 : 0.15;
+
+              return (
+                <motion.div
+                  key={service.id}
+                  animate={{
+                    x: isCenter ? 0 : isLeft ? "-80%" : "80%",
+                    zIndex: isCenter ? 30 : 20,
+                    rotateY: isCenter ? 0 : isLeft ? 35 : -35,
+                  }}
+                  transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                  className="absolute w-[280px] md:w-[480px] h-[340px] md:h-[420px] cursor-pointer flex items-center justify-center"
+                  onClick={() => setActiveIndex(index)}
+                >
+                  {/* Entrance Wrapper: Handles the 3D 'thrown wobble' reveal */}
+                  <motion.div
+                    initial={{ 
+                      opacity: 0, 
+                      z: -800, 
+                      scale: 0.8, 
+                      filter: "blur(20px)",
+                      rotateZ: -5,
+                      rotateX: 10
+                    }}
+                    whileInView={{ 
+                      opacity: 1, 
+                      z: 0, 
+                      scale: 1, 
+                      filter: "blur(0px)",
+                      rotateZ: 0,
+                      rotateX: 0
+                    }}
+                    viewport={{ once: false, amount: 0.05 }}
+                    transition={{ 
+                      type: "spring", 
+                      stiffness: 180, // Snappy throw
+                      damping: 12,    // Low damping for 'wobble' effect
+                      mass: 0.8,      // Light card feel
+                      delay: staggerDelay 
+                    }}
+                    className="w-full h-full flex items-center justify-center"
+                    style={{ transformStyle: "preserve-3d" }}
+                  >
+                    {/* Outer Colored Transparent Box */}
+                    <div 
+                      className="w-full h-full p-4 md:p-6 rounded-[40px] border transition-colors duration-700"
+                      style={{ 
+                        backgroundColor: `${service.color}15`,
+                        borderColor: `${service.color}30`,
+                        opacity: isCenter ? 1 : 0.4, // Dim the side boxes
+                        scale: isCenter ? 1 : 0.85,  // Scale down the side boxes
+                        transition: "all 0.6s cubic-bezier(0.22, 1, 0.36, 1)"
+                      }}
+                    >
+                      {/* The Opaque Card */}
+                      <div 
+                        className="w-full h-full bg-[#0F0F0F] rounded-[32px] border border-white/10 overflow-hidden flex flex-col shadow-[0_40px_100px_rgba(0,0,0,0.6)] relative group"
+                      >
+                        
+                        {/* Top Content: Visual */}
+                        <div className="relative flex-1 overflow-hidden">
+                          <div className={`absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-transparent z-10`} />
+                          <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-40 mix-blend-overlay z-10`} />
+                          <Image 
+                            src={service.image} 
+                            alt={service.title} 
+                            fill
+                            className="w-full h-full object-cover grayscale-[40%] group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100"
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            priority={index < 3}
+                          />
+                          
+                          {/* Icon Overlay */}
+                          <div className="absolute top-6 left-6 z-20 w-12 h-12 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center text-white shadow-xl">
+                            {service.icon}
+                          </div>
+                        </div>
+
+                        {/* Bottom Content: Info */}
+                        <div className="p-5 md:p-6 space-y-3 bg-black/40 backdrop-blur-xl">
+                          <div className="flex items-center gap-3">
+                            <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: service.color }} />
+                            <span className="font-mono text-[9px] uppercase tracking-[0.4em] text-white/30">Service Package</span>
+                          </div>
+                          
+                          <h3 className="font-serif text-xl md:text-3xl font-black italic tracking-tighter text-white leading-none">
+                            {service.title.split(" ").map((word, i) => (
+                              <span key={i} className={i === service.title.split(" ").length - 1 ? "text-accent" : ""}>
+                                {word}{" "}
+                              </span>
+                            ))}
+                          </h3>
+                          
+                          <p className="font-body text-white/40 text-[13px] md:text-sm leading-relaxed line-clamp-2">
+                            {service.description}
+                          </p>
+
+                          <div className="pt-4 flex items-center justify-between">
+                             <button className="flex items-center gap-2 font-display font-bold text-[10px] uppercase tracking-widest text-accent group/btn transition-all">
+                                View Case Study
+                                <ArrowUpRight size={14} className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                             </button>
+                             <div className="text-[10px] font-mono text-white/10">0{index + 1} / 0{services.length}</div>
+                          </div>
+                        </div>
+
+                        {/* Active Border Effect */}
+                        {isCenter && (
+                          <motion.div 
+                            layoutId="active-border"
+                            className="absolute inset-0 border-2 border-accent/30 rounded-[32px] pointer-events-none"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+        </div>
       </motion.div>
 
-      <div className="mt-6 text-center glass-container py-3 px-5 rounded-2xl backdrop-blur-md border border-white/5">
-        <motion.h3 
-          className="font-serif text-2xl md:text-4xl text-white/95 tracking-tighter drop-shadow-2xl italic leading-none"
-          animate={{ 
-            letterSpacing: (isHovered || isActive) ? "0.02em" : "-0.02em",
-            y: (isHovered || isActive) ? -5 : 0
-          }}
-        >
-          {service.title}
-        </motion.h3>
-        
-        <AnimatePresence>
-          {(isHovered || isActive) && (
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              className="mt-4 text-white/50 text-[10px] uppercase tracking-[0.4em] font-black max-w-[250px] mx-auto leading-relaxed"
-            >
-              {service.shortDesc}
-            </motion.p>
-          )}
-        </AnimatePresence>
+      {/* Pagination Dots */}
+      <div className="mt-12 flex gap-3 z-10">
+        {services.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setActiveIndex(i)}
+            className={`w-2 h-2 rounded-full transition-all duration-500 ${
+              activeIndex === i ? "bg-accent w-8" : "bg-white/20 hover:bg-white/40"
+            }`}
+          />
+        ))}
       </div>
-
-      <div 
-        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] blur-[120px] rounded-full -z-10 transition-opacity duration-1000 ${isHovered ? "opacity-40" : "opacity-0"}`}
-        style={{ backgroundColor: service.color }}
-      />
-    </div>
+    </section>
   );
 }

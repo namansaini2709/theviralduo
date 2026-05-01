@@ -73,8 +73,8 @@ export default function Polaroids() {
     "media-collage",
     {
       "aria-label": "Viral Duo feedback collage",
-      "activation-line": "0.5",
-      "activation-mode": "center",
+      "activation-mode": "threshold",
+      "activation-threshold": "0",
       "auto-scroll": "true",
       "scroll-speed": "1.0",
       style: collageStyle,

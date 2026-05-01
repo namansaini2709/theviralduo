@@ -5,8 +5,18 @@ import { motion, useSpring, useMotionValue } from 'framer-motion';
 import './CustomCursor.css';
 
 export default function CustomCursor() {
+  const [isMobile, setIsMobile] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.matchMedia("(max-width: 1024px)").matches || 'ontouchstart' in window);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Use MotionValues for high-performance tracking without re-renders
   const mouseX = useMotionValue(0);
@@ -31,14 +41,9 @@ export default function CustomCursor() {
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (
-        target.tagName === 'A' || 
-        target.tagName === 'BUTTON' || 
-        target.closest('button') || 
-        target.closest('a') ||
-        target.classList.contains('interactive') ||
-        target.role === 'button'
-      ) {
+      const closestInteractive = target.closest('a, button, [role="button"], .interactive');
+      
+      if (closestInteractive && !closestInteractive.classList.contains('no-cursor')) {
         setIsHovering(true);
       } else {
         setIsHovering(false);
@@ -61,7 +66,7 @@ export default function CustomCursor() {
     };
   }, [mouseX, mouseY, isVisible]);
 
-  if (!isVisible) return null;
+  if (isMobile || !isVisible) return null;
 
   return (
     <>

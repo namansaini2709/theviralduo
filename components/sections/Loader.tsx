@@ -17,6 +17,28 @@ const HeroAnimationLoader: React.FC<HeroAnimationLoaderProps> = ({ onComplete })
   const [progress, setProgress] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
+  
+  // Dynamic settings based on device capability
+  const [settings, setSettings] = useState({
+    frameCount: FRAME_COUNT,
+    step: 1,
+    resolutionScale: 1
+  });
+
+  // Determine device capability once on mount
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    // Check for low memory if browser supports it
+    const isLowMemory = (navigator as any).deviceMemory && (navigator as any).deviceMemory < 4;
+    
+    if (isMobile || isLowMemory) {
+      setSettings({
+        frameCount: 40, // Use half the frames
+        step: 2,        // Skip every other frame
+        resolutionScale: 0.7 // Lower canvas internal resolution
+      });
+    }
+  }, []);
 
   // Preload images
   useEffect(() => {
@@ -26,8 +48,8 @@ const HeroAnimationLoader: React.FC<HeroAnimationLoaderProps> = ({ onComplete })
 
     const handleLoad = () => {
       loadedCount++;
-      setProgress(Math.floor(((loadedCount + errorCount) / FRAME_COUNT) * 100));
-      if (loadedCount + errorCount === FRAME_COUNT) {
+      setProgress(Math.floor(((loadedCount + errorCount) / settings.frameCount) * 100));
+      if (loadedCount + errorCount === settings.frameCount) {
         setIsLoaded(true);
       }
     };
@@ -35,47 +57,46 @@ const HeroAnimationLoader: React.FC<HeroAnimationLoaderProps> = ({ onComplete })
     const handleError = () => {
       errorCount++;
       setHasError(true);
-      setProgress(Math.floor(((loadedCount + errorCount) / FRAME_COUNT) * 100));
-      if (loadedCount + errorCount === FRAME_COUNT) {
+      setProgress(Math.floor(((loadedCount + errorCount) / settings.frameCount) * 100));
+      if (loadedCount + errorCount === settings.frameCount) {
         setIsLoaded(true);
       }
     };
 
-    // Load all 80 frames
-    for (let i = 0; i < FRAME_COUNT; i++) {
+    // Load optimized number of frames
+    for (let i = 0; i < settings.frameCount; i++) {
+      const frameNum = i * settings.step;
       const img = new Image();
-      img.src = `/assets/loading-animation/Animation_${i.toString().padStart(3, '0')}.jpg`;
+      img.src = `/assets/loading-animation/Animation_${frameNum.toString().padStart(3, '0')}.jpg`;
       img.onload = handleLoad;
       img.onerror = handleError;
       images.push(img);
     }
     imagesRef.current = images;
 
-    // Safety timeout: 6 seconds max loading time (increased for 80 high-res frames)
+    // Safety timeout: 5 seconds max loading time
     const timeout = setTimeout(() => {
       if (!isLoaded) {
         setIsLoaded(true);
       }
-    }, 6000);
+    }, 5000);
 
     return () => {
       clearTimeout(timeout);
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, [isLoaded]);
+  }, [settings, isLoaded]);
 
   const render = useCallback(() => {
     const canvas = canvasRef.current;
-    const ctx = canvas?.getContext("2d");
+    const ctx = canvas?.getContext("2d", { alpha: false }); // Optimization: no alpha channel
     if (!canvas || !ctx) return;
 
     const img = imagesRef.current[frameIndexRef.current];
     if (img && img.complete) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
       const hRatio = canvas.width / img.width;
       const vRatio = canvas.height / img.height;
-      const ratio = Math.max(hRatio, vRatio); // Cover
+      const ratio = Math.max(hRatio, vRatio);
       
       const w = img.width * ratio;
       const h = img.height * ratio;
@@ -91,8 +112,9 @@ const HeroAnimationLoader: React.FC<HeroAnimationLoaderProps> = ({ onComplete })
 
     const canvas = canvasRef.current;
     if (canvas) {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      // Use lower resolution on mobile to save GPU memory
+      canvas.width = window.innerWidth * settings.resolutionScale;
+      canvas.height = window.innerHeight * settings.resolutionScale;
     }
 
     let lastTime = 0;
@@ -108,7 +130,7 @@ const HeroAnimationLoader: React.FC<HeroAnimationLoaderProps> = ({ onComplete })
         frameIndexRef.current++;
         lastTime = time - (delta % interval);
 
-        if (frameIndexRef.current >= FRAME_COUNT) {
+        if (frameIndexRef.current >= settings.frameCount) {
           setTimeout(onComplete, 500);
           return;
         }
@@ -121,7 +143,7 @@ const HeroAnimationLoader: React.FC<HeroAnimationLoaderProps> = ({ onComplete })
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, [isLoaded, render, onComplete]);
+  }, [isLoaded, render, onComplete, settings]);
 
   return (
     <div className="relative w-full h-full flex items-center justify-center bg-black">
@@ -135,12 +157,12 @@ const HeroAnimationLoader: React.FC<HeroAnimationLoaderProps> = ({ onComplete })
             />
           </div>
           <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-white/40">
-            Initializing Cinematic Flow {progress}%
+            {settings.step > 1 ? "Optimizing Stream..." : "Initializing Cinematic Flow..."} {progress}%
           </span>
-          {hasError && <span className="text-red-500/40 text-[8px] uppercase tracking-widest">Some assets missing - optimizing stream</span>}
+          {hasError && <span className="text-red-500/40 text-[8px] uppercase tracking-widest">Adjusting data flow</span>}
         </div>
       )}
-      <canvas ref={canvasRef} className="w-full h-full object-cover" />
+      <canvas ref={canvasRef} className="w-full h-full object-cover" style={{ imageRendering: 'auto' }} />
       
       <div className="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none">
         <motion.div
@@ -154,7 +176,6 @@ const HeroAnimationLoader: React.FC<HeroAnimationLoaderProps> = ({ onComplete })
         </motion.div>
       </div>
 
-      {/* Manual Skip Button */}
       <button 
         onClick={onComplete}
         className="absolute bottom-10 right-10 z-30 font-mono text-[10px] text-white/20 hover:text-white uppercase tracking-[0.4em] transition-colors"
