@@ -9,7 +9,79 @@ import CinematicReel from "../global/CinematicReel";
 const projects = [
   {
     id: 1,
-    client: "Saral Gym",
+    client: "Anytime Fitness",
+    platform: "Instagram Reels",
+    views: "1.2M",
+    color: "#8E24AA",
+    gradient: "from-purple-900/50 to-black",
+    thumbnail: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 2,
+    client: "Vdmc",
+    platform: "Corporate Video",
+    views: "850K",
+    color: "#1E88E5",
+    gradient: "from-blue-900/50 to-black",
+    thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 3,
+    client: "Make your trip possible",
+    platform: "Travel Film",
+    views: "2.1M",
+    color: "#F4511E",
+    gradient: "from-orange-900/50 to-black",
+    thumbnail: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 4,
+    client: "Fof fitnesa",
+    platform: "TikTok",
+    views: "1.5M",
+    color: "#43A047",
+    gradient: "from-green-900/50 to-black",
+    thumbnail: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 5,
+    client: "Sharma ke bhature",
+    platform: "Food Vlog",
+    views: "3.4M",
+    color: "#FB8C00",
+    gradient: "from-amber-900/50 to-black",
+    thumbnail: "https://images.unsplash.com/photo-1589187151032-573a91317445?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 6,
+    client: "Radhe krishna",
+    platform: "Spiritual Reel",
+    views: "4.2M",
+    color: "#D81B60",
+    gradient: "from-pink-900/50 to-black",
+    thumbnail: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 7,
+    client: "Global holidays",
+    platform: "Adventure Film",
+    views: "920K",
+    color: "#00ACC1",
+    gradient: "from-cyan-900/50 to-black",
+    thumbnail: "https://images.unsplash.com/photo-1436491865332-7a61a109c0f3?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 8,
+    client: "City gym",
+    platform: "Workout Reel",
+    views: "1.1M",
+    color: "#546E7A",
+    gradient: "from-slate-900/50 to-black",
+    thumbnail: "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 9,
+    client: "Saral",
     platform: "Instagram Reels",
     views: "2.3M",
     color: "#E63946",
@@ -22,49 +94,13 @@ const projects = [
     logoLink: "https://www.instagram.com/_saralgym_/",
   },
   {
-    id: 2,
-    client: "Urban Threads",
-    platform: "TikTok",
+    id: 10,
+    client: "Career launcher",
+    platform: "Education Promo",
     views: "1.8M",
-    color: "#16213e",
-    gradient: "from-blue-900/50 to-black",
-    thumbnail: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 3,
-    client: "Mindful Coffee",
-    platform: "Instagram Reels",
-    views: "890K",
-    color: "#0f3460",
-    gradient: "from-amber-900/50 to-black",
-    thumbnail: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 4,
-    client: "FitFlow Studios",
-    platform: "YouTube Shorts",
-    views: "3.1M",
-    color: "#1a1a2e",
-    gradient: "from-emerald-900/50 to-black",
-    thumbnail: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 5,
-    client: "Bloom Skincare",
-    platform: "TikTok",
-    views: "2.7M",
-    color: "#16213e",
-    gradient: "from-rose-900/50 to-black",
-    thumbnail: "https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 6,
-    client: "Rust Rooster Records",
-    platform: "Instagram Reels",
-    views: "1.2M",
-    color: "#0f3460",
-    gradient: "from-orange-900/50 to-black",
-    thumbnail: "https://images.unsplash.com/photo-1514525253361-bee8718a300a?q=80&w=800&auto=format&fit=crop",
+    color: "#3949AB",
+    gradient: "from-indigo-900/50 to-black",
+    thumbnail: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop",
   },
 ];
 
@@ -86,22 +122,25 @@ export default function MovieReel() {
     // Use a function to get the latest width during scroll calculations
     const getScrollAmount = () => {
       const horizontalWidth = horizontalReel.scrollWidth;
-      return -(horizontalWidth - window.innerWidth + 400);
+      // Scroll until the last element (CTA) is fully shown
+      return -(horizontalWidth - window.innerWidth);
     };
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: section,
         start: "top top",
-        end: () => `+=${horizontalReel.scrollWidth + 1500}`,
-        scrub: 1.5,
+        end: () => `+=${horizontalReel.scrollWidth}`, // Tighter end based on content width
+        scrub: 1, // Snappier scroll response
         pin: true,
         anticipatePin: 1,
-        invalidateOnRefresh: true, // Crucial for dynamic width updates
+        invalidateOnRefresh: true,
         onUpdate: (self) => {
           const progress = self.progress;
-          if (progress > 0.54) {
-            const adjustedProgress = (progress - 0.54) / 0.46;
+          // Sync active frame highlighting with the horizontal scroll phase
+          // The horizontal scroll starts after the intro (approx 35% into the timeline)
+          if (progress > 0.35) {
+            const adjustedProgress = (progress - 0.35) / 0.65;
             const frameIndex = Math.floor(adjustedProgress * projects.length);
             setActiveFrame(Math.min(frameIndex, projects.length - 1));
           } else {
@@ -111,31 +150,31 @@ export default function MovieReel() {
       },
     });
 
-    // Initial Spin & Scale (The "Unspooling" Start)
+    // 1. Initial Spin & Scale (The "Unspooling" Start)
     tl.fromTo(spinningReel, 
       { rotate: 0, scale: 1, opacity: 1, filter: "blur(0px)" },
       { 
         rotate: 360, 
         scale: 0.8, 
-        duration: 0.5, 
+        duration: 0.8, 
         ease: "power2.inOut" 
       }
     );
 
-    // Synchronize Text Character Coloring (Turns Red one by one)
+    // Synchronize Text Character Coloring
     tl.to(".reel-char", {
       fill: "#E63946",
       opacity: 1,
-      duration: 0.4,
+      duration: 0.5,
       stagger: 0.05,
       ease: "power2.inOut"
     }, 0);
 
-    // Staggered Color Reveal for Thumbnails (One by one, synced with text)
+    // Staggered Color Reveal for Thumbnails
     tl.to(".reel-thumb", {
       filter: "grayscale(0%)",
       opacity: 1,
-      duration: 0.5,
+      duration: 0.6,
       stagger: 0.08,
       ease: "power2.inOut"
     }, 0.05);
@@ -146,9 +185,9 @@ export default function MovieReel() {
       scale: 0.6,
       duration: 0.6,
       ease: "power2.inOut"
-    }, ">");
+    }, ">-0.1");
 
-    // 4. Horizontal Scroller enters
+    // 3. Horizontal Scroller enters
     tl.fromTo(horizontalReel, 
       { opacity: 0, scale: 0.96, x: "100%", filter: "blur(8px)" },
       { 
@@ -156,17 +195,17 @@ export default function MovieReel() {
         scale: 1, 
         x: "0%", 
         filter: "blur(0px)", 
-        duration: 0.8, 
+        duration: 1, 
         ease: "expo.out" 
       },
-      ">-0.2"
+      ">-0.3"
     );
 
-    // 3. Horizontal Scroll through projects
+    // 4. Horizontal Scroll through projects
     tl.to(horizontalReel, {
       x: getScrollAmount,
       ease: "none",
-      duration: 1.5,
+      duration: 4, // Give horizontal scroll more weight in the total timeline
     });
 
     return () => {
