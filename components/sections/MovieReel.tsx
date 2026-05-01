@@ -14,7 +14,13 @@ const projects = [
     views: "1.2M",
     color: "#8E24AA",
     gradient: "from-purple-900/50 to-black",
-    thumbnail: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800&auto=format&fit=crop",
+    thumbnail: "/assets/projects/anytime-fitness.jpg",
+    thumbnailPosition: "top center",
+    logo: "/assets/projects/anytime-fitness-logo.jpg",
+    video: "/assets/projects/anytime-fitness.mp4",
+    link: "https://www.instagram.com/reel/DUXvwuHkt9F/",
+    watchMoreLink: "https://www.instagram.com/anytimefitnessshahdaradelhi/reels/?hl=en",
+    logoLink: "https://www.instagram.com/anytimefitnessshahdaradelhi/?hl=en",
   },
   {
     id: 2,
@@ -23,7 +29,13 @@ const projects = [
     views: "850K",
     color: "#1E88E5",
     gradient: "from-blue-900/50 to-black",
-    thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop",
+    thumbnail: "/assets/projects/vdmc-thumb.png",
+    thumbnailPosition: "top center",
+    logo: "/assets/projects/vdmc-logo.jpg",
+    video: "/assets/projects/vdmc.mp4",
+    link: "https://www.instagram.com/reel/DXJzPiKCK3M/",
+    watchMoreLink: "https://www.instagram.com/vdmc_malai_chaap_nsfood/reels/?hl=en",
+    logoLink: "https://www.instagram.com/vdmc_malai_chaap_nsfood/?hl=en",
   },
   {
     id: 3,
@@ -41,7 +53,12 @@ const projects = [
     views: "1.5M",
     color: "#43A047",
     gradient: "from-green-900/50 to-black",
-    thumbnail: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=800&auto=format&fit=crop",
+    thumbnail: "/assets/projects/fof-fitness.png",
+    logo: "/assets/projects/fof-fitness-logo.jpeg",
+    video: "/assets/projects/fof-fitness.mp4",
+    link: "https://www.instagram.com/reel/DXVqVftE2rS/",
+    watchMoreLink: "https://www.instagram.com/foffitnesa/reels/",
+    logoLink: "https://www.instagram.com/foffitnesa/",
   },
   {
     id: 5,
@@ -291,6 +308,7 @@ interface Project {
   link?: string;
   watchMoreLink?: string;
   logoLink?: string;
+  thumbnailPosition?: string;
 }
 
 function FilmFrame({ project, index, isActive }: { project: Project, index: number, isActive: boolean }) {
@@ -352,8 +370,11 @@ function FilmFrame({ project, index, isActive }: { project: Project, index: numb
 
         {/* Visual Content */}
         <div 
-          className={`absolute inset-0 bg-cover bg-center transition-all duration-1000 scale-110 group-hover:scale-100 ${isActive ? "grayscale-0" : "grayscale"}`}
-          style={{ backgroundImage: `url(${project.thumbnail})` }}
+          className={`absolute inset-0 bg-cover transition-all duration-1000 scale-110 group-hover:scale-100 ${isActive ? "grayscale-0" : "grayscale"}`}
+          style={{ 
+            backgroundImage: `url(${project.thumbnail})`,
+            backgroundPosition: project.thumbnailPosition || "center"
+          }}
         />
 
         {/* Hover Video Overlay */}
