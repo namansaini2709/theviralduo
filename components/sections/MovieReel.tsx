@@ -17,7 +17,9 @@ const projects = [
     thumbnail: "/assets/projects/saral-gym-thumb.jpg",
     video: "/assets/projects/saral-gym.mp4",
     logo: "/assets/projects/saral-gym-logo.jpg",
-    link: "https://www.instagram.com/_saralgym_",
+    link: "https://www.instagram.com/reel/DXUHP30k_Xl/",
+    watchMoreLink: "https://www.instagram.com/_saralgym_/reels/",
+    logoLink: "https://www.instagram.com/_saralgym_/",
   },
   {
     id: 2,
@@ -248,12 +250,20 @@ interface Project {
   video?: string;
   logo?: string;
   link?: string;
+  watchMoreLink?: string;
+  logoLink?: string;
 }
 
 function FilmFrame({ project, index, isActive }: { project: Project, index: number, isActive: boolean }) {
   const [showVideo, setShowVideo] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleClick = () => {
+    if (showVideo && project.link) {
+      window.open(project.link, "_blank", "noopener,noreferrer");
+    }
+  };
 
   useEffect(() => {
     if (showVideo && videoRef.current) {
@@ -282,9 +292,10 @@ function FilmFrame({ project, index, isActive }: { project: Project, index: numb
 
   return (
     <motion.div 
-      className="flex-shrink-0 relative w-[85vw] md:w-[450px] h-[480px] md:h-[520px]"
+      className={`flex-shrink-0 relative w-[85vw] md:w-[450px] h-[480px] md:h-[520px] ${showVideo && project.link ? "cursor-pointer" : ""}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
       animate={{ 
         scale: isActive ? 1 : 0.85,
         opacity: isActive ? 1 : 0.3,
@@ -336,12 +347,13 @@ function FilmFrame({ project, index, isActive }: { project: Project, index: numb
           <h3 className="font-display text-3xl md:text-4xl font-bold text-white leading-[1.1] mb-6">{project.client}</h3>
           
           <div className="flex items-center gap-4 opacity-0 group-hover:opacity-100 translate-y-8 group-hover:translate-y-0 transition-all duration-500 delay-100">
-            {project.link ? (
+            {project.watchMoreLink || project.link ? (
               <a 
-                href={project.link} 
+                href={project.watchMoreLink || project.link} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex-1"
+                onClick={(e) => e.stopPropagation()}
               >
                 <button className="w-full py-4 bg-white text-black font-bold text-xs uppercase tracking-[0.2em] rounded-xl hover:bg-accent hover:text-white transition-colors">
                   {showVideo ? "Click to watch more" : "Play the case study"}
@@ -353,12 +365,13 @@ function FilmFrame({ project, index, isActive }: { project: Project, index: numb
               </button>
             )}
 
-            {project.link ? (
+            {project.logoLink || project.watchMoreLink || project.link ? (
               <a 
-                href={project.link} 
+                href={project.logoLink || project.watchMoreLink || project.link} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="w-14 h-14 border border-white/20 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer overflow-hidden no-cursor"
+                onClick={(e) => e.stopPropagation()}
               >
                 {project.logo ? (
                   <img 
