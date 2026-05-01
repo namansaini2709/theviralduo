@@ -310,11 +310,14 @@ function FilmFrame({ project, index, isActive }: { project: Project, index: numb
         {project.video && (
           <video
             ref={videoRef}
-            src={project.video}
+            src={`${project.video}#t=0,5`}
+            poster={project.thumbnail}
             muted
             loop
             playsInline
-            preload="auto"
+            preload="metadata"
+            controlsList="nodownload"
+            disablePictureInPicture
             className={`absolute inset-0 w-full h-full object-cover z-20 transition-opacity duration-1000 pointer-events-none ${showVideo ? "opacity-100" : "opacity-0"}`}
           />
         )}
