@@ -87,10 +87,20 @@ export default function Navigation() {
   const router = useRouter();
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [activeSection, setActiveSection] = useState("Home");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 739);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -148,13 +158,13 @@ export default function Navigation() {
         animate="visible"
         variants={containerVariants}
         style={{ 
-          height: isScrolled ? 56 : 84,
-          width: isScrolled ? "min(880px, 92vw)" : "100%",
-          backgroundColor: isScrolled ? "rgba(8, 8, 8, 0.65)" : "rgba(8, 8, 8, 0.15)",
+          height: isMobile ? 64 : (isScrolled ? 56 : 84),
+          width: (isScrolled && !isMobile) ? "min(880px, 92vw)" : "100%",
+          backgroundColor: isScrolled ? "rgba(8, 8, 8, 0.9)" : "rgba(8, 8, 8, 0.15)",
           backdropFilter: "blur(20px)",
         }}
         className={`fixed top-0 left-1/2 z-[100] flex items-center justify-between pl-4 pr-6 md:pl-6 md:pr-10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          isScrolled ? "top-4 rounded-full border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)]" : "border-b border-white/10"
+          isScrolled && !isMobile ? "top-4 rounded-full border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)]" : "border-b border-white/10"
         }`}
       >
         {/* Premium Animated Gradient Line (only when not scrolled) */}
