@@ -187,27 +187,27 @@ export default function MovieReel() {
       </div>
 
       {/* SVG Movie Reel Intro */}
-      <div ref={spinningReelRef} className="absolute inset-0 flex items-center justify-center z-10">
-        <div className="relative w-[600px] h-[600px]">
+      <div ref={spinningReelRef} className="absolute inset-0 flex items-center justify-center z-10 p-4">
+        <div className="relative w-full h-full max-w-[600px] max-h-[600px] aspect-square">
           <CinematicReel thumbnails={projects.map(p => p.logo || p.thumbnail)} />
         </div>
       </div>
 
       {/* Horizontal Scroller */}
       <div ref={horizontalReelRef} className="absolute inset-0 flex items-center opacity-0 z-20">
-        <div className="flex items-center gap-24 pl-[40vw] pr-[60vw]">
+        <div className="flex items-center gap-12 md:gap-24 pl-[7.5vw] md:pl-[40vw] pr-[50vw] md:pr-[60vw]">
           {projects.map((project, i) => (
             <FilmFrame key={project.id} project={project} index={i} isActive={activeFrame === i} />
           ))}
 
           {/* Final Call to Action */}
-          <div className="flex-shrink-0 w-[450px] h-[520px] rounded-2xl border-2 border-dashed border-foreground/20 flex flex-col items-center justify-center bg-foreground/5 hover:border-accent/50 transition-all duration-500 group">
-            <div className="w-20 h-20 rounded-full border border-foreground/20 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
-              <span className="text-4xl text-foreground/40 group-hover:text-accent">+</span>
+          <div className="flex-shrink-0 w-[85vw] md:w-[450px] h-[480px] md:h-[520px] rounded-2xl border-2 border-dashed border-foreground/20 flex flex-col items-center justify-center bg-foreground/5 hover:border-accent/50 transition-all duration-500 group">
+            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border border-foreground/20 flex items-center justify-center mb-6 md:mb-8 group-hover:scale-110 transition-transform">
+              <span className="text-3xl md:text-4xl text-foreground/40 group-hover:text-accent">+</span>
             </div>
-            <h3 className="font-display text-4xl font-bold text-foreground/40 group-hover:text-foreground">YOUR STORY</h3>
-            <p className="font-body text-foreground/20 mt-2">Next Frame: 2024</p>
-            <button className="mt-12 px-10 py-4 bg-accent text-background rounded-full font-bold uppercase text-xs tracking-[0.2em] hover:bg-white transition-colors shadow-xl shadow-accent/20">
+            <h3 className="font-display text-3xl md:text-4xl font-bold text-foreground/40 group-hover:text-foreground">YOUR STORY</h3>
+            <p className="font-body text-foreground/20 mt-2 text-sm md:text-base">Next Frame: 2024</p>
+            <button className="mt-8 md:mt-12 px-8 md:px-10 py-3 md:py-4 bg-accent text-background rounded-full font-bold uppercase text-[10px] md:text-xs tracking-[0.2em] hover:bg-white transition-colors shadow-xl shadow-accent/20">
               Start Project
             </button>
           </div>
@@ -282,7 +282,7 @@ function FilmFrame({ project, index, isActive }: { project: Project, index: numb
 
   return (
     <motion.div 
-      className="flex-shrink-0 relative w-[450px] h-[520px]"
+      className="flex-shrink-0 relative w-[85vw] md:w-[450px] h-[480px] md:h-[520px]"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       animate={{ 
@@ -333,7 +333,7 @@ function FilmFrame({ project, index, isActive }: { project: Project, index: numb
             <span className="text-white/40 font-mono text-[10px] uppercase tracking-widest">{project.platform}</span>
           </div>
           
-          <h3 className="font-display text-4xl font-bold text-white leading-[1.1] mb-6">{project.client}</h3>
+          <h3 className="font-display text-3xl md:text-4xl font-bold text-white leading-[1.1] mb-6">{project.client}</h3>
           
           <div className="flex items-center gap-4 opacity-0 group-hover:opacity-100 translate-y-8 group-hover:translate-y-0 transition-all duration-500 delay-100">
             {project.link ? (

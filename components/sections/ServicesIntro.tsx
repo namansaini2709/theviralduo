@@ -108,10 +108,10 @@ export default function ServicesIntro() {
             <div 
               key={wordIdx} 
               className={`inline-block whitespace-nowrap relative ${
-                word === "SERVICES" ? "-translate-x-4 -translate-y-12 md:-translate-x-8 md:-translate-y-20 z-0" : 
-                word === "PROVIDE" ? "translate-x-4 translate-y-12 md:translate-x-8 md:translate-y-20 z-0" : 
+                word === "SERVICES" ? "-translate-x-2 -translate-y-8 md:-translate-x-8 md:-translate-y-20 z-0" : 
+                word === "PROVIDE" ? "translate-x-2 translate-y-8 md:translate-x-8 md:translate-y-20 z-0" : 
                 "z-10 mx-[-0.05em]" 
-              }`}
+              } transition-transform duration-700`}
             >
               {word.split("").map((char, charIdx) => {
                 const charIndex = words.slice(0, wordIdx).join("").length + charIdx;
@@ -122,8 +122,8 @@ export default function ServicesIntro() {
                     ref={(el) => { charRefs.current[charIndex] = el; }}
                     className={`inline-block font-serif font-black italic leading-[0.7] tracking-[-0.05em] uppercase drop-shadow-[0_20px_70px_rgba(230,57,70,0.4)] ${
                       isWe 
-                        ? "text-white text-[18vw] md:text-[14vw] lg:text-[13rem]" 
-                        : "text-[#E63946] text-[8vw] md:text-[6vw] lg:text-[5rem] opacity-90"
+                        ? "text-white text-[16vw] md:text-[14vw] lg:text-[13rem]" 
+                        : "text-[#E63946] text-[7.5vw] md:text-[6vw] lg:text-[5rem] opacity-90"
                     }`}
                   >
                     {char}

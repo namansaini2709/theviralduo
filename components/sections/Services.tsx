@@ -125,7 +125,7 @@ export default function Services() {
                 <motion.div
                   key={service.id}
                   animate={{
-                    x: isCenter ? 0 : isLeft ? -250 : 250,
+                    x: isCenter ? 0 : isLeft ? "-80%" : "80%",
                     zIndex: isCenter ? 30 : 20,
                     rotateY: isCenter ? 0 : isLeft ? 35 : -35,
                   }}

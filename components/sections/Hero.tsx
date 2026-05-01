@@ -150,7 +150,7 @@ export default function Hero() {
 
         <div className="absolute inset-0 flex items-center justify-center z-30 flex-col perspective-[1000px]">
             <div ref={mergedTextRef} className="flex flex-col items-center justify-center will-change-transform">
-              <div className="flex flex-col md:flex-row items-center md:items-baseline space-y-4 md:space-y-0 md:space-x-6 font-display font-black text-6xl md:text-[11vw] uppercase tracking-[-0.05em] leading-[0.8] filter drop-shadow-[0_0_80px_rgba(255,255,255,0.1)]">
+              <div className="flex flex-col md:flex-row items-center md:items-baseline space-y-2 md:space-y-0 md:space-x-6 font-display font-black text-5xl md:text-[11vw] uppercase tracking-[-0.05em] leading-[0.8] filter drop-shadow-[0_0_80px_rgba(255,255,255,0.1)]">
                 <div className="flex overflow-hidden pb-2 md:pb-4">
                   {"THE".split("").map((char, cIdx) => (
                     <span 
