@@ -230,7 +230,7 @@ export default function About() {
                         }
                       }
                     }}
-                    className="inline-block font-serif text-[12vw] font-black italic leading-[0.74] tracking-normal text-[#E63946] drop-shadow-[0_0_32px_rgba(230,57,70,0.28)] md:text-[7vw] lg:text-[5.5rem] uppercase"
+                    className="inline-block font-serif text-[10vw] md:text-[7vw] lg:text-[5.5rem] font-black italic leading-[0.74] tracking-normal text-[#E63946] drop-shadow-[0_0_32px_rgba(230,57,70,0.28)] uppercase"
                   >
                     {char}
                   </motion.span>
@@ -310,10 +310,10 @@ export default function About() {
                 </div>
 
                 <div className="mt-auto p-4 md:p-5">
-                  <h3 className="font-serif text-2xl font-black italic leading-none text-white md:text-3xl">
+                  <h3 className="font-serif text-xl font-black italic leading-none text-white md:text-3xl">
                     {pillar.title}
                   </h3>
-                  <p className="mt-4 font-body text-[13px] leading-5 text-white/64">
+                  <p className="mt-3 md:mt-4 font-body text-[12px] md:text-[13px] leading-relaxed text-white/70">
                     {pillar.copy}
                   </p>
                 </div>
