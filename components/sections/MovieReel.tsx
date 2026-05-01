@@ -3,17 +3,21 @@
 import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import CinematicReel from "../global/CinematicReel";
 
 const projects = [
   {
     id: 1,
-    client: "Luxe Cosmetics",
+    client: "Saral Gym",
     platform: "Instagram Reels",
     views: "2.3M",
-    color: "#1a1a2e",
-    gradient: "from-purple-900/50 to-black",
-    thumbnail: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=800&auto=format&fit=crop",
+    color: "#E63946",
+    gradient: "from-red-900/50 to-black",
+    thumbnail: "/assets/projects/saral-gym-thumb.jpg",
+    video: "/assets/projects/saral-gym.mp4",
+    logo: "/assets/projects/saral-gym-logo.jpg",
+    link: "https://www.instagram.com/_saralgym_",
   },
   {
     id: 2,
@@ -94,8 +98,8 @@ export default function MovieReel() {
         invalidateOnRefresh: true, // Crucial for dynamic width updates
         onUpdate: (self) => {
           const progress = self.progress;
-          if (progress > 0.3) {
-            const adjustedProgress = (progress - 0.3) / 0.7;
+          if (progress > 0.54) {
+            const adjustedProgress = (progress - 0.54) / 0.46;
             const frameIndex = Math.floor(adjustedProgress * projects.length);
             setActiveFrame(Math.min(frameIndex, projects.length - 1));
           } else {
@@ -105,25 +109,55 @@ export default function MovieReel() {
       },
     });
 
-    // 1. Initial Spin & Scale
+    // Initial Spin & Scale (The "Unspooling" Start)
     tl.fromTo(spinningReel, 
-      { rotate: 0, scale: 1, opacity: 1 },
-      { rotate: 720, scale: 0.6, duration: 0.4, ease: "power2.inOut" }
+      { rotate: 0, scale: 1, opacity: 1, filter: "blur(0px)" },
+      { 
+        rotate: 360, 
+        scale: 0.8, 
+        duration: 0.5, 
+        ease: "power2.inOut" 
+      }
     );
 
-    // 2. Explode/Unwind Transition
+    // Synchronize Text Character Coloring (Turns Red one by one)
+    tl.to(".reel-char", {
+      fill: "#E63946",
+      opacity: 1,
+      duration: 0.4,
+      stagger: 0.05,
+      ease: "power2.inOut"
+    }, 0);
+
+    // Staggered Color Reveal for Thumbnails (One by one, synced with text)
+    tl.to(".reel-thumb", {
+      filter: "grayscale(0%)",
+      opacity: 1,
+      duration: 0.5,
+      stagger: 0.08,
+      ease: "power2.inOut"
+    }, 0.05);
+
+    // 2. The Reel fades out smoothly
     tl.to(spinningReel, {
       opacity: 0,
-      scale: 3,
-      filter: "blur(30px)",
-      duration: 0.2,
-      ease: "power3.in"
-    }, ">-0.1");
+      scale: 0.6,
+      duration: 0.6,
+      ease: "power2.inOut"
+    }, ">");
 
+    // 4. Horizontal Scroller enters
     tl.fromTo(horizontalReel, 
-      { opacity: 0, scale: 0.8, x: "100%", filter: "blur(10px)" },
-      { opacity: 1, scale: 1, x: "0%", filter: "blur(0px)", duration: 0.4, ease: "expo.out" },
-      "<"
+      { opacity: 0, scale: 0.96, x: "100%", filter: "blur(8px)" },
+      { 
+        opacity: 1, 
+        scale: 1, 
+        x: "0%", 
+        filter: "blur(0px)", 
+        duration: 0.8, 
+        ease: "expo.out" 
+      },
+      ">-0.2"
     );
 
     // 3. Horizontal Scroll through projects
@@ -154,28 +188,8 @@ export default function MovieReel() {
 
       {/* SVG Movie Reel Intro */}
       <div ref={spinningReelRef} className="absolute inset-0 flex items-center justify-center z-10">
-        <div className="relative w-[500px] h-[500px]">
-          <svg viewBox="0 0 200 200" className="w-full h-full text-foreground/10 fill-current">
-            <circle cx="100" cy="100" r="95" stroke="currentColor" strokeWidth="1" fill="none" />
-            <circle cx="100" cy="100" r="30" stroke="currentColor" strokeWidth="1" fill="none" />
-            {[0, 60, 120, 180, 240, 300].map(angle => (
-              <circle 
-                key={angle}
-                cx={100 + 60 * Math.cos(angle * Math.PI / 180)} 
-                cy={100 + 60 * Math.sin(angle * Math.PI / 180)} 
-                r="15" 
-              />
-            ))}
-          </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-            <h2 className="font-display text-6xl font-bold uppercase tracking-[0.3em] text-foreground">
-              OUR<br /><span className="text-accent">REEL</span>
-            </h2>
-            <div className="mt-4 flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-              <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/60">Ready to play</span>
-            </div>
-          </div>
+        <div className="relative w-[600px] h-[600px]">
+          <CinematicReel thumbnails={projects.map(p => p.logo || p.thumbnail)} />
         </div>
       </div>
 
@@ -187,7 +201,7 @@ export default function MovieReel() {
           ))}
 
           {/* Final Call to Action */}
-          <div className="flex-shrink-0 w-[450px] h-[600px] rounded-2xl border-2 border-dashed border-foreground/20 flex flex-col items-center justify-center bg-foreground/5 hover:border-accent/50 transition-all duration-500 group">
+          <div className="flex-shrink-0 w-[450px] h-[520px] rounded-2xl border-2 border-dashed border-foreground/20 flex flex-col items-center justify-center bg-foreground/5 hover:border-accent/50 transition-all duration-500 group">
             <div className="w-20 h-20 rounded-full border border-foreground/20 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
               <span className="text-4xl text-foreground/40 group-hover:text-accent">+</span>
             </div>
@@ -231,36 +245,84 @@ interface Project {
   color: string;
   gradient: string;
   thumbnail: string;
+  video?: string;
+  logo?: string;
+  link?: string;
 }
 
 function FilmFrame({ project, index, isActive }: { project: Project, index: number, isActive: boolean }) {
+  const [showVideo, setShowVideo] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (showVideo && videoRef.current) {
+      videoRef.current.play().catch(err => console.warn("Video play failed:", err));
+    } else if (!showVideo && videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  }, [showVideo]);
+
+  const handleMouseEnter = () => {
+    if (project.video && isActive) {
+      timeoutRef.current = setTimeout(() => {
+        setShowVideo(true);
+      }, 1500);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    setShowVideo(false);
+  };
+
   return (
     <motion.div 
-      className="flex-shrink-0 relative w-[450px] h-[600px]"
+      className="flex-shrink-0 relative w-[450px] h-[520px]"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       animate={{ 
         scale: isActive ? 1 : 0.85,
         opacity: isActive ? 1 : 0.3,
         y: isActive ? 0 : 40,
-        filter: isActive ? "blur(0px)" : "blur(4px)"
       }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
       {/* Frame Metadata */}
-      <div className="absolute -top-16 left-0 w-full flex justify-between font-mono text-[10px] text-foreground/20 uppercase tracking-[0.2em]">
-        <span>Scene // 0{index + 1}</span>
-        <span>REC 🔴 00:0{index + 1}:24</span>
-      </div>
+      <div className="w-full h-full bg-[#121212] rounded-2xl overflow-hidden border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.5)] group relative">
+        {/* Frame Metadata */}
+        <div className="absolute top-8 left-8 right-8 z-30 flex justify-between font-mono text-[10px] text-white/30 uppercase tracking-[0.2em] pointer-events-none transition-all duration-500 group-hover:opacity-0 group-hover:-translate-y-4">
+          <span>Scene // 0{index + 1}</span>
+          <span className="flex items-center gap-2">REC <span className="w-2 h-2 rounded-full bg-[#E63946] animate-pulse" /> 00:0{index + 1}:24</span>
+        </div>
 
-      <div className="w-full h-full bg-[#121212] rounded-2xl overflow-hidden border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.5)] group">
         {/* Visual Content */}
         <div 
-          className="absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-1000 scale-110 group-hover:scale-100"
+          className={`absolute inset-0 bg-cover bg-center transition-all duration-1000 scale-110 group-hover:scale-100 ${isActive ? "grayscale-0" : "grayscale"}`}
           style={{ backgroundImage: `url(${project.thumbnail})` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+
+        {/* Hover Video Overlay */}
+        {project.video && (
+          <video
+            ref={videoRef}
+            src={project.video}
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className={`absolute inset-0 w-full h-full object-cover z-20 transition-opacity duration-1000 pointer-events-none ${showVideo ? "opacity-100" : "opacity-0"}`}
+          />
+        )}
+
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
         
         {/* Interface Overlay */}
-        <div className="absolute inset-0 p-10 flex flex-col justify-end">
+        <div className="absolute inset-0 p-10 flex flex-col justify-end z-30">
           <div className="flex items-center gap-3 mb-4">
             <span className="px-2 py-0.5 border border-accent text-accent font-mono text-[9px] uppercase font-bold tracking-tighter rounded">
               {project.views} Views
@@ -268,23 +330,64 @@ function FilmFrame({ project, index, isActive }: { project: Project, index: numb
             <span className="text-white/40 font-mono text-[10px] uppercase tracking-widest">{project.platform}</span>
           </div>
           
-          <h3 className="font-display text-5xl font-bold text-white leading-[1.1] mb-8">{project.client}</h3>
+          <h3 className="font-display text-4xl font-bold text-white leading-[1.1] mb-6">{project.client}</h3>
           
           <div className="flex items-center gap-4 opacity-0 group-hover:opacity-100 translate-y-8 group-hover:translate-y-0 transition-all duration-500 delay-100">
-            <button className="flex-1 py-4 bg-white text-black font-bold text-xs uppercase tracking-[0.2em] rounded-xl hover:bg-accent hover:text-white transition-colors">
-              Play Case Study
-            </button>
-            <div className="w-14 h-14 border border-white/20 rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer">
-              <span className="text-2xl text-white">→</span>
-            </div>
+            {project.link ? (
+              <a 
+                href={project.link} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex-1"
+              >
+                <button className="w-full py-4 bg-white text-black font-bold text-xs uppercase tracking-[0.2em] rounded-xl hover:bg-accent hover:text-white transition-colors">
+                  {showVideo ? "Click to watch more" : "Play the case study"}
+                </button>
+              </a>
+            ) : (
+              <button className="flex-1 py-4 bg-white text-black font-bold text-xs uppercase tracking-[0.2em] rounded-xl hover:bg-accent hover:text-white transition-colors">
+                {showVideo ? "Click to watch more" : "Play the case study"}
+              </button>
+            )}
+
+            {project.link ? (
+              <a 
+                href={project.link} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-14 h-14 border border-white/20 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer overflow-hidden no-cursor"
+              >
+                {project.logo ? (
+                  <img 
+                    src={project.logo} 
+                    alt={project.client} 
+                    className="w-full h-full object-cover scale-125 mix-blend-screen opacity-60"
+                  />
+                ) : (
+                  <span className="text-2xl text-white">→</span>
+                )}
+              </a>
+            ) : (
+              <div className="w-14 h-14 border border-white/20 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer overflow-hidden">
+                {project.logo ? (
+                  <img 
+                    src={project.logo} 
+                    alt={project.client} 
+                    className="w-full h-full object-cover scale-125 mix-blend-screen opacity-60"
+                  />
+                ) : (
+                  <span className="text-2xl text-white">→</span>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
         {/* Viewfinder Brackets */}
-        <div className="absolute top-8 left-8 w-6 h-6 border-t border-l border-white/20" />
-        <div className="absolute top-8 right-8 w-6 h-6 border-t border-r border-white/20" />
-        <div className="absolute bottom-8 left-8 w-6 h-6 border-b border-l border-white/20" />
-        <div className="absolute bottom-8 right-8 w-6 h-6 border-b border-r border-white/20" />
+        <div className="absolute top-8 left-8 w-6 h-6 border-t border-l border-white/20 z-30" />
+        <div className="absolute top-8 right-8 w-6 h-6 border-t border-r border-white/20 z-30" />
+        <div className="absolute bottom-8 left-8 w-6 h-6 border-b border-l border-white/20 z-30" />
+        <div className="absolute bottom-8 right-8 w-6 h-6 border-b border-r border-white/20 z-30" />
       </div>
     </motion.div>
   );

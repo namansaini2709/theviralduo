@@ -98,7 +98,7 @@ export default function ServicesIntro() {
       <div className="relative z-10 w-full max-w-7xl px-6 flex flex-col items-center">
         <p
           ref={taglineRef}
-          className="font-body text-white/50 uppercase tracking-[0.6em] text-[10px] md:text-xs font-black mb-16 text-center"
+          className="font-body text-white/70 uppercase tracking-[0.5em] text-lg md:text-xl font-black mb-16 text-center"
         >
           If it&apos;s not viral then its not us
         </p>

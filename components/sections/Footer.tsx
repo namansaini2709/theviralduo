@@ -48,13 +48,14 @@ export default function Footer() {
           >
             <a 
               href="mailto:hello@viralduo.com"
-              className="group relative inline-flex items-center justify-center w-32 h-32 md:w-40 md:h-40 rounded-full bg-white/5 border border-white/10 hover:border-accent transition-colors duration-500 overflow-hidden"
+              className="group flex flex-col items-center gap-2 transition-transform duration-300 hover:scale-105"
             >
-              <div className="absolute inset-0 bg-accent translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[0.22,1,0.36,1]" />
-              <div className="relative z-10 flex flex-col items-center">
-                <span className="font-display font-bold text-sm tracking-widest mb-1 group-hover:text-white transition-colors duration-300">EMAIL US</span>
-                <ArrowUpRight size={24} className="group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform duration-300 group-hover:text-white text-white/50" />
-              </div>
+              <img 
+                src="https://cdn-icons-gif.flaticon.com/8717/8717939.gif" 
+                alt="Email Icon" 
+                className="w-20 h-20 md:w-28 md:h-28 transition-all duration-300"
+              />
+              <span className="font-display font-bold text-xs tracking-[0.4em] text-white/40 group-hover:text-white transition-colors duration-300">EMAIL US</span>
             </a>
           </motion.div>
 
@@ -91,8 +92,8 @@ export default function Footer() {
           <div className="flex flex-col gap-4 md:col-span-2">
             <h4 className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 mb-2">Location</h4>
             <p className="text-white/70 font-body text-sm">
-              Los Angeles, CA<br />
-              Operating Worldwide
+              New Delhi, India<br />
+              Operating in Delhi
             </p>
           </div>
         </div>

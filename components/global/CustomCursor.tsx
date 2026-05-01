@@ -31,14 +31,9 @@ export default function CustomCursor() {
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (
-        target.tagName === 'A' || 
-        target.tagName === 'BUTTON' || 
-        target.closest('button') || 
-        target.closest('a') ||
-        target.classList.contains('interactive') ||
-        target.role === 'button'
-      ) {
+      const closestInteractive = target.closest('a, button, [role="button"], .interactive');
+      
+      if (closestInteractive && !closestInteractive.classList.contains('no-cursor')) {
         setIsHovering(true);
       } else {
         setIsHovering(false);

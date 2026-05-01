@@ -9,6 +9,14 @@ const nextConfig = {
   experimental: {
     urlImports: ['https://framer.com/m/', 'https://framerusercontent.com/', 'https://fonts.gstatic.com/'],
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+    ],
+  },
   webpack: (config) => {
     config.resolve.alias['framer'] = path.resolve(__dirname, 'framer-mock.js');
     return config;

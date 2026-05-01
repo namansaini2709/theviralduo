@@ -23,7 +23,7 @@ const pillars = [
     image: "/assets/services/clapboard.png",
     accent: "from-red-500/22 via-orange-300/10 to-red-100/[0.03]",
     tint: "bg-red-500/[0.18] group-hover:bg-red-400/[0.34]",
-    video: "/assets/videos/productive_poster.png",
+    video: "/assets/videos/Screen Recording 2026-05-01 at 12.57.42 PM.mov",
     border: "border-red-200/[0.22] group-hover:border-red-200/[0.48]",
     shadow: "shadow-red-500/10 group-hover:shadow-red-400/25",
   },
@@ -31,7 +31,7 @@ const pillars = [
     title: "Creative",
     copy: "We read the data, double down on winners, and keep the content machine compounding.",
     image: "/assets/services/charts.png",
-    video: "/assets/videos/creative.mp4",
+    video: "/assets/videos/creative_reel_trimmed_2.mov",
     accent: "from-amber-400/22 via-lime-300/10 to-yellow-100/[0.03]",
     tint: "bg-amber-300/[0.18] group-hover:bg-amber-300/[0.34]",
     border: "border-amber-100/[0.22] group-hover:border-amber-100/[0.48]",
@@ -250,7 +250,7 @@ export default function About() {
           </motion.p>
         </motion.div>
 
-        <div className="grid w-full max-w-6xl grid-cols-1 gap-5 [perspective:1200px] md:grid-cols-3 md:gap-8">
+        <div className="grid w-full max-w-5xl grid-cols-1 gap-8 [perspective:1200px] md:grid-cols-3 md:gap-10">
           {pillars.map((pillar, index) => (
             <div
               key={pillar.title}
@@ -259,7 +259,7 @@ export default function About() {
               }}
               onMouseMove={(e) => handleMouseMove(e, index)}
               onMouseLeave={() => handleMouseLeave(index)}
-              className={`group relative min-h-[340px] overflow-hidden rounded-2xl border bg-gradient-to-br ${pillar.accent} ${pillar.border} shadow-[0_30px_90px_rgba(0,0,0,0.38)] ${pillar.shadow} backdrop-blur-[7px] transition-[border-color,box-shadow,background-color] duration-500 md:min-h-[440px] [transform-style:preserve-3d]`}
+              className={`group relative min-h-[280px] overflow-hidden rounded-2xl border bg-gradient-to-br ${pillar.accent} ${pillar.border} shadow-[0_30px_90px_rgba(0,0,0,0.38)] ${pillar.shadow} backdrop-blur-[7px] transition-[border-color,box-shadow,background-color] duration-500 md:min-h-[340px] [transform-style:preserve-3d]`}
             >
               <div className="card-glare pointer-events-none absolute inset-0 z-50 opacity-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.12)_0%,transparent_80%)] blur-2xl" />
               <div className={`absolute inset-0 ${pillar.tint} opacity-80 mix-blend-screen transition-colors duration-500`} />
@@ -269,7 +269,7 @@ export default function About() {
               <div className="relative z-10 flex h-full flex-col">
                 <div className="relative flex aspect-[1.6] items-center justify-center overflow-hidden bg-black/8 transition-colors duration-500 group-hover:bg-white/[0.035]">
                   {pillar.video ? (
-                    pillar.video.match(/\.(mp4|webm|ogg)$/) ? (
+                    pillar.video.match(/\.(mp4|webm|ogg|mov)$/) ? (
                       <video
                         ref={(el) => {
                           videoRefs.current[index] = el;
@@ -309,11 +309,11 @@ export default function About() {
                   ) : null}
                 </div>
 
-                <div className="mt-auto p-6 md:p-8">
-                  <h3 className="font-serif text-4xl font-black italic leading-none text-white md:text-5xl">
+                <div className="mt-auto p-4 md:p-5">
+                  <h3 className="font-serif text-2xl font-black italic leading-none text-white md:text-3xl">
                     {pillar.title}
                   </h3>
-                  <p className="mt-5 font-body text-sm leading-6 text-white/64">
+                  <p className="mt-4 font-body text-[13px] leading-5 text-white/64">
                     {pillar.copy}
                   </p>
                 </div>
