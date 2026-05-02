@@ -61,7 +61,6 @@ const feedbackItems = [
 export default function Polaroids() {
   const { data } = useDynamicData();
   const [mounted, setMounted] = React.useState(false);
-  const [mousePos, setMousePos] = React.useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = React.useState(false);
 
   React.useEffect(() => {
@@ -77,6 +76,8 @@ export default function Polaroids() {
       document.head.appendChild(script);
     }
   }, []);
+
+  const sectionRef = React.useRef<HTMLElement>(null);
 
   if (!mounted) return <section id="testimonials" className="min-h-[60vh] bg-black" />;
 
@@ -116,13 +117,13 @@ export default function Polaroids() {
   return (
     <section 
       id="testimonials" 
+      ref={sectionRef}
       className="py-12 md:py-24 min-h-[80vh] overflow-hidden relative isolate bg-black z-10"
       onMouseMove={(e) => {
-        const rect = e.currentTarget.getBoundingClientRect();
-        setMousePos({
-          x: e.clientX - rect.left,
-          y: e.clientY - rect.top,
-        });
+        if (!sectionRef.current) return;
+        const rect = sectionRef.current.getBoundingClientRect();
+        sectionRef.current.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+        sectionRef.current.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
       }}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
@@ -131,8 +132,7 @@ export default function Polaroids() {
         className="pointer-events-none absolute inset-0 z-20 transition-opacity duration-500"
         style={{
           opacity: isHovering ? 1 : 0,
-          background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(230, 57, 70, 0.15), transparent 60%)`,
-          mixBlendMode: "screen"
+          background: `radial-gradient(600px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(230, 57, 70, 0.15), transparent 60%)`,
         }}
       />
 

@@ -57,7 +57,7 @@
       this._hasAutoScrolled = false;
 
       this._onWindowScroll = this._onWindowScroll.bind(this);
-      this._autoScrollLoop = this._autoScrollLoop.bind(this);
+      this._updateLoop = this._updateLoop.bind(this);
       
       this._autoScrollRaf = 0;
       this._isUserInteracting = false;
@@ -94,26 +94,12 @@
       }
     }
 
-    _onHorizontalScroll(event) {
-      if (this._hScrollRaf) return;
-      const root = event.target || event.currentTarget;
-      if (!root) return;
-
-      this._hScrollRaf = requestAnimationFrame(() => {
-        this._hScrollRaf = 0;
-        if (!this._isActive) return;
-
-        const vw = document.documentElement.clientWidth / 100;
-        const gap = Math.min(240, Math.max(140, 16 * vw)); 
-        this._targetScrollIndex = root.scrollLeft / gap;
-        
-        // Pass the raw scroll value natively up so the camera layer can track correctly 
-        this.style.setProperty('--scroll-left', `${root.scrollLeft}px`);
-      });
+    _onHorizontalScroll() {
+      // Scroll handling is now unified in the _updateLoop for better performance and synchronization
     }
 
-    _autoScrollLoop() {
-      if (!this._isActive || !this.hasAttribute('auto-scroll')) {
+    _updateLoop() {
+      if (!this._isActive) {
         this._autoScrollRaf = 0;
         return;
       }
@@ -121,41 +107,36 @@
       const root = this.shadowRoot.querySelector('.root');
       if (root) {
         const vw = document.documentElement.clientWidth / 100;
-        const gap = Math.min(240, Math.max(140, 16 * vw));
+        const gap = Math.min(400, Math.max(250, 25 * vw));
         
-        if (!this._isUserInteracting) {
+        if (!this._isUserInteracting && this.hasAttribute('auto-scroll')) {
           const speed = parseFloat(this.getAttribute('scroll-speed')) || 0.45;
           root.scrollLeft += speed;
         }
         
         this._targetScrollIndex = root.scrollLeft / gap;
 
-        // Seamless Looping logic
-        const jumpWidth = 20 * gap;
+        // Seamless Looping logic (exactly 20 items for 360 deg)
+        const jumpItems = 20;
+        const jumpWidth = jumpItems * gap;
         if (root.scrollLeft > jumpWidth * 1.8) {
            root.scrollLeft -= jumpWidth;
-           this._targetScrollIndex -= 20;
-           this._currentScrollIndex -= 20;
+           this._targetScrollIndex -= jumpItems;
+           this._currentScrollIndex -= jumpItems;
         }
-      }
 
-      // Smooth Lerping Logic
-      const lerpFactor = 0.25;
-      this._currentScrollIndex += (this._targetScrollIndex - this._currentScrollIndex) * lerpFactor;
-      
-      if (Math.abs(this._targetScrollIndex - this._currentScrollIndex) > 0.0001) {
-        this.style.setProperty('--scroll-index', this._currentScrollIndex.toFixed(4));
+        // Smooth Lerping Logic
+        // 0.2 provides a good balance between "cinematic weight" and responsiveness
+        const lerpFactor = 0.2;
+        this._currentScrollIndex += (this._targetScrollIndex - this._currentScrollIndex) * lerpFactor;
         
-        const cards = this.shadowRoot.querySelectorAll('.card');
-        cards.forEach((card, i) => {
-          const offset = i - this._currentScrollIndex;
-          const absOffset = Math.abs(offset);
-          card.style.setProperty('--scroll-offset', offset.toFixed(3));
-          card.style.setProperty('--scroll-abs-offset', absOffset.toFixed(3));
-        });
+        // Update global variables on the component host
+        // This allows CSS to handle the rest of the transformations natively
+        this.style.setProperty('--scroll-left', `${root.scrollLeft}px`);
+        this.style.setProperty('--scroll-index', this._currentScrollIndex.toFixed(4));
       }
 
-      this._autoScrollRaf = requestAnimationFrame(this._autoScrollLoop);
+      this._autoScrollRaf = requestAnimationFrame(this._updateLoop);
     }
 
     disconnectedCallback() {
@@ -283,7 +264,7 @@
             height: 100%;
             transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
             transform-style: preserve-3d;
-            transform: translateZ(0) rotateY(0deg);
+            transform: translateY(calc(var(--lift, 0px) * -1)) translateZ(0) rotateY(0deg);
             border-radius: clamp(24px, 3.5vw, 42px);
             will-change: transform;
           }
@@ -443,6 +424,11 @@
             top: 50%;
             width: min(var(--active-w), calc(100% - 24px));
             aspect-ratio: 1.5;
+            
+            /* CSS-based scroll offset calculation for better performance */
+            --scroll-offset: calc(var(--index, 0) - var(--scroll-index, 0));
+            --scroll-abs-offset: max(var(--scroll-offset), calc(-1 * var(--scroll-offset)));
+            
             z-index: calc(100 - var(--scroll-abs-offset, 0));
             display: block;
             padding: 0;
@@ -453,15 +439,13 @@
             transform-origin: center;
             transform:
               translate3d(-50%, -50%, 0)
-              translateY(calc(var(--lift) * -1))
               rotateY(var(--fixed-rotate-y))
               translateZ(var(--radius))
               rotateX(var(--tilt-x, 0deg))
               rotateY(var(--tilt-y, 0deg))
               scale(calc(1.1 - clamp(0, var(--scroll-abs-offset, 10), 1) * 0.1));
-            transition:
-              transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
-              opacity 0.4s ease;
+            
+            /* Removed transitions here as they conflict with JS-driven frame updates */
             will-change: transform, opacity;
           }
 
@@ -652,10 +636,10 @@
           class="card"
           part="card"
           style="
+            --index: ${index};
             --active-w: ${activeW};
             --fixed-rotate-y: ${fixedRotateY};
             --radius: ${radius}px;
-            --scroll-abs-offset: 100;
             --card-bg: ${escapeAttr(color)};
           "
         >
@@ -909,8 +893,8 @@
           }
         }
         
-        if (this.hasAttribute('auto-scroll') && !this._autoScrollRaf) {
-          this._autoScrollRaf = requestAnimationFrame(this._autoScrollLoop);
+        if (!this._autoScrollRaf) {
+          this._autoScrollRaf = requestAnimationFrame(this._updateLoop);
         }
       } else {
         if (this._autoScrollRaf) {

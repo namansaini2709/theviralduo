@@ -18,7 +18,7 @@ a, button, .interactive, [role="button"] {
   background-color: #dc2626; /* red-600 */
   border-radius: 9999px;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 10000;
 }
 
 /* Outer Trailing Ring Base Styles */
@@ -31,5 +31,5 @@ a, button, .interactive, [role="button"] {
   border: 1px solid rgba(220, 38, 38, 0.5); /* red-600 with 50% opacity */
   border-radius: 9999px;
   pointer-events: none;
-  z-index: 9998;
+  z-index: 9999;
 }

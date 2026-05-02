@@ -331,7 +331,7 @@ export default function AdminPage() {
                     <div key={item.id} className="flex items-center justify-between p-3 bg-black/50 rounded-lg border border-white/5">
                       <div>
                         <p className="text-sm font-bold">{item.name}</p>
-                        <p className="text-xs text-white/40 truncate max-w-[200px]">"{item.quote}"</p>
+                        <p className="text-xs text-white/40 truncate max-w-[200px]">&quot;{item.quote}&quot;</p>
                       </div>
                       <button 
                         onClick={() => removeFeedback(item.id)}

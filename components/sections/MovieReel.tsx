@@ -49,7 +49,7 @@ const projects = [
   },
   {
     id: 4,
-    client: "Fof fitnesa",
+    client: "FOF Fitness",
     platform: "TikTok",
     views: "1.5M",
     color: "#43A047",
