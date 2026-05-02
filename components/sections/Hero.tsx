@@ -30,8 +30,12 @@ export default function Hero() {
           end: "+=150%", 
           scrub: 1.5,
           pin: true,
+          pinSpacing: true,
+          refreshPriority: 10,
         }
       });
+
+
 
       // 1. Cinematic Reveal (Start earlier since no frame animation)
       tl.fromTo(".black-hole",
@@ -136,8 +140,9 @@ export default function Hero() {
 
       <div 
         ref={stickyDivRef}
-        className="sticky top-[6.5vh] h-[87vh] w-[90vw] mx-auto flex items-center justify-center overflow-hidden touch-none pointer-events-none perspective-[1000px] rounded-[3.5rem] border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.8)] z-50 transition-colors duration-500"
+        className="relative min-h-[87vh] w-[90vw] mx-auto flex items-center justify-center overflow-hidden touch-none pointer-events-none perspective-[1000px] rounded-[3.5rem] border border-white/10 shadow-[0_40px_100px_rgba(0,0,0,0.8)] z-10 transition-colors duration-500"
       >
+
         <div 
           ref={bgRef} 
           className="absolute inset-[-10%] opacity-40 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.1)_0%,transparent_60%)] mix-blend-screen transition-opacity duration-1000" 

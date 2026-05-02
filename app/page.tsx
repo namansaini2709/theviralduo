@@ -1,7 +1,6 @@
 "use client";
 
 import FloatingParticlesBackground from "@/components/global/FloatingParticlesBackground";
-import CustomCursor from "@/components/global/CustomCursor";
 import ScrollProgress from "@/components/global/ScrollProgress";
 import Navigation from "@/components/global/Navigation";
 import Loader from "@/components/sections/Loader";
@@ -27,40 +26,74 @@ export default function Home() {
       setTimeout(() => {
         const customEvent = e as CustomEvent;
         const targetId = customEvent.detail;
-        const element = document.querySelector(targetId);
-        if (element) {
-          element.scrollIntoView({ behavior: 'auto' }); // Jump while covered
+        if (targetId === "#top") {
+          window.scrollTo({ top: 0, behavior: 'auto' });
+        } else {
+          const element = document.querySelector(targetId);
+          if (element) {
+            element.scrollIntoView({ behavior: 'auto' }); // Jump while covered
+          }
         }
       }, 500);
       setTimeout(() => setIsTransitioning(false), 1200);
     };
 
     window.addEventListener("page-transition", handleTransition);
-    return () => window.removeEventListener("page-transition", handleTransition);
+    
+    // Global Refresh for all ScrollTriggers to fix overlapping
+    const refreshAll = () => {
+      import("gsap").then((gsap) => {
+        import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
+          gsap.default.ticker.lagSmoothing(0);
+          ScrollTrigger.refresh(true);
+        });
+      });
+    };
+    
+    const timer = setTimeout(refreshAll, 1500);
+    window.addEventListener("resize", refreshAll);
+
+    return () => {
+      window.removeEventListener("page-transition", handleTransition);
+      window.removeEventListener("resize", refreshAll);
+      clearTimeout(timer);
+    };
   }, []);
 
   return (
     <>
       <FloatingParticlesBackground />
       <TransitionOverlay isTransitioning={isTransitioning} />
-      <CustomCursor />
       <ScrollProgress />
       <Navigation />
       <Loader />
 
-      <main className="relative z-10">
+      <main className="relative z-10 flex flex-col">
+        {/* 1. Hero Section */}
         <Hero />
+        
+        {/* 2. Who We Are Section */}
         <About />
-        <ServicesIntro />
-        <Services />
-        <Marquee />
+        
+        {/* 3. Services We Provide Section */}
+        <div id="services-group">
+          <ServicesIntro />
+          <Services />
+          <Marquee />
+        </div>
+        
+        {/* 4. Our Work Section */}
         <MovieReel />
+        
+        {/* 5. Feedback Section */}
         <Polaroids />
+        
+        {/* 6. Contact Section */}
         <Contact />
       </main>
+
 
       <Footer />
     </>
   );
 }
-

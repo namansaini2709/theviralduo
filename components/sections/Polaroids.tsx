@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createElement, type CSSProperties } from "react";
+import { useDynamicData } from "@/lib/DynamicDataContext";
 
 const collageStyle = {
   "--media-collage-bg": "transparent",
@@ -16,7 +17,8 @@ const feedbackItems = [
     image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80",
     color: "#F5F0E8",
     feedback: "The Viral Duo didn't just post for us; they engineered a community. Our engagement rate tripled within the first month.",
-    points: "Engagement, Community, Scaling"
+    points: "Engagement, Community, Scaling",
+    stars: "5"
   },
   {
     title: "Tech Guru",
@@ -24,7 +26,8 @@ const feedbackItems = [
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80",
     color: "#FF6B6B",
     feedback: "Technical precision met creative genius. They navigated the complex B2B space with ease and delivered results.",
-    points: "B2B, Lead Gen, Precision"
+    points: "B2B, Lead Gen, Precision",
+    stars: "5"
   },
   {
     title: "Rust Rooster",
@@ -32,7 +35,8 @@ const feedbackItems = [
     image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80",
     color: "#F2DC78",
     feedback: "Every frame they produced felt like a high-budget movie. They truly elevated our brand's visual identity.",
-    points: "Cinematic, Visuals, Luxury"
+    points: "Cinematic, Visuals, Luxury",
+    stars: "4"
   },
   {
     title: "FitFlow",
@@ -40,7 +44,8 @@ const feedbackItems = [
     image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1200&q=80",
     color: "#A8F275",
     feedback: "Unprecedented reach. We went from a local gym to a global fitness brand almost overnight.",
-    points: "Viral, Global, Fitness"
+    points: "Viral, Global, Fitness",
+    stars: "5"
   },
   {
     title: "Bloom",
@@ -48,30 +53,39 @@ const feedbackItems = [
     image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=1200&q=80",
     color: "#8998F2",
     feedback: "Direct ROI. Every piece of content they created led to measurable sales growth and brand loyalty.",
-    points: "Sales, ROI, Loyalty"
+    points: "Sales, ROI, Loyalty",
+    stars: "5"
   }
 ];
 
 export default function Polaroids() {
+  const { data } = useDynamicData();
   const [mounted, setMounted] = React.useState(false);
   const [mousePos, setMousePos] = React.useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = React.useState(false);
 
   React.useEffect(() => {
     setMounted(true);
-    // Directly load the component script
-    const script = document.createElement("script");
-    script.src = "/components/media-collage.js?v=6";
-    script.type = "module";
-    script.crossOrigin = "anonymous";
-    document.head.appendChild(script);
+    
+    // Prevent multiple script injections
+    if (!document.getElementById("media-collage-script")) {
+      const script = document.createElement("script");
+      script.id = "media-collage-script";
+      script.src = "/components/media-collage.js?v=6";
+      script.type = "module";
+      script.crossOrigin = "anonymous";
+      document.head.appendChild(script);
+    }
   }, []);
 
   if (!mounted) return <section id="testimonials" className="min-h-[60vh] bg-black" />;
 
+  const finalFeedback = [...feedbackItems, ...(data?.feedback || [])];
+
   const mediaCollage = createElement(
     "media-collage",
     {
+      key: `collage-${finalFeedback.length}`, // Force re-mount when count changes
       "aria-label": "Viral Duo feedback collage",
       "activation-mode": "threshold",
       "activation-threshold": "0",
@@ -79,24 +93,30 @@ export default function Polaroids() {
       "scroll-speed": "1.0",
       style: collageStyle,
     },
-    // Duplicate items 8 times to reach 40 items total (since there are 5 unique items).
-    // 20 items = 360 degrees, so 40 items allows a perfect 360 degree loop without hitting edges.
-    [...Array(8)].flatMap(() => feedbackItems).map((item, index) =>
-      createElement("media-collage-item", {
-        key: `${item.title}-${index}`,
-        "data-title": item.title,
-        "data-subtitle": item.quote,
-        "data-color": item.color,
-        "data-feedback": item.feedback,
-        "data-points": item.points,
-      })
-    )
+    // Duplicate items to ensure enough total items for the cylinder loop
+    // Aim for ~40 items total for a perfect 360 degree loop
+    finalFeedback.length > 0 
+      ? [...Array(Math.ceil(40 / finalFeedback.length))].flatMap(() => finalFeedback).map((item, index) =>
+          createElement("media-collage-item", {
+            key: `${item.title}-${index}-${item.stars}-${item.image?.length}`,
+            "data-title": item.title,
+            "data-subtitle": item.quote,
+            "data-color": item.color,
+            "data-feedback": item.feedback || item.quote,
+            "data-points": item.points || item.role || "",
+            "data-image": item.image || "",
+            "data-stars": item.stars || "5",
+          })
+        )
+      : []
   );
+
+  if (finalFeedback.length === 0) return null;
 
   return (
     <section 
       id="testimonials" 
-      className="py-0 md:py-20 overflow-hidden relative isolate bg-black"
+      className="py-12 md:py-24 min-h-[80vh] overflow-hidden relative isolate bg-black z-10"
       onMouseMove={(e) => {
         const rect = e.currentTarget.getBoundingClientRect();
         setMousePos({
@@ -107,7 +127,6 @@ export default function Polaroids() {
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
-      {/* Red glow effect that follows the mouse */}
       <div 
         className="pointer-events-none absolute inset-0 z-20 transition-opacity duration-500"
         style={{

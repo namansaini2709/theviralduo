@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, AnimatePresence } from "framer-motion";
 import CinematicReel from "../global/CinematicReel";
+import { useDynamicData } from "@/lib/DynamicDataContext";
 
 const projects = [
   {
@@ -122,6 +123,8 @@ const projects = [
 ];
 
 export default function MovieReel() {
+  const { data } = useDynamicData();
+  const finalProjects = [...projects, ...(data?.work || [])];
   const sectionRef = useRef<HTMLDivElement>(null);
   const horizontalReelRef = useRef<HTMLDivElement>(null);
   const spinningReelRef = useRef<HTMLDivElement>(null);
@@ -134,112 +137,86 @@ export default function MovieReel() {
     const section = sectionRef.current;
     const horizontalReel = horizontalReelRef.current;
     const spinningReel = spinningReelRef.current;
+
     if (!section || !horizontalReel || !spinningReel) return;
 
-    // Use a function to get the latest width during scroll calculations
-    const getScrollAmount = () => {
-      const horizontalWidth = horizontalReel.scrollWidth;
-      // Scroll until the last element (CTA) is fully shown
-      return -(horizontalWidth - window.innerWidth);
-    };
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: () => `+=${horizontalReel.scrollWidth + window.innerWidth}`,
+          scrub: 1,
+          pin: true,
+          pinSpacing: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          refreshPriority: 7,
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: section,
-        start: "top top",
-        end: () => `+=${horizontalReel.scrollWidth}`, // Tighter end based on content width
-        scrub: 1, // Snappier scroll response
-        pin: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          // Sync active frame highlighting with the horizontal scroll phase
-          // The horizontal scroll starts after the intro (approx 35% into the timeline)
-          if (progress > 0.35) {
-            const adjustedProgress = (progress - 0.35) / 0.65;
-            const frameIndex = Math.floor(adjustedProgress * projects.length);
-            setActiveFrame(Math.min(frameIndex, projects.length - 1));
-          } else {
-            setActiveFrame(-1);
+          onUpdate: (self) => {
+            const progress = self.progress;
+            // Split progress between intro (0-0.2) and horizontal scroll (0.2-1)
+            if (progress < 0.2) {
+              setActiveFrame(-1);
+            } else {
+              const scrollProgress = (progress - 0.2) / 0.8;
+              const index = Math.floor(scrollProgress * finalProjects.length);
+              setActiveFrame(Math.min(index, finalProjects.length - 1));
+            }
           }
-        },
-      },
-    });
+        }
+      });
 
-    // 1. Initial Spin & Scale (The "Unspooling" Start)
-    tl.fromTo(spinningReel, 
-      { rotate: 0, scale: 1, opacity: 1, filter: "blur(0px)" },
-      { 
-        rotate: 360, 
-        scale: 0.8, 
-        duration: 0.8, 
-        ease: "power2.inOut" 
-      }
-    );
+      // 1. SVG Reel Spin (Intro)
+      tl.to(spinningReel, {
+        rotation: 360,
+        scale: 0.8,
+        opacity: 0,
+        duration: 2,
+        ease: "power2.inOut"
+      });
 
-    // Synchronize Text Character Coloring
-    tl.to(".reel-char", {
-      fill: "#E63946",
-      opacity: 1,
-      duration: 0.5,
-      stagger: 0.05,
-      ease: "power2.inOut"
-    }, 0);
+      // 2. Horizontal Scroll (Main)
+      tl.fromTo(horizontalReel, 
+        { opacity: 0, x: "100%" },
+        { 
+          opacity: 1, 
+          x: "0%", 
+          duration: 1, 
+          ease: "power2.out" 
+        }, 
+        "-=0.5"
+      );
 
-    // Staggered Color Reveal for Thumbnails
-    tl.to(".reel-thumb", {
-      filter: "grayscale(0%)",
-      opacity: 1,
-      duration: 0.6,
-      stagger: 0.08,
-      ease: "power2.inOut"
-    }, 0.05);
+      tl.to(horizontalReel, {
+        x: () => -(horizontalReel.scrollWidth - window.innerWidth * 0.9),
+        ease: "none",
+        duration: 8
+      });
 
-    // 2. The Reel fades out smoothly
-    tl.to(spinningReel, {
-      opacity: 0,
-      scale: 0.6,
-      duration: 0.6,
-      ease: "power2.inOut"
-    }, ">-0.1");
+    }, sectionRef);
 
-    // 3. Horizontal Scroller enters
-    tl.fromTo(horizontalReel, 
-      { opacity: 0, scale: 0.96, x: "100%", filter: "blur(8px)" },
-      { 
-        opacity: 1, 
-        scale: 1, 
-        x: "0%", 
-        filter: "blur(0px)", 
-        duration: 1, 
-        ease: "expo.out" 
-      },
-      ">-0.3"
-    );
-
-    // 4. Horizontal Scroll through projects
-    tl.to(horizontalReel, {
-      x: getScrollAmount,
-      ease: "none",
-      duration: 4, // Give horizontal scroll more weight in the total timeline
-    });
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 1000);
 
     return () => {
-      tl.kill();
-      ScrollTrigger.getAll().forEach((t) => {
-        if (t.trigger === section) t.kill();
-      });
+      ctx.revert();
+      clearTimeout(timer);
     };
-  }, []);
+  }, [finalProjects.length, data]);
+
 
   return (
-    <section ref={sectionRef} id="movie-reel" className="relative h-screen overflow-hidden perspective-2000">
+    <section ref={sectionRef} id="movie-reel" className="relative h-screen overflow-hidden perspective-2000 bg-black z-10">
+
+
+
       {/* Dynamic Background */}
       <div className="absolute inset-0 z-0">
         <div 
           className="absolute inset-0 transition-colors duration-1000 opacity-20 blur-[100px]" 
-          style={{ backgroundColor: activeFrame >= 0 ? projects[activeFrame].color : 'transparent' }} 
+          style={{ backgroundColor: activeFrame >= 0 && finalProjects[activeFrame] ? finalProjects[activeFrame].color : 'transparent' }} 
         />
         <div className="absolute inset-0 bg-[#080808]/45" />
       </div>
@@ -247,15 +224,15 @@ export default function MovieReel() {
       {/* SVG Movie Reel Intro */}
       <div ref={spinningReelRef} className="absolute inset-0 flex items-center justify-center z-10 p-4">
         <div className="relative w-full h-full max-w-[600px] max-h-[600px] aspect-square">
-          <CinematicReel thumbnails={projects.map(p => p.logo || p.thumbnail)} />
+          <CinematicReel thumbnails={finalProjects.map(p => p.logo || p.thumbnail)} />
         </div>
       </div>
 
       {/* Horizontal Scroller */}
       <div ref={horizontalReelRef} className="absolute inset-0 flex items-center opacity-0 z-20">
         <div className="flex items-center gap-12 md:gap-24 pl-[7.5vw] md:pl-[40vw] pr-[50vw] md:pr-[60vw]">
-          {projects.map((project, i) => (
-            <FilmFrame key={project.id} project={project} index={i} isActive={activeFrame === i} />
+          {finalProjects.map((project, i) => (
+            <FilmFrame key={project.id || i} project={project} index={i} isActive={activeFrame === i} />
           ))}
 
           {/* Final Call to Action */}
@@ -286,7 +263,7 @@ export default function MovieReel() {
           <div className="w-32 h-[1px] bg-foreground/10 overflow-hidden">
             <motion.div 
               className="w-full h-full bg-accent origin-left"
-              style={{ scaleX: activeFrame >= 0 ? (activeFrame + 1) / projects.length : 0 }}
+              style={{ scaleX: activeFrame >= 0 ? (activeFrame + 1) / finalProjects.length : 0 }}
             />
           </div>
         </div>

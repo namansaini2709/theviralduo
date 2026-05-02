@@ -135,16 +135,8 @@ export default function Navigation() {
         return;
       }
 
-      if (href === "#top") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      } else {
-        const element = document.querySelector(href);
-        if (element) {
-          element.scrollIntoView({ behavior: "smooth" });
-        } else {
-          window.dispatchEvent(new CustomEvent("page-transition", { detail: href } as any));
-        }
-      }
+      // Always use the transition overlay for a cinematic feel
+      window.dispatchEvent(new CustomEvent("page-transition", { detail: href }));
     } else {
       router.push(href);
     }

@@ -41,6 +41,9 @@ export const metadata: Metadata = {
   ],
 };
 
+import { DynamicDataProvider } from "@/lib/DynamicDataContext";
+import CustomCursor from "@/components/global/CustomCursor";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -51,7 +54,10 @@ export default function RootLayout({
       <body
         className={`${dmSans.variable} ${caveat.variable} ${outfit.variable} ${fraunces.variable} antialiased film-grain`}
       >
-        {children}
+        <DynamicDataProvider>
+          <CustomCursor />
+          {children}
+        </DynamicDataProvider>
       </body>
     </html>
   );
