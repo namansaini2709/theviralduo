@@ -7,10 +7,11 @@ import { UserRound } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 
 const NAV_LINKS = [
-  { label: "Home", href: "#top" },
-  { label: "About", href: "#about" },
-  { label: "Services", href: "#services" },
   { label: "Work", href: "#movie-reel" },
+  { label: "Services", href: "#services" },
+  { label: "About Us", href: "#about" },
+  { label: "Results", href: "#results" },
+  { label: "Contact", href: "#contact" },
 ];
 
 const BEZIER: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -68,14 +69,14 @@ function MagneticLink({ children, onClick }: { children: React.ReactNode; onClic
       onClick={onClick}
     >
       <motion.span
-        className="relative z-10 text-sm font-medium transition-colors duration-300 text-white/80 group-hover:text-white"
+        className="relative z-10 text-sm font-medium transition-colors duration-300 text-black/60 group-hover:text-black"
       >
         {children}
       </motion.span>
       
       {/* Hover Glow Pill */}
       <motion.div
-        className="absolute inset-0 z-0 bg-white/5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        className="absolute inset-0 z-0 bg-black/5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
         initial={false}
         whileHover={{ scale: 1.1 }}
       />
@@ -152,11 +153,11 @@ export default function Navigation() {
         style={{ 
           height: isMobile ? 64 : (isScrolled ? 56 : 84),
           width: (isScrolled && !isMobile) ? "min(880px, 92vw)" : "100%",
-          backgroundColor: isScrolled ? "rgba(8, 8, 8, 0.9)" : "rgba(8, 8, 8, 0.15)",
+          backgroundColor: isScrolled ? "rgba(255, 255, 255, 0.85)" : "rgba(255, 255, 255, 0.3)",
           backdropFilter: "blur(20px)",
         }}
         className={`fixed top-0 left-1/2 z-[100] flex items-center justify-between pl-4 pr-6 md:pl-6 md:pr-10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          isScrolled && !isMobile ? "top-4 rounded-full border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)]" : "border-b border-white/10"
+          isScrolled && !isMobile ? "top-4 rounded-full border border-black/10 shadow-[0_8px_32px_rgba(0,0,0,0.05)]" : "border-b border-black/10"
         }`}
       >
         {/* Premium Animated Gradient Line (only when not scrolled) */}
@@ -192,7 +193,7 @@ export default function Navigation() {
           className="flex items-center gap-2.5 cursor-pointer group z-10"
           onClick={() => window.open("https://www.instagram.com/theviralduo", "_blank")}
         >
-          <div className={`relative rounded-full overflow-hidden border border-white/10 group-hover:border-accent/50 transition-all duration-500 shadow-lg ${
+          <div className={`relative rounded-full overflow-hidden border border-black/10 group-hover:border-accent/50 transition-all duration-500 shadow-lg ${
             isScrolled ? "w-7 h-7" : "w-8 h-8 md:w-9 md:h-9"
           }`}>
             <Image 
@@ -200,16 +201,16 @@ export default function Navigation() {
               alt="The Viral Duo" 
               fill 
               sizes="36px"
-              className="object-cover group-hover:scale-110 transition-transform duration-500"
+              className="object-cover group-hover:scale-110 transition-transform duration-500 invert"
             />
           </div>
-          <span className="hidden md:block font-display font-bold text-base tracking-tight text-white group-hover:text-accent transition-colors duration-300">
+          <span className="hidden md:block font-display font-bold text-base tracking-tight text-black group-hover:text-accent transition-colors duration-300">
             THE VIRAL <span className="text-accent">DUO</span>
           </span>
         </motion.div>
 
         {/* Desktop Links Container */}
-        <div className="hidden md:flex items-center gap-0.5 bg-white/5 px-1.5 py-1 rounded-full border border-white/5 backdrop-blur-md z-10 shadow-inner relative overflow-hidden">
+        <div className="hidden md:flex items-center gap-0.5 bg-black/5 px-1.5 py-1 rounded-full border border-black/5 backdrop-blur-md z-10 shadow-sm relative overflow-hidden">
           {NAV_LINKS.map((link, i) => (
             <motion.div
               key={link.label}
@@ -229,10 +230,10 @@ export default function Navigation() {
         {/* Action Button */}
         <motion.button
           variants={itemVariants}
-          whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(230,57,70,0.3)" }}
+          whileHover={{ scale: 1.05, backgroundColor: "#E63946", color: "#FFFFFF" }}
           whileTap={{ scale: 0.95 }}
           onClick={() => scrollTo("#contact", "Contact")}
-          className="hidden md:flex items-center gap-2 bg-white text-black px-5 py-2 rounded-full font-bold text-xs transition-all duration-300 z-10 border border-white/20"
+          className="hidden md:flex items-center gap-2 bg-transparent text-black px-5 py-2 rounded-full font-bold text-xs transition-colors duration-300 z-10 border-2 border-accent"
         >
           <UserRound size={14} strokeWidth={2.5} />
           LET&apos;S TALK
@@ -247,15 +248,15 @@ export default function Navigation() {
         >
           <motion.div 
             animate={isMobileMenuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
-            className="w-6 h-0.5 bg-white rounded-full shadow-glow"
+            className="w-6 h-0.5 bg-black rounded-full"
           />
           <motion.div 
             animate={isMobileMenuOpen ? { opacity: 0, x: -10 } : { opacity: 1, x: 0 }}
-            className="w-4 h-0.5 bg-white rounded-full self-end shadow-glow"
+            className="w-4 h-0.5 bg-black rounded-full self-end"
           />
           <motion.div 
             animate={isMobileMenuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
-            className="w-6 h-0.5 bg-white rounded-full shadow-glow"
+            className="w-6 h-0.5 bg-black rounded-full"
           />
         </motion.button>
 
@@ -267,7 +268,7 @@ export default function Navigation() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -20 }}
               transition={{ duration: 0.4, ease: BEZIER }}
-              className="fixed top-20 left-4 right-4 bg-zinc-900/98 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-8 flex flex-col gap-6 md:hidden z-[105] shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+              className="fixed top-20 left-4 right-4 bg-white/95 backdrop-blur-3xl border border-black/10 rounded-[2.5rem] p-8 flex flex-col gap-6 md:hidden z-[105] shadow-[0_20px_50px_rgba(0,0,0,0.1)]"
             >
               {NAV_LINKS.map((link, i) => (
                 <motion.button
@@ -276,7 +277,7 @@ export default function Navigation() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1, duration: 0.4 }}
                   onClick={() => scrollTo(link.href, link.label)}
-                  className="text-3xl font-display font-bold text-left transition-all text-white/50 hover:text-white"
+                  className="text-3xl font-display font-bold text-left transition-all text-black/50 hover:text-black"
                 >
                   {link.label}
                 </motion.button>

@@ -67,10 +67,10 @@ export default function Services() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <section id="services" className="relative min-h-screen bg-[#080808] flex flex-col items-center justify-center py-24 overflow-hidden">
+    <section id="services" className="relative min-h-screen bg-transparent flex flex-col items-center justify-center py-24 overflow-hidden">
       {/* Background Atmosphere */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vh] bg-[radial-gradient(circle,rgba(230,57,70,0.05)_0%,transparent_70%)] opacity-50" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vh] bg-[radial-gradient(circle,rgba(230,57,70,0.03)_0%,transparent_70%)] opacity-50" />
       </div>
 
       <div className="relative z-10 w-full max-w-[1400px] px-6 h-[500px]">
@@ -94,8 +94,8 @@ export default function Services() {
                 onMouseLeave={() => setHoveredIndex(null)}
                 animate={{ width }}
                 transition={{ type: "spring", stiffness: 300, damping: 30, mass: 1 }}
-                className="relative h-full overflow-hidden rounded-[2rem] border border-white/10 cursor-pointer group"
-                style={{ backgroundColor: "#121212" }}
+                className="relative h-full overflow-hidden rounded-[2rem] border border-black/10 cursor-pointer group"
+                style={{ backgroundColor: "#FFFFFF" }}
               >
                 {/* Background Image with Overlay */}
                 <div className="absolute inset-0 z-0">
@@ -103,9 +103,9 @@ export default function Services() {
                     src={service.image} 
                     alt={service.title} 
                     fill
-                    className={`object-cover transition-all duration-700 ${isHovered ? 'scale-105 opacity-40 blur-sm' : 'scale-110 opacity-20 grayscale'}`}
+                    className={`object-cover transition-all duration-700 ${isHovered ? 'scale-105 opacity-10 blur-sm' : 'scale-110 opacity-5 grayscale'}`}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-white via-white/80 to-transparent opacity-80" />
                 </div>
 
                 {/* Content Container */}
@@ -115,11 +115,11 @@ export default function Services() {
                     <motion.div 
                       animate={{ 
                         scale: isHovered ? 1.2 : 1,
-                        backgroundColor: isHovered ? service.color : "rgba(255,255,255,0.05)"
+                        backgroundColor: isHovered ? service.color : "rgba(0,0,0,0.05)"
                       }}
-                      className="w-12 h-12 rounded-2xl flex items-center justify-center border border-white/10 transition-colors duration-500"
+                      className="w-12 h-12 rounded-2xl flex items-center justify-center border border-black/10 transition-colors duration-500"
                     >
-                      <div className={isHovered ? "text-black" : "text-white"}>
+                      <div className={isHovered ? "text-white" : "text-black"}>
                         {service.icon}
                       </div>
                     </motion.div>
@@ -128,7 +128,7 @@ export default function Services() {
                       <motion.h3 
                         animate={{ 
                           fontSize: isHovered ? "2rem" : "1.25rem",
-                          color: isHovered ? "#fff" : "rgba(255,255,255,0.6)"
+                          color: isHovered ? "#000" : "rgba(0,0,0,0.7)"
                         }}
                         className="font-serif font-black italic leading-none tracking-tight"
                       >
@@ -147,11 +147,11 @@ export default function Services() {
                         transition={{ duration: 0.4, delay: 0.1 }}
                         className="space-y-6"
                       >
-                        <p className="text-white/70 text-sm md:text-base leading-relaxed max-w-[90%]">
+                        <p className="text-black/70 font-medium text-sm md:text-base leading-relaxed max-w-[90%]">
                           {service.description}
                         </p>
                         
-                        <button className="flex items-center gap-3 px-6 py-3 bg-white text-black rounded-full font-display font-bold text-xs uppercase tracking-widest hover:bg-accent hover:text-white transition-all transform hover:scale-105">
+                        <button className="flex items-center gap-3 px-6 py-3 bg-black text-white rounded-full font-display font-bold text-xs uppercase tracking-widest hover:bg-accent transition-all transform hover:scale-105">
                           Learn More
                           <ArrowUpRight size={16} />
                         </button>
@@ -164,7 +164,7 @@ export default function Services() {
                     <motion.div 
                       initial={{ opacity: 0 }}
                       animate={{ opacity: isAnyHovered ? 0.1 : 0.3 }}
-                      className="absolute bottom-8 right-8 font-mono text-4xl font-black text-white pointer-events-none"
+                      className="absolute bottom-8 right-8 font-mono text-4xl font-black text-black pointer-events-none"
                     >
                       0{index + 1}
                     </motion.div>

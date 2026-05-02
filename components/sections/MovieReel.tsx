@@ -232,7 +232,7 @@ export default function MovieReel() {
 
 
   return (
-    <section ref={sectionRef} id="movie-reel" className="relative h-screen overflow-hidden perspective-2000 bg-black z-10">
+    <section ref={sectionRef} id="movie-reel" className="relative h-screen overflow-hidden perspective-2000 bg-transparent z-10">
 
 
 
@@ -242,7 +242,7 @@ export default function MovieReel() {
           className="absolute inset-0 transition-colors duration-1000 opacity-20 blur-[100px]" 
           style={{ backgroundColor: activeFrame >= 0 && finalProjects[activeFrame] ? finalProjects[activeFrame].color : 'transparent' }} 
         />
-        <div className="absolute inset-0 bg-[#080808]/45" />
+        <div className="absolute inset-0 bg-white/45 mix-blend-overlay" />
       </div>
 
       {/* SVG Movie Reel Intro */}
@@ -260,13 +260,13 @@ export default function MovieReel() {
           ))}
 
           {/* Final Call to Action */}
-          <div className="flex-shrink-0 w-[85vw] md:w-[450px] h-[480px] md:h-[520px] rounded-2xl border-2 border-dashed border-foreground/20 flex flex-col items-center justify-center bg-foreground/5 hover:border-accent/50 transition-all duration-500 group">
-            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border border-foreground/20 flex items-center justify-center mb-6 md:mb-8 group-hover:scale-110 transition-transform">
-              <span className="text-3xl md:text-4xl text-foreground/40 group-hover:text-accent">+</span>
+          <div className="flex-shrink-0 w-[85vw] md:w-[450px] h-[480px] md:h-[520px] rounded-2xl border-2 border-dashed border-black/20 flex flex-col items-center justify-center bg-black/5 hover:border-accent/50 transition-all duration-500 group">
+            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border border-black/20 flex items-center justify-center mb-6 md:mb-8 group-hover:scale-110 transition-transform">
+              <span className="text-3xl md:text-4xl text-black/40 group-hover:text-accent">+</span>
             </div>
-            <h3 className="font-display text-3xl md:text-4xl font-bold text-foreground/40 group-hover:text-foreground">YOUR STORY</h3>
-            <p className="font-body text-foreground/20 mt-2 text-sm md:text-base">Next Frame: 2024</p>
-            <button className="mt-8 md:mt-12 px-8 md:px-10 py-3 md:py-4 bg-accent text-background rounded-full font-bold uppercase text-[10px] md:text-xs tracking-[0.2em] hover:bg-white transition-colors shadow-xl shadow-accent/20">
+            <h3 className="font-display text-3xl md:text-4xl font-bold text-black/40 group-hover:text-black">YOUR STORY</h3>
+            <p className="font-body text-black/40 mt-2 text-sm md:text-base">Next Frame: 2024</p>
+            <button className="mt-8 md:mt-12 px-8 md:px-10 py-3 md:py-4 bg-accent text-white rounded-full font-bold uppercase text-[10px] md:text-xs tracking-[0.2em] hover:bg-black transition-colors shadow-xl shadow-accent/20">
               Start Project
             </button>
           </div>
@@ -277,14 +277,14 @@ export default function MovieReel() {
       <div className="absolute top-12 left-12 z-40 hidden md:block">
         <div className="flex items-center gap-4">
           <div className="w-2 h-2 rounded-full bg-accent" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-foreground/40">Cinematic Portfolio // Vol 1.0</span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-black/50">Cinematic Portfolio // Vol 1.0</span>
         </div>
       </div>
       
       <div className="absolute bottom-12 right-12 z-40">
         <div className="flex flex-col items-end gap-2">
-          <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/30">Scroll Down</span>
-          <div className="w-32 h-[1px] bg-foreground/10 overflow-hidden">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-black/50">Scroll Down</span>
+          <div className="w-32 h-[1px] bg-black/10 overflow-hidden">
             <motion.div 
               className="w-full h-full bg-accent origin-left"
               style={{ scaleX: activeFrame >= 0 ? (activeFrame + 1) / finalProjects.length : 0 }}

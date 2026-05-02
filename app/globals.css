@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --background: #080808;
-  --foreground: #F5F0E8;
+  --background: #f5f3ef;
+  --foreground: #080808;
   --accent: #E63946;
   --accent-warm: #FF6B6B;
 }
@@ -18,26 +18,41 @@ html {
 }
 
 body {
-  color: #FFFFFF;
+  color: var(--foreground);
   background: var(--background);
   font-family: var(--font-dm-sans), system-ui, sans-serif;
   overflow-x: hidden;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .glass-container {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px) saturate(150%);
   -webkit-backdrop-filter: blur(10px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .shadow-glow {
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 15px rgba(230, 57, 70, 0.5);
 }
 
-/* Base text colors are inherited from body */
-
+/* Marker Highlight Utility */
+.marker-highlight {
+  position: relative;
+  display: inline-block;
+  z-index: 1;
+}
+.marker-highlight::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -2%;
+  width: 104%;
+  height: 30%;
+  background-color: var(--accent);
+  opacity: 0.2;
+  transform: skewX(-15deg);
+  z-index: -1;
+}
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 4px;

@@ -79,7 +79,7 @@ export default function Polaroids() {
 
   const sectionRef = React.useRef<HTMLElement>(null);
 
-  if (!mounted) return <section id="testimonials" className="min-h-[60vh] bg-black" />;
+  if (!mounted) return <section id="testimonials" className="min-h-[60vh] bg-transparent" />;
 
   const finalFeedback = [...feedbackItems, ...(data?.feedback || [])];
 
@@ -118,7 +118,7 @@ export default function Polaroids() {
     <section 
       id="testimonials" 
       ref={sectionRef}
-      className="py-12 md:py-24 min-h-[80vh] overflow-hidden relative isolate bg-black z-10"
+      className="py-12 md:py-24 min-h-[80vh] overflow-hidden relative isolate bg-transparent z-10"
       onMouseMove={(e) => {
         if (!sectionRef.current) return;
         const rect = sectionRef.current.getBoundingClientRect();
@@ -137,15 +137,15 @@ export default function Polaroids() {
       />
 
       <div className="relative z-10 mb-2 px-6 text-center md:mb-2">
-        <h2 className="font-display text-5xl font-bold tracking-tighter md:text-8xl text-white">
+        <h2 className="font-display text-5xl font-bold tracking-tighter md:text-8xl text-black">
           THE <span className="italic text-accent">FEEDBACK</span>
         </h2>
         <div className="mx-auto mt-2 flex max-w-2xl items-center justify-center gap-4">
-          <div className="h-px w-12 bg-white/20" />
-          <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-white/40">
+          <div className="h-px w-12 bg-black/20" />
+          <p className="font-mono text-[10px] uppercase tracking-[0.5em] text-black/40">
             Scroll to unlock the cylinder
           </p>
-          <div className="h-px w-12 bg-white/20" />
+          <div className="h-px w-12 bg-black/20" />
         </div>
       </div>
 
