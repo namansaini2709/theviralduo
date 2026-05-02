@@ -43,9 +43,12 @@ export default function ServicesIntro() {
           start: "top top",
           end: "+=180%",
           pin: true,
+          pinSpacing: true,
           scrub: 1.8,
           anticipatePin: 1,
+          refreshPriority: 8,
         },
+
       });
 
       // Heading recedes

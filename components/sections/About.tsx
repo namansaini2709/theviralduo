@@ -137,8 +137,11 @@ export default function About() {
               end: "+=240%",
               scrub: 1.15,
               pin: true,
+              pinSpacing: true,
               anticipatePin: 1,
+              refreshPriority: 9,
             },
+
           });
 
           tl.fromTo(

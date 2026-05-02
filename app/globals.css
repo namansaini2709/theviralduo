@@ -13,14 +13,8 @@
   cursor: none;
 }
 
-@media (pointer: coarse) {
-  * {
-    cursor: auto;
-  }
-}
-
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto !important;
 }
 
 body {
@@ -42,9 +36,7 @@ body {
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
-h1, h2, h3, h4, h5, h6, p, span, div {
-  color: #FFFFFF;
-}
+/* Base text colors are inherited from body */
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {

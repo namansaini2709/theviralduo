@@ -5,11 +5,101 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, AnimatePresence } from "framer-motion";
 import CinematicReel from "../global/CinematicReel";
+import { useDynamicData } from "@/lib/DynamicDataContext";
 
 const projects = [
   {
     id: 1,
-    client: "Saral Gym",
+    client: "Anytime Fitness",
+    platform: "Instagram Reels",
+    views: "1.2M",
+    color: "#8E24AA",
+    gradient: "from-purple-900/50 to-black",
+    thumbnail: "/assets/projects/anytime-fitness.jpg",
+    thumbnailPosition: "top center",
+    logo: "/assets/projects/anytime-fitness-logo.jpg",
+    video: "/assets/projects/anytime-fitness.mp4",
+    link: "https://www.instagram.com/reel/DUXvwuHkt9F/",
+    watchMoreLink: "https://www.instagram.com/anytimefitnessshahdaradelhi/reels/?hl=en",
+    logoLink: "https://www.instagram.com/anytimefitnessshahdaradelhi/?hl=en",
+  },
+  {
+    id: 2,
+    client: "Vdmc",
+    platform: "Corporate Video",
+    views: "850K",
+    color: "#1E88E5",
+    gradient: "from-blue-900/50 to-black",
+    thumbnail: "/assets/projects/vdmc-thumb.png",
+    thumbnailPosition: "top center",
+    logo: "/assets/projects/vdmc-logo.jpg",
+    video: "/assets/projects/vdmc.mp4",
+    link: "https://www.instagram.com/reel/DXJzPiKCK3M/",
+    watchMoreLink: "https://www.instagram.com/vdmc_malai_chaap_nsfood/reels/?hl=en",
+    logoLink: "https://www.instagram.com/vdmc_malai_chaap_nsfood/?hl=en",
+  },
+  {
+    id: 3,
+    client: "Make your trip possible",
+    platform: "Travel Film",
+    views: "2.1M",
+    color: "#F4511E",
+    gradient: "from-orange-900/50 to-black",
+    thumbnail: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 4,
+    client: "FOF Fitness",
+    platform: "TikTok",
+    views: "1.5M",
+    color: "#43A047",
+    gradient: "from-green-900/50 to-black",
+    thumbnail: "/assets/projects/fof-fitness.png",
+    logo: "/assets/projects/fof-fitness-logo.jpeg",
+    video: "/assets/projects/fof-fitness.mp4",
+    link: "https://www.instagram.com/reel/DXVqVftE2rS/",
+    watchMoreLink: "https://www.instagram.com/foffitnesa/reels/",
+    logoLink: "https://www.instagram.com/foffitnesa/",
+  },
+  {
+    id: 5,
+    client: "Sharma ke bhature",
+    platform: "Food Vlog",
+    views: "3.4M",
+    color: "#FB8C00",
+    gradient: "from-amber-900/50 to-black",
+    thumbnail: "https://images.unsplash.com/photo-1589187151032-573a91317445?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 6,
+    client: "Radhe krishna",
+    platform: "Spiritual Reel",
+    views: "4.2M",
+    color: "#D81B60",
+    gradient: "from-pink-900/50 to-black",
+    thumbnail: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 7,
+    client: "Global holidays",
+    platform: "Adventure Film",
+    views: "920K",
+    color: "#00ACC1",
+    gradient: "from-cyan-900/50 to-black",
+    thumbnail: "https://images.unsplash.com/photo-1436491865332-7a61a109c0f3?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 8,
+    client: "City gym",
+    platform: "Workout Reel",
+    views: "1.1M",
+    color: "#546E7A",
+    gradient: "from-slate-900/50 to-black",
+    thumbnail: "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: 9,
+    client: "Saral",
     platform: "Instagram Reels",
     views: "2.3M",
     color: "#E63946",
@@ -17,56 +107,24 @@ const projects = [
     thumbnail: "/assets/projects/saral-gym-thumb.jpg",
     video: "/assets/projects/saral-gym.mp4",
     logo: "/assets/projects/saral-gym-logo.jpg",
-    link: "https://www.instagram.com/_saralgym_",
+    link: "https://www.instagram.com/reel/DXUHP30k_Xl/",
+    watchMoreLink: "https://www.instagram.com/_saralgym_/reels/",
+    logoLink: "https://www.instagram.com/_saralgym_/",
   },
   {
-    id: 2,
-    client: "Urban Threads",
-    platform: "TikTok",
+    id: 10,
+    client: "Career launcher",
+    platform: "Education Promo",
     views: "1.8M",
-    color: "#16213e",
-    gradient: "from-blue-900/50 to-black",
-    thumbnail: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 3,
-    client: "Mindful Coffee",
-    platform: "Instagram Reels",
-    views: "890K",
-    color: "#0f3460",
-    gradient: "from-amber-900/50 to-black",
-    thumbnail: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 4,
-    client: "FitFlow Studios",
-    platform: "YouTube Shorts",
-    views: "3.1M",
-    color: "#1a1a2e",
-    gradient: "from-emerald-900/50 to-black",
-    thumbnail: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 5,
-    client: "Bloom Skincare",
-    platform: "TikTok",
-    views: "2.7M",
-    color: "#16213e",
-    gradient: "from-rose-900/50 to-black",
-    thumbnail: "https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 6,
-    client: "Rust Rooster Records",
-    platform: "Instagram Reels",
-    views: "1.2M",
-    color: "#0f3460",
-    gradient: "from-orange-900/50 to-black",
-    thumbnail: "https://images.unsplash.com/photo-1514525253361-bee8718a300a?q=80&w=800&auto=format&fit=crop",
+    color: "#3949AB",
+    gradient: "from-indigo-900/50 to-black",
+    thumbnail: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop",
   },
 ];
 
 export default function MovieReel() {
+  const { data } = useDynamicData();
+  const finalProjects = [...projects, ...(data?.work || [])];
   const sectionRef = useRef<HTMLDivElement>(null);
   const horizontalReelRef = useRef<HTMLDivElement>(null);
   const spinningReelRef = useRef<HTMLDivElement>(null);
@@ -79,109 +137,86 @@ export default function MovieReel() {
     const section = sectionRef.current;
     const horizontalReel = horizontalReelRef.current;
     const spinningReel = spinningReelRef.current;
+
     if (!section || !horizontalReel || !spinningReel) return;
 
-    // Use a function to get the latest width during scroll calculations
-    const getScrollAmount = () => {
-      const horizontalWidth = horizontalReel.scrollWidth;
-      return -(horizontalWidth - window.innerWidth + 400);
-    };
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: () => `+=${horizontalReel.scrollWidth + window.innerWidth}`,
+          scrub: 1,
+          pin: true,
+          pinSpacing: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          refreshPriority: 7,
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: section,
-        start: "top top",
-        end: () => `+=${horizontalReel.scrollWidth + 1500}`,
-        scrub: 1.5,
-        pin: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true, // Crucial for dynamic width updates
-        onUpdate: (self) => {
-          const progress = self.progress;
-          if (progress > 0.54) {
-            const adjustedProgress = (progress - 0.54) / 0.46;
-            const frameIndex = Math.floor(adjustedProgress * projects.length);
-            setActiveFrame(Math.min(frameIndex, projects.length - 1));
-          } else {
-            setActiveFrame(-1);
+          onUpdate: (self) => {
+            const progress = self.progress;
+            // Split progress between intro (0-0.2) and horizontal scroll (0.2-1)
+            if (progress < 0.2) {
+              setActiveFrame(-1);
+            } else {
+              const scrollProgress = (progress - 0.2) / 0.8;
+              const index = Math.floor(scrollProgress * finalProjects.length);
+              setActiveFrame(Math.min(index, finalProjects.length - 1));
+            }
           }
-        },
-      },
-    });
+        }
+      });
 
-    // Initial Spin & Scale (The "Unspooling" Start)
-    tl.fromTo(spinningReel, 
-      { rotate: 0, scale: 1, opacity: 1, filter: "blur(0px)" },
-      { 
-        rotate: 360, 
-        scale: 0.8, 
-        duration: 0.5, 
-        ease: "power2.inOut" 
-      }
-    );
+      // 1. SVG Reel Spin (Intro)
+      tl.to(spinningReel, {
+        rotation: 360,
+        scale: 0.8,
+        opacity: 0,
+        duration: 2,
+        ease: "power2.inOut"
+      });
 
-    // Synchronize Text Character Coloring (Turns Red one by one)
-    tl.to(".reel-char", {
-      fill: "#E63946",
-      opacity: 1,
-      duration: 0.4,
-      stagger: 0.05,
-      ease: "power2.inOut"
-    }, 0);
+      // 2. Horizontal Scroll (Main)
+      tl.fromTo(horizontalReel, 
+        { opacity: 0, x: "100%" },
+        { 
+          opacity: 1, 
+          x: "0%", 
+          duration: 1, 
+          ease: "power2.out" 
+        }, 
+        "-=0.5"
+      );
 
-    // Staggered Color Reveal for Thumbnails (One by one, synced with text)
-    tl.to(".reel-thumb", {
-      filter: "grayscale(0%)",
-      opacity: 1,
-      duration: 0.5,
-      stagger: 0.08,
-      ease: "power2.inOut"
-    }, 0.05);
+      tl.to(horizontalReel, {
+        x: () => -(horizontalReel.scrollWidth - window.innerWidth * 0.9),
+        ease: "none",
+        duration: 8
+      });
 
-    // 2. The Reel fades out smoothly
-    tl.to(spinningReel, {
-      opacity: 0,
-      scale: 0.6,
-      duration: 0.6,
-      ease: "power2.inOut"
-    }, ">");
+    }, sectionRef);
 
-    // 4. Horizontal Scroller enters
-    tl.fromTo(horizontalReel, 
-      { opacity: 0, scale: 0.96, x: "100%", filter: "blur(8px)" },
-      { 
-        opacity: 1, 
-        scale: 1, 
-        x: "0%", 
-        filter: "blur(0px)", 
-        duration: 0.8, 
-        ease: "expo.out" 
-      },
-      ">-0.2"
-    );
-
-    // 3. Horizontal Scroll through projects
-    tl.to(horizontalReel, {
-      x: getScrollAmount,
-      ease: "none",
-      duration: 1.5,
-    });
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 1000);
 
     return () => {
-      tl.kill();
-      ScrollTrigger.getAll().forEach((t) => {
-        if (t.trigger === section) t.kill();
-      });
+      ctx.revert();
+      clearTimeout(timer);
     };
-  }, []);
+  }, [finalProjects.length, data]);
+
 
   return (
-    <section ref={sectionRef} id="movie-reel" className="relative h-screen overflow-hidden perspective-2000">
+    <section ref={sectionRef} id="movie-reel" className="relative h-screen overflow-hidden perspective-2000 bg-black z-10">
+
+
+
       {/* Dynamic Background */}
       <div className="absolute inset-0 z-0">
         <div 
           className="absolute inset-0 transition-colors duration-1000 opacity-20 blur-[100px]" 
-          style={{ backgroundColor: activeFrame >= 0 ? projects[activeFrame].color : 'transparent' }} 
+          style={{ backgroundColor: activeFrame >= 0 && finalProjects[activeFrame] ? finalProjects[activeFrame].color : 'transparent' }} 
         />
         <div className="absolute inset-0 bg-[#080808]/45" />
       </div>
@@ -189,15 +224,15 @@ export default function MovieReel() {
       {/* SVG Movie Reel Intro */}
       <div ref={spinningReelRef} className="absolute inset-0 flex items-center justify-center z-10 p-4">
         <div className="relative w-full h-full max-w-[600px] max-h-[600px] aspect-square">
-          <CinematicReel thumbnails={projects.map(p => p.logo || p.thumbnail)} />
+          <CinematicReel thumbnails={finalProjects.map(p => p.logo || p.thumbnail)} />
         </div>
       </div>
 
       {/* Horizontal Scroller */}
       <div ref={horizontalReelRef} className="absolute inset-0 flex items-center opacity-0 z-20">
         <div className="flex items-center gap-12 md:gap-24 pl-[7.5vw] md:pl-[40vw] pr-[50vw] md:pr-[60vw]">
-          {projects.map((project, i) => (
-            <FilmFrame key={project.id} project={project} index={i} isActive={activeFrame === i} />
+          {finalProjects.map((project, i) => (
+            <FilmFrame key={project.id || i} project={project} index={i} isActive={activeFrame === i} />
           ))}
 
           {/* Final Call to Action */}
@@ -228,7 +263,7 @@ export default function MovieReel() {
           <div className="w-32 h-[1px] bg-foreground/10 overflow-hidden">
             <motion.div 
               className="w-full h-full bg-accent origin-left"
-              style={{ scaleX: activeFrame >= 0 ? (activeFrame + 1) / projects.length : 0 }}
+              style={{ scaleX: activeFrame >= 0 ? (activeFrame + 1) / finalProjects.length : 0 }}
             />
           </div>
         </div>
@@ -248,12 +283,21 @@ interface Project {
   video?: string;
   logo?: string;
   link?: string;
+  watchMoreLink?: string;
+  logoLink?: string;
+  thumbnailPosition?: string;
 }
 
 function FilmFrame({ project, index, isActive }: { project: Project, index: number, isActive: boolean }) {
   const [showVideo, setShowVideo] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleClick = () => {
+    if (showVideo && project.link) {
+      window.open(project.link, "_blank", "noopener,noreferrer");
+    }
+  };
 
   useEffect(() => {
     if (showVideo && videoRef.current) {
@@ -282,9 +326,10 @@ function FilmFrame({ project, index, isActive }: { project: Project, index: numb
 
   return (
     <motion.div 
-      className="flex-shrink-0 relative w-[85vw] md:w-[450px] h-[480px] md:h-[520px]"
+      className={`flex-shrink-0 relative w-[85vw] md:w-[450px] h-[480px] md:h-[520px] ${showVideo && project.link ? "cursor-pointer" : ""}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
       animate={{ 
         scale: isActive ? 1 : 0.85,
         opacity: isActive ? 1 : 0.3,
@@ -302,8 +347,11 @@ function FilmFrame({ project, index, isActive }: { project: Project, index: numb
 
         {/* Visual Content */}
         <div 
-          className={`absolute inset-0 bg-cover bg-center transition-all duration-1000 scale-110 group-hover:scale-100 ${isActive ? "grayscale-0" : "grayscale"}`}
-          style={{ backgroundImage: `url(${project.thumbnail})` }}
+          className={`absolute inset-0 bg-cover transition-all duration-1000 scale-110 group-hover:scale-100 ${isActive ? "grayscale-0" : "grayscale"}`}
+          style={{ 
+            backgroundImage: `url(${project.thumbnail})`,
+            backgroundPosition: project.thumbnailPosition || "center"
+          }}
         />
 
         {/* Hover Video Overlay */}
@@ -336,12 +384,13 @@ function FilmFrame({ project, index, isActive }: { project: Project, index: numb
           <h3 className="font-display text-3xl md:text-4xl font-bold text-white leading-[1.1] mb-6">{project.client}</h3>
           
           <div className="flex items-center gap-4 opacity-0 group-hover:opacity-100 translate-y-8 group-hover:translate-y-0 transition-all duration-500 delay-100">
-            {project.link ? (
+            {project.watchMoreLink || project.link ? (
               <a 
-                href={project.link} 
+                href={project.watchMoreLink || project.link} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex-1"
+                onClick={(e) => e.stopPropagation()}
               >
                 <button className="w-full py-4 bg-white text-black font-bold text-xs uppercase tracking-[0.2em] rounded-xl hover:bg-accent hover:text-white transition-colors">
                   {showVideo ? "Click to watch more" : "Play the case study"}
@@ -353,12 +402,13 @@ function FilmFrame({ project, index, isActive }: { project: Project, index: numb
               </button>
             )}
 
-            {project.link ? (
+            {project.logoLink || project.watchMoreLink || project.link ? (
               <a 
-                href={project.link} 
+                href={project.logoLink || project.watchMoreLink || project.link} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="w-14 h-14 border border-white/20 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors cursor-pointer overflow-hidden no-cursor"
+                onClick={(e) => e.stopPropagation()}
               >
                 {project.logo ? (
                   <img 

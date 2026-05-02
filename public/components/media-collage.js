@@ -22,15 +22,15 @@
   const ELEMENT_NAME = "media-collage";
 
   const DEFAULT_ITEMS = [
-    { title: "PICNIC", subtitle: "next-level social picnic", color: "#a8f275" },
-    { title: "COFFEE", subtitle: "proof that mornings can perform", color: "#f2dc78" },
-    { title: "BAKERY", subtitle: "local bakes made loud", color: "#f495e7" },
-    { title: "SPINNING", subtitle: "who said spinning is boring?", color: "#8998f2" },
-    { title: "PARTY", subtitle: "a room that refused to sit still", color: "#202020" },
-    { title: "NEON", subtitle: "city lights at midnight", color: "#ff7455" },
-    { title: "NATURE", subtitle: "finding peace in the wild", color: "#68d391" },
-    { title: "OCEAN", subtitle: "deep blue serenity", color: "#4db8ff" },
-    { title: "DESERT", subtitle: "golden dunes and endless skies", color: "#ffb347" },
+    { title: "PICNIC", subtitle: "next-level social picnic", color: "#a8f275", stars: "5", image: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80&w=800" },
+    { title: "COFFEE", subtitle: "proof that mornings can perform", color: "#f2dc78", stars: "5", image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&q=80&w=800" },
+    { title: "BAKERY", subtitle: "local bakes made loud", color: "#f495e7", stars: "5", image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=800" },
+    { title: "SPINNING", subtitle: "who said spinning is boring?", color: "#8998f2", stars: "5", image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=800" },
+    { title: "PARTY", subtitle: "a room that refused to sit still", color: "#202020", stars: "5", image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=800" },
+    { title: "NEON", subtitle: "city lights at midnight", color: "#ff7455", stars: "5", image: "https://images.unsplash.com/photo-1514525253344-f814d8742985?auto=format&fit=crop&q=80&w=800" },
+    { title: "NATURE", subtitle: "finding peace in the wild", color: "#68d391", stars: "5", image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=800" },
+    { title: "OCEAN", subtitle: "deep blue serenity", color: "#4db8ff", stars: "5", image: "https://images.unsplash.com/photo-1439405326854-014607f694d7?auto=format&fit=crop&q=80&w=800" },
+    { title: "DESERT", subtitle: "golden dunes and endless skies", color: "#ffb347", stars: "5", image: "https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?auto=format&fit=crop&q=80&w=800" },
   ];
 
   const escapeAttr = (value) =>
@@ -57,10 +57,12 @@
       this._hasAutoScrolled = false;
 
       this._onWindowScroll = this._onWindowScroll.bind(this);
-      this._autoScrollLoop = this._autoScrollLoop.bind(this);
+      this._updateLoop = this._updateLoop.bind(this);
       
       this._autoScrollRaf = 0;
       this._isUserInteracting = false;
+      this._currentScrollIndex = 0;
+      this._targetScrollIndex = 0;
     }
 
     connectedCallback() {
@@ -92,98 +94,49 @@
       }
     }
 
-    _onHorizontalScroll(event) {
-      if (this._hScrollRaf) return;
-      const root = event.target || event.currentTarget;
-      if (!root) return;
-
-      this._hScrollRaf = requestAnimationFrame(() => {
-        this._hScrollRaf = 0;
-        if (!this._isActive) return;
-
-        const cards = this.shadowRoot.querySelectorAll('.card');
-        if (cards.length < 2) return;
-
-        const vw = document.documentElement.clientWidth / 100;
-        const gap = Math.min(240, Math.max(140, 16 * vw)); 
-        
-        // Manual scrolling seamless jump logic
-        const jumpWidth = 20 * gap;
-        if (root.scrollLeft > jumpWidth * 1.8) {
-           const carousel = this.shadowRoot.querySelector('.carousel');
-           if (carousel) carousel.style.transition = 'none';
-           root.scrollLeft -= jumpWidth;
-           requestAnimationFrame(() => requestAnimationFrame(() => {
-             if (carousel) carousel.style.transition = '';
-           }));
-        } else if (root.scrollLeft < jumpWidth * 0.2 && this._hasAutoScrolled) {
-           const carousel = this.shadowRoot.querySelector('.carousel');
-           if (carousel) carousel.style.transition = 'none';
-           root.scrollLeft += jumpWidth;
-           requestAnimationFrame(() => requestAnimationFrame(() => {
-             if (carousel) carousel.style.transition = '';
-           }));
-        }
-
-        const scrollIndex = root.scrollLeft / gap;
-
-        cards.forEach((card, i) => {
-          const offset = i - scrollIndex;
-          const absOffset = Math.abs(offset);
-
-          card.style.setProperty('--scroll-offset', offset.toFixed(3));
-          card.style.setProperty('--scroll-abs-offset', absOffset.toFixed(3));
-        });
-        
-        // Pass the raw scroll value natively up so the camera layer can track correctly 
-        this.style.setProperty('--scroll-left', `${root.scrollLeft}px`);
-        this.style.setProperty('--scroll-index', scrollIndex.toFixed(4));
-      });
+    _onHorizontalScroll() {
+      // Scroll handling is now unified in the _updateLoop for better performance and synchronization
     }
 
-    _autoScrollLoop() {
-      if (!this._isActive || !this.hasAttribute('auto-scroll')) {
+    _updateLoop() {
+      if (!this._isActive) {
         this._autoScrollRaf = 0;
         return;
       }
 
       const root = this.shadowRoot.querySelector('.root');
-      if (root && !this._isUserInteracting) {
-        const speed = parseFloat(this.getAttribute('scroll-speed')) || 0.45;
-        root.scrollLeft += speed;
-        
-        // Seamless Looping logic:
-        // A full circle is 360 degrees. Each item is 18 degrees, so 20 items make a full circle.
-        // We want to jump by exactly a full circle to be completely seamless.
+      if (root) {
         const vw = document.documentElement.clientWidth / 100;
-        const gap = Math.min(240, Math.max(140, 16 * vw));
-        const jumpWidth = 20 * gap; // 360 degrees rotation jump
+        const gap = Math.min(400, Math.max(250, 25 * vw));
         
-        // If we've scrolled far enough to the right, jump back by one full circle
-        if (root.scrollLeft > jumpWidth * 1.8) {
-           const carousel = this.shadowRoot.querySelector('.carousel');
-           if (carousel) carousel.style.transition = 'none';
-           
-           root.scrollLeft -= jumpWidth;
-           
-           // Instantly update CSS variables so there's no visual stutter
-           const scrollIndex = root.scrollLeft / gap;
-           this.style.setProperty('--scroll-left', `${root.scrollLeft}px`);
-           this.style.setProperty('--scroll-index', scrollIndex.toFixed(4));
-           
-           // Restore transition after the DOM has updated
-           requestAnimationFrame(() => {
-             requestAnimationFrame(() => {
-               if (carousel) carousel.style.transition = '';
-             });
-           });
-        } else if (root.scrollLeft < jumpWidth * 0.2 && this._hasAutoScrolled) {
-           // Allow seamless scrolling backwards as well
-           // root.scrollLeft += jumpWidth; // This can cause issues with auto-scroll pushing right, so we'll just handle right-scrolling overflow.
+        if (!this._isUserInteracting && this.hasAttribute('auto-scroll')) {
+          const speed = parseFloat(this.getAttribute('scroll-speed')) || 0.45;
+          root.scrollLeft += speed;
         }
+        
+        this._targetScrollIndex = root.scrollLeft / gap;
+
+        // Seamless Looping logic (exactly 20 items for 360 deg)
+        const jumpItems = 20;
+        const jumpWidth = jumpItems * gap;
+        if (root.scrollLeft > jumpWidth * 1.8) {
+           root.scrollLeft -= jumpWidth;
+           this._targetScrollIndex -= jumpItems;
+           this._currentScrollIndex -= jumpItems;
+        }
+
+        // Smooth Lerping Logic
+        // 0.2 provides a good balance between "cinematic weight" and responsiveness
+        const lerpFactor = 0.2;
+        this._currentScrollIndex += (this._targetScrollIndex - this._currentScrollIndex) * lerpFactor;
+        
+        // Update global variables on the component host
+        // This allows CSS to handle the rest of the transformations natively
+        this.style.setProperty('--scroll-left', `${root.scrollLeft}px`);
+        this.style.setProperty('--scroll-index', this._currentScrollIndex.toFixed(4));
       }
 
-      this._autoScrollRaf = requestAnimationFrame(this._autoScrollLoop);
+      this._autoScrollRaf = requestAnimationFrame(this._updateLoop);
     }
 
     disconnectedCallback() {
@@ -233,8 +186,8 @@
           .root {
             position: relative;
             overflow: hidden;
-            min-height: clamp(400px, 60vw, 700px);
-            padding: clamp(10px, 2vw, 30px);
+            min-height: clamp(300px, 45vw, 550px);
+            padding: clamp(8px, 1.5vw, 15px);
             background: var(--media-collage-bg);
             isolation: isolate;
             scrollbar-width: none; /* Firefox */
@@ -265,8 +218,8 @@
           .stage {
             position: relative;
             z-index: 1;
-            height: min(74vh, 760px);
-            min-height: 520px;
+            height: min(60vh, 550px);
+            min-height: 400px;
             margin: 0 auto;
           }
 
@@ -295,7 +248,7 @@
             position: absolute;
             inset: 0;
             transform-style: preserve-3d;
-            transition: transform 900ms cubic-bezier(0.18, 0.95, 0.2, 1);
+            transition: none; /* Handled by JS lerp for maximum responsiveness */
             transform: 
               translateZ(calc(var(--radius, 1400px) * -1)) 
               rotateY(calc(var(--scroll-index, 0) * 18deg * -1));
@@ -311,7 +264,7 @@
             height: 100%;
             transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
             transform-style: preserve-3d;
-            transform: translateZ(0) rotateY(0deg);
+            transform: translateY(calc(var(--lift, 0px) * -1)) translateZ(0) rotateY(0deg);
             border-radius: clamp(24px, 3.5vw, 42px);
             will-change: transform;
           }
@@ -324,10 +277,9 @@
             border-radius: inherit;
             overflow: hidden;
             background: linear-gradient(135deg, #080808, #121212);
-            padding: 0.8rem;
+            padding: 0;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            flex-direction: row;
             border: 1px solid rgba(255, 255, 255, 0.15);
             box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
             transform: translateZ(0.01px);
@@ -340,14 +292,96 @@
             background: radial-gradient(circle at 0% 0%, var(--card-bg, #fff) 0%, transparent 70%);
             opacity: 0.15;
             pointer-events: none;
+            z-index: 1;
+          }
+
+          .card-part-left {
+            width: 35%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1.5rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 2;
+          }
+
+
+
+          .feedbacker-image {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(1) brightness(0.6);
+            transition: filter 0.6s ease, transform 0.6s ease;
+            z-index: 1;
+          }
+
+          .card:hover .feedbacker-image {
+            filter: grayscale(0) brightness(0.8);
+            transform: scale(1.05);
+          }
+
+          .stars-container {
+            position: absolute;
+            bottom: 1.2rem;
+            left: 1.2rem;
+            z-index: 20;
+            display: flex;
+            gap: 4px;
+          }
+
+          .star-box {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+          }
+
+          .star {
+            width: 10px;
+            height: 10px;
+            fill: currentColor;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+          }
+
+          .card-part-right {
+            width: 65%;
+            height: 100%;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            background: rgba(255, 255, 255, 0.01);
+            z-index: 2;
           }
 
           .feedback-text {
             color: #fff;
-            font: 400 1rem/1.5 ui-serif, Georgia, serif;
+            font: 400 0.95rem/1.6 ui-serif, Georgia, serif;
             font-style: italic;
             margin-bottom: 1rem;
-            opacity: 0.9;
+            opacity: 0.95;
+            position: relative;
+          }
+
+          .feedback-text::before {
+            content: '"';
+            position: absolute;
+            top: -1rem;
+            left: -1rem;
+            font-size: 3rem;
+            opacity: 0.2;
+            font-family: serif;
           }
 
           .key-points {
@@ -363,19 +397,21 @@
             font-size: 0.65rem;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            padding: 0.35rem 0.75rem;
-            border-radius: 100px;
+            letter-spacing: 0.1em;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
           }
 
           .author {
-            margin-top: 1.5rem;
-            align-self: flex-end;
-            color: rgba(255, 255, 255, 0.3);
-            font-size: 0.55rem;
+            position: absolute;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 20;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.6rem;
             text-transform: uppercase;
-            letter-spacing: 0.12em;
-            font-weight: 700;
+            letter-spacing: 0.2em;
+            font-weight: 800;
           }
 
           .card {
@@ -387,7 +423,12 @@
             left: 50%;
             top: 50%;
             width: min(var(--active-w), calc(100% - 24px));
-            aspect-ratio: 0.8;
+            aspect-ratio: 1.5;
+            
+            /* CSS-based scroll offset calculation for better performance */
+            --scroll-offset: calc(var(--index, 0) - var(--scroll-index, 0));
+            --scroll-abs-offset: max(var(--scroll-offset), calc(-1 * var(--scroll-offset)));
+            
             z-index: calc(100 - var(--scroll-abs-offset, 0));
             display: block;
             padding: 0;
@@ -398,15 +439,13 @@
             transform-origin: center;
             transform:
               translate3d(-50%, -50%, 0)
-              translateY(calc(var(--lift) * -1))
               rotateY(var(--fixed-rotate-y))
               translateZ(var(--radius))
               rotateX(var(--tilt-x, 0deg))
               rotateY(var(--tilt-y, 0deg))
-              scale(calc(1.4 - clamp(0, var(--scroll-abs-offset, 10), 1) * 0.4));
-            transition:
-              transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
-              opacity 0.4s ease;
+              scale(calc(1.1 - clamp(0, var(--scroll-abs-offset, 10), 1) * 0.1));
+            
+            /* Removed transitions here as they conflict with JS-driven frame updates */
             will-change: transform, opacity;
           }
 
@@ -553,7 +592,7 @@
         </style>
 
         <section class="root" part="root" aria-label="${escapeAttr(label)}">
-          <div class="stage" part="stage" style="--total: ${items.length}; --gap: clamp(140px, 14vw, 220px);">
+          <div class="stage" part="stage" style="--total: ${items.length}; --gap: clamp(250px, 25vw, 400px);">
             <div class="camera">
               <div class="carousel">
                 ${items.map((item, index) => this._cardTemplate(item, index)).join("")}
@@ -575,30 +614,49 @@
       const color = item.color || DEFAULT_ITEMS[index % DEFAULT_ITEMS.length].color;
 
       // Active state layout - Rigid 3D wheel physics
-      const activeW = "clamp(140px, 16vw, 280px)";
+      const activeW = "clamp(280px, 30vw, 420px)";
       const theta = 18; // degrees
-      const radius = 1400; // cylinder push
+      const radius = 1800; // cylinder push
       const fixedRotateY = `${index * theta}deg`;
+
+      const stars = parseInt(item.stars || "5");
+      const starsHtml = Array(5).fill(0).map((_, i) => {
+        const isFilled = i < stars;
+        return `
+          <div class="star-box" style="opacity: 1">
+            <svg class="star" style="color: ${isFilled ? '#FFD700' : '#ff3b3b'}" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+            </svg>
+          </div>
+        `;
+      }).join('');
 
       return `
         <article
           class="card"
           part="card"
           style="
+            --index: ${index};
             --active-w: ${activeW};
             --fixed-rotate-y: ${fixedRotateY};
             --radius: ${radius}px;
-            --scroll-abs-offset: 100; /* Initial high value to ensure Z-index works before scroll */
             --card-bg: ${escapeAttr(color)};
           "
         >
           <div class="card-inner">
             <div class="card-content">
-              <div class="feedback-text">${escapeAttr(item.feedback || "Exceptional performance and cinematic vision. The Viral Duo transformed our digital presence.")}</div>
-              <div class="key-points">
-                ${(item.points || "Growth, Viral, Strategy").split(',').map(p => `<span class="point">${escapeAttr(p.trim())}</span>`).join('')}
+              <div class="card-part-left">
+                <img src="${escapeAttr(item.image || item.src)}" class="feedbacker-image" alt="${escapeAttr(title)}" />
+                <div class="stars-container">${starsHtml}</div>
+
               </div>
-              <div class="author" part="author">Review by ${escapeAttr(title)}</div>
+              <div class="card-part-right">
+                <div class="feedback-text">${escapeAttr(item.feedback || "Exceptional performance and cinematic vision. The Viral Duo transformed our digital presence.")}</div>
+                <div class="key-points">
+                  ${(item.points || "Growth, Viral, Strategy").split(',').map(p => `<span class="point">${escapeAttr(p.trim())}</span>`).join('')}
+                </div>
+              </div>
+              <div class="author" part="author">FEEDBACK BY ${escapeAttr(title)}</div>
             </div>
           </div>
         </article>
@@ -673,6 +731,8 @@
             "",
           sources: nestedSources,
           poster: element.dataset.poster || element.getAttribute("poster") || "",
+          image: element.dataset.image || element.getAttribute("src") || "",
+          stars: element.dataset.stars || "5",
           title:
             element.dataset.title ||
             element.getAttribute("title") ||
@@ -827,14 +887,14 @@
           const root = this.shadowRoot.querySelector('.root');
           if (root) {
             const vw = document.documentElement.clientWidth / 100;
-            const gap = Math.min(240, Math.max(140, 16 * vw));
+            const gap = Math.min(400, Math.max(250, 25 * vw));
             const targetIndex = Math.floor(this._readItems().length / 2);
             root.scrollLeft = targetIndex * gap;
           }
         }
         
-        if (this.hasAttribute('auto-scroll') && !this._autoScrollRaf) {
-          this._autoScrollRaf = requestAnimationFrame(this._autoScrollLoop);
+        if (!this._autoScrollRaf) {
+          this._autoScrollRaf = requestAnimationFrame(this._updateLoop);
         }
       } else {
         if (this._autoScrollRaf) {

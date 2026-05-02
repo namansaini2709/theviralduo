@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { DM_Sans, Caveat, Outfit, Fraunces } from "next/font/google";
 import "./globals.css";
+import { DynamicDataProvider } from "@/lib/DynamicDataContext";
+import CustomCursor from "@/components/global/CustomCursor";
+import { Suspense } from "react";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
   variable: "--font-fraunces",
   weight: ["400", "500", "600", "700", "800", "900"],
 });
-
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -51,7 +53,12 @@ export default function RootLayout({
       <body
         className={`${dmSans.variable} ${caveat.variable} ${outfit.variable} ${fraunces.variable} antialiased film-grain`}
       >
-        {children}
+        <DynamicDataProvider>
+          <Suspense fallback={null}>
+            <CustomCursor />
+          </Suspense>
+          {children}
+        </DynamicDataProvider>
       </body>
     </html>
   );
