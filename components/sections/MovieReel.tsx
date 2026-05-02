@@ -45,7 +45,11 @@ const projects = [
     views: "2.1M",
     color: "#F4511E",
     gradient: "from-orange-900/50 to-black",
-    thumbnail: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=800&auto=format&fit=crop",
+    thumbnail: "/assets/projects/make-your-trip-possible.jpg",
+    video: "/assets/projects/make-your-trips-possible.mp4",
+    logo: "/assets/projects/make-your-trip-possible-logo.jpg",
+    link: "https://www.instagram.com/makeyourtrippossible?igsh=b2lxeTdobDhwZHht",
+    logoLink: "https://www.instagram.com/makeyourtrippossible?igsh=b2lxeTdobDhwZHht",
   },
   {
     id: 4,
@@ -68,7 +72,11 @@ const projects = [
     views: "3.4M",
     color: "#FB8C00",
     gradient: "from-amber-900/50 to-black",
-    thumbnail: "https://images.unsplash.com/photo-1589187151032-573a91317445?q=80&w=800&auto=format&fit=crop",
+    thumbnail: "/assets/projects/skb-thumb.jpg",
+    video: "/assets/projects/skb-video.mp4",
+    logo: "/assets/projects/sharma-ke-bhature-logo.jpg",
+    link: "https://www.instagram.com/reel/DXVwQYHEmqw/?utm_source=ig_web_copy_link&igsh=NTc4MTIwNjQ2YQ==",
+    logoLink: "https://www.instagram.com/reel/DXVwQYHEmqw/?utm_source=ig_web_copy_link&igsh=NTc4MTIwNjQ2YQ==",
   },
   {
     id: 6,
@@ -77,7 +85,11 @@ const projects = [
     views: "4.2M",
     color: "#D81B60",
     gradient: "from-pink-900/50 to-black",
-    thumbnail: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=800&auto=format&fit=crop",
+    thumbnail: "/assets/projects/radhe-krishna-thumb.jpg",
+    video: "/assets/projects/radhe-krishna-video.mp4",
+    logo: "/assets/projects/radhe-krishna-logo.jpg",
+    link: "https://www.instagram.com/reel/DXBnqYQkiwW/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+    logoLink: "https://www.instagram.com/shri_radheykrishnajewellers?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
   },
   {
     id: 7,
@@ -86,7 +98,11 @@ const projects = [
     views: "920K",
     color: "#00ACC1",
     gradient: "from-cyan-900/50 to-black",
-    thumbnail: "https://images.unsplash.com/photo-1436491865332-7a61a109c0f3?q=80&w=800&auto=format&fit=crop",
+    thumbnail: "/assets/projects/global-holidays-thumb.jpg",
+    logo: "/assets/projects/global-holidays-logo.png",
+    video: "/assets/projects/global-holidays-video.mp4",
+    link: "https://www.instagram.com/reel/DXtZpZDTCrB/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+    logoLink: "https://www.instagram.com/reel/DXtZpZDTCrB/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
   },
   {
     id: 8,
@@ -95,7 +111,11 @@ const projects = [
     views: "1.1M",
     color: "#546E7A",
     gradient: "from-slate-900/50 to-black",
-    thumbnail: "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=800&auto=format&fit=crop",
+    thumbnail: "/assets/projects/city-gym-thumb.jpg",
+    video: "/assets/projects/city-gym-video.mp4",
+    logo: "/assets/projects/city-gym-logo.jpg",
+    link: "https://www.instagram.com/reel/DXOoUHJkfHy/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+    logoLink: "https://www.instagram.com/citygym.16?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
   },
   {
     id: 9,
@@ -118,7 +138,11 @@ const projects = [
     views: "1.8M",
     color: "#3949AB",
     gradient: "from-indigo-900/50 to-black",
-    thumbnail: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop",
+    thumbnail: "/assets/projects/career-launcher-thumb.jpg",
+    video: "/assets/projects/career-launcher-video.mp4",
+    logo: "/assets/projects/career-launcher-logo.jpg",
+    link: "https://www.instagram.com/cl_ashokvihar?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+    logoLink: "https://www.instagram.com/cl_ashokvihar?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
   },
 ];
 
@@ -414,7 +438,7 @@ function FilmFrame({ project, index, isActive }: { project: Project, index: numb
                   <img 
                     src={project.logo} 
                     alt={project.client} 
-                    className="w-full h-full object-cover scale-125 mix-blend-screen opacity-60"
+                    className="w-full h-full object-contain bg-white"
                   />
                 ) : (
                   <span className="text-2xl text-white">→</span>
@@ -426,7 +450,7 @@ function FilmFrame({ project, index, isActive }: { project: Project, index: numb
                   <img 
                     src={project.logo} 
                     alt={project.client} 
-                    className="w-full h-full object-cover scale-125 mix-blend-screen opacity-60"
+                    className="w-full h-full object-contain bg-white"
                   />
                 ) : (
                   <span className="text-2xl text-white">→</span>
