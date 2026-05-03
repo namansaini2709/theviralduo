@@ -69,7 +69,7 @@ export default function Home() {
       <Navigation />
       <Loader />
 
-      <main className="relative z-10 flex flex-col">
+      <main className="relative z-10 flex w-full flex-col overflow-x-hidden">
         {/* 1. Hero Section */}
         <Hero />
         

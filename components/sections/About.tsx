@@ -140,6 +140,7 @@ export default function About() {
               pinSpacing: true,
               anticipatePin: 1,
               refreshPriority: 9,
+              invalidateOnRefresh: true,
             },
 
           });
@@ -187,7 +188,8 @@ export default function About() {
                 ease: "power2.in",
               },
               2.72
-            );
+            )
+            .to(sectionRef.current, { autoAlpha: 0, duration: 0.1 }, "+=0");
         }
       );
 
@@ -201,12 +203,12 @@ export default function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="relative min-h-screen overflow-hidden px-5 py-16 text-black bg-transparent"
+      className="relative min-h-screen w-full overflow-hidden px-5 py-16 text-black bg-transparent"
     >
       <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-background to-transparent" />
       <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background to-transparent" />
 
-      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-8rem)] w-full max-w-6xl flex-col items-center justify-center">
+      <div className="relative z-10 mx-auto flex min-h-fit md:min-h-[calc(100vh-8rem)] w-full max-w-6xl flex-col items-center justify-center py-10 md:py-0">
         <motion.div 
           initial="hidden"
           whileInView="visible"
@@ -243,10 +245,10 @@ export default function About() {
           </div>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 0.62, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="mx-auto mt-4 max-w-2xl font-body text-sm leading-7 text-black/80 md:text-base font-medium"
+            className="mx-auto mt-4 max-w-2xl font-body text-sm leading-7 text-black md:text-base font-bold"
           >
             We don&apos;t post content. We engineer virality through strategy,
             production, and relentless creative iteration.

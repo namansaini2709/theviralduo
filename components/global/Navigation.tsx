@@ -156,7 +156,7 @@ export default function Navigation() {
           backgroundColor: isScrolled ? "rgba(255, 255, 255, 0.85)" : "rgba(255, 255, 255, 0.3)",
           backdropFilter: "blur(20px)",
         }}
-        className={`fixed top-0 left-1/2 z-[100] flex items-center justify-between pl-4 pr-6 md:pl-6 md:pr-10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        className={`fixed top-0 left-1/2 -translate-x-1/2 z-[100] flex items-center justify-between pl-4 pr-6 md:pl-6 md:pr-10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
           isScrolled && !isMobile ? "top-4 rounded-full border border-black/10 shadow-[0_8px_32px_rgba(0,0,0,0.05)]" : "border-b border-black/10"
         }`}
       >
@@ -201,7 +201,7 @@ export default function Navigation() {
               alt="The Viral Duo" 
               fill 
               sizes="36px"
-              className="object-cover group-hover:scale-110 transition-transform duration-500 invert"
+              className="object-cover group-hover:scale-110 transition-transform duration-500"
             />
           </div>
           <span className="hidden md:block font-display font-bold text-base tracking-tight text-black group-hover:text-accent transition-colors duration-300">

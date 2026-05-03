@@ -11,8 +11,8 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-transparent text-black overflow-hidden border-t border-black/5 pt-24 pb-12 z-20">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(230,57,70,0.05)_0%,transparent_70%)] pointer-events-none" />
+    <footer className="relative bg-[#0a0a0a] text-white overflow-hidden border-t border-white/5 pt-24 pb-12 z-20">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(230,57,70,0.1)_0%,transparent_70%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-24 gap-12">
@@ -33,7 +33,7 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="font-body text-black/60 font-medium text-lg md:text-xl max-w-md"
+              className="font-body text-white/60 font-medium text-lg md:text-xl max-w-md"
             >
               Stop posting content. Start engineering attention. Drop us a line and let&apos;s build something massive.
             </motion.p>
@@ -53,45 +53,45 @@ export default function Footer() {
               <img 
                 src="https://cdn-icons-gif.flaticon.com/8717/8717939.gif" 
                 alt="Email Icon" 
-                className="w-20 h-20 md:w-28 md:h-28 transition-all duration-300 mix-blend-multiply invert"
+                className="w-20 h-20 md:w-28 md:h-28 transition-all duration-300"
               />
-              <span className="font-display font-bold text-xs tracking-[0.4em] text-black/40 group-hover:text-black transition-colors duration-300">EMAIL US</span>
+              <span className="font-display font-bold text-xs tracking-[0.4em] text-white/40 group-hover:text-white transition-colors duration-300">EMAIL US</span>
             </a>
           </motion.div>
 
         </div>
 
         {/* Links Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-24 border-t border-black/10 pt-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-24 border-t border-white/10 pt-12">
           <div className="flex flex-col gap-4">
-            <h4 className="font-mono text-[10px] uppercase tracking-[0.2em] text-black/40 mb-2">Navigation</h4>
-            <button onClick={scrollToTop} className="text-left text-black/70 hover:text-black font-body text-sm transition-colors font-medium">Home</button>
-            <a href="#about" className="text-black/70 hover:text-black font-body text-sm transition-colors font-medium">About Us</a>
-            <a href="#services" className="text-black/70 hover:text-black font-body text-sm transition-colors font-medium">Services</a>
-            <a href="#movie-reel" className="text-black/70 hover:text-black font-body text-sm transition-colors font-medium">Work</a>
+            <h4 className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 mb-2">Navigation</h4>
+            <button onClick={scrollToTop} className="text-left text-white/70 hover:text-white font-body text-sm transition-colors font-medium">Home</button>
+            <a href="#about" className="text-white/70 hover:text-white font-body text-sm transition-colors font-medium">About Us</a>
+            <a href="#services" className="text-white/70 hover:text-white font-body text-sm transition-colors font-medium">Services</a>
+            <a href="#movie-reel" className="text-white/70 hover:text-white font-body text-sm transition-colors font-medium">Work</a>
           </div>
           
           <div className="flex flex-col gap-4">
-            <h4 className="font-mono text-[10px] uppercase tracking-[0.2em] text-black/40 mb-2">Socials</h4>
+            <h4 className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 mb-2">Socials</h4>
             <a 
               href="https://www.instagram.com/theviralduo" 
               target="_blank"
               rel="noopener noreferrer"
-              className="text-black/70 hover:text-black font-body text-sm transition-colors flex items-center gap-2 group font-medium"
+              className="text-white/70 hover:text-white font-body text-sm transition-colors flex items-center gap-2 group font-medium"
             >
               Instagram <ArrowUpRight size={14} className="opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
             </a>
-            <a href="#" className="text-black/70 hover:text-black font-body text-sm transition-colors flex items-center gap-2 group font-medium">
+            <a href="#" className="text-white/70 hover:text-white font-body text-sm transition-colors flex items-center gap-2 group font-medium">
               Twitter <ArrowUpRight size={14} className="opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
             </a>
-            <a href="#" className="text-black/70 hover:text-black font-body text-sm transition-colors flex items-center gap-2 group font-medium">
+            <a href="#" className="text-white/70 hover:text-white font-body text-sm transition-colors flex items-center gap-2 group font-medium">
               LinkedIn <ArrowUpRight size={14} className="opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all" />
             </a>
           </div>
 
           <div className="flex flex-col gap-4 md:col-span-2">
-            <h4 className="font-mono text-[10px] uppercase tracking-[0.2em] text-black/40 mb-2">Location</h4>
-            <p className="text-black/70 font-body text-sm font-medium">
+            <h4 className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 mb-2">Location</h4>
+            <p className="text-white/70 font-body text-sm font-medium">
               New Delhi, India<br />
               Operating in Delhi
             </p>
@@ -99,18 +99,18 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-black/5">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-white/5">
           <p className="font-display font-black text-2xl tracking-tighter">
             VIRAL<span className="text-accent">DUO</span>
           </p>
           <div className="flex flex-col md:flex-row items-center gap-2 md:gap-6">
-            <p className="font-mono text-[10px] text-black/40 uppercase tracking-widest text-center font-bold">
+            <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest text-center font-bold">
               © {currentYear} All Rights Reserved
             </p>
-            <p className="font-mono text-[10px] text-black/40 uppercase tracking-widest hidden md:block">
+            <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest hidden md:block">
               |
             </p>
-            <p className="font-mono text-[10px] text-black/40 uppercase tracking-widest text-center font-bold">
+            <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest text-center font-bold">
               Design by Viral Duo
             </p>
           </div>

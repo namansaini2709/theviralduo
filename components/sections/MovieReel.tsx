@@ -200,6 +200,15 @@ export default function MovieReel() {
         ease: "power2.inOut"
       });
 
+      // Staggered color reveal for logos
+      tl.to(".reel-thumb", {
+        filter: "grayscale(0%)",
+        opacity: 1,
+        duration: 0.4,
+        stagger: 0.15,
+        ease: "power2.out"
+      }, 0);
+
       // 2. Horizontal Scroll (Main)
       tl.fromTo(horizontalReel, 
         { opacity: 0, x: "100%" },
@@ -350,7 +359,7 @@ function FilmFrame({ project, index, isActive }: { project: Project, index: numb
 
   return (
     <motion.div 
-      className={`flex-shrink-0 relative w-[85vw] md:w-[450px] h-[480px] md:h-[520px] ${showVideo && project.link ? "cursor-pointer" : ""}`}
+      className={`flex-shrink-0 relative w-[85vw] md:w-[450px] h-[65vh] md:h-[520px] min-h-[400px] ${showVideo && project.link ? "cursor-pointer" : ""}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}

@@ -52,6 +52,7 @@ export default function ServicesIntro() {
           scrub: 1.8,
           anticipatePin: 1,
           refreshPriority: 8,
+          invalidateOnRefresh: true,
         },
 
       });
@@ -92,6 +93,8 @@ export default function ServicesIntro() {
         duration: 0.4,
       }, 1.5);
 
+      scrollTl.to(sectionRef.current, { autoAlpha: 0, duration: 0.1 }, 1.9);
+
 
 
     }, sectionRef);
@@ -104,7 +107,7 @@ export default function ServicesIntro() {
   return (
     <section 
       ref={sectionRef}
-      className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-transparent z-30"
+      className="relative min-h-screen w-full flex items-center justify-center overflow-x-hidden bg-transparent z-30"
     >
       {/* Background Cinematic Glow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
