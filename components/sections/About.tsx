@@ -134,62 +134,61 @@ export default function About() {
             scrollTrigger: {
               trigger: sectionRef.current,
               start: "top top",
-              end: "+=240%",
-              scrub: 1.15,
+              end: isDesktop ? "+=240%" : "+=160%",
+              scrub: isDesktop ? 1.15 : 1,
               pin: true,
               pinSpacing: true,
               anticipatePin: 1,
               refreshPriority: 9,
               invalidateOnRefresh: true,
             },
-
           });
 
           tl.fromTo(
             cards,
-              {
-                autoAlpha: 0,
-                y: isDesktop ? 260 : 180,
-                scale: 0.82,
-                rotateX: 22,
-                rotateZ: (index) => (isDesktop ? desktopRotations[index] * 1.8 : mobileRotations[index]),
-              },
-              {
-                autoAlpha: 1,
-                y: 0,
-                scale: 1,
-                rotateX: 0,
-                rotateZ: (index) => (isDesktop ? desktopRotations[index] : mobileRotations[index]),
-                duration: 1,
-                stagger: 0.12,
-              },
-              0.42
-            )
-            .to(
-              cards,
-              {
-                y: (index) => (isDesktop ? [18, -34, 18][index] : [0, -14, 0][index]),
-                rotateY: (index) => (isDesktop ? [-8, 0, 8][index] : 0),
-                rotateZ: (index) => (isDesktop ? [-1.25, 1.5, 1.25][index] : mobileRotations[index]),
-                scale: (index) => (index === 1 ? 1.035 : 0.96),
-                duration: 1.25,
-                ease: "none",
-              },
-              1.25
-            )
-            .to(
-              cards,
-              {
-                y: isDesktop ? -150 : -90,
-                autoAlpha: 0,
-                scale: 0.92,
-                duration: 0.7,
-                stagger: 0.06,
-                ease: "power2.in",
-              },
-              2.72
-            )
-            .to(sectionRef.current, { autoAlpha: 0, duration: 0.1 }, "+=0");
+            {
+              autoAlpha: 0,
+              y: isDesktop ? 260 : 120,
+              scale: 0.82,
+              rotateX: 22,
+              rotateZ: (index) => (isDesktop ? desktopRotations[index] * 1.8 : mobileRotations[index]),
+            },
+            {
+              autoAlpha: 1,
+              y: 0,
+              scale: 1,
+              rotateX: 0,
+              rotateZ: (index) => (isDesktop ? desktopRotations[index] : mobileRotations[index]),
+              duration: 1,
+              stagger: isDesktop ? 0.12 : 0.08,
+            },
+            0.42
+          )
+          .to(
+            cards,
+            {
+              y: (index) => (isDesktop ? [18, -34, 18][index] : [0, -10, 0][index]),
+              rotateY: (index) => (isDesktop ? [-8, 0, 8][index] : 0),
+              rotateZ: (index) => (isDesktop ? [-1.25, 1.5, 1.25][index] : mobileRotations[index]),
+              scale: (index) => (index === 1 ? 1.035 : 0.96),
+              duration: 1.25,
+              ease: "none",
+            },
+            1.25
+          )
+          .to(
+            cards,
+            {
+              y: isDesktop ? -150 : -60,
+              autoAlpha: 0,
+              scale: 0.92,
+              duration: isDesktop ? 0.7 : 0.4,
+              stagger: isDesktop ? 0.06 : 0.04,
+              ease: "power2.in",
+            },
+            isDesktop ? 2.72 : 2.2
+          )
+          .to(sectionRef.current, { autoAlpha: 0, duration: 0.1 }, "+=0");
         }
       );
 
@@ -255,7 +254,7 @@ export default function About() {
           </motion.p>
         </motion.div>
 
-        <div className="grid w-full max-w-5xl grid-cols-1 gap-8 [perspective:1200px] md:grid-cols-3 md:gap-10">
+        <div className="grid w-full max-w-5xl grid-cols-1 gap-10 px-5 [perspective:1200px] md:grid-cols-3 md:gap-10 md:px-0">
           {pillars.map((pillar, index) => (
             <div
               key={pillar.title}
@@ -264,7 +263,7 @@ export default function About() {
               }}
               onMouseMove={(e) => handleMouseMove(e, index)}
               onMouseLeave={() => handleMouseLeave(index)}
-              className={`group relative min-h-[280px] overflow-hidden rounded-2xl border bg-gradient-to-br ${pillar.accent} ${pillar.border} shadow-[0_30px_90px_rgba(0,0,0,0.38)] ${pillar.shadow} backdrop-blur-[7px] transition-[border-color,box-shadow,background-color] duration-500 md:min-h-[340px] [transform-style:preserve-3d]`}
+              className={`group relative min-h-[300px] overflow-hidden rounded-[2.5rem] border bg-gradient-to-br ${pillar.accent} ${pillar.border} shadow-[0_15px_45px_rgba(0,0,0,0.15)] md:shadow-[0_30px_90px_rgba(0,0,0,0.38)] ${pillar.shadow} backdrop-blur-[7px] transition-[border-color,box-shadow,background-color] duration-500 md:min-h-[340px] [transform-style:preserve-3d]`}
             >
               <div className="card-glare pointer-events-none absolute inset-0 z-50 opacity-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.05)_0%,transparent_80%)] blur-2xl" />
               <div className={`absolute inset-0 ${pillar.tint} opacity-40 mix-blend-multiply transition-colors duration-500`} />
@@ -272,7 +271,7 @@ export default function About() {
               <div className="absolute inset-0 opacity-35 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_50%_0%,rgba(0,0,0,0.05),transparent_52%)]" />
 
               <div className="relative z-10 flex h-full flex-col">
-                <div className="relative flex aspect-[1.6] items-center justify-center overflow-hidden bg-white/50 transition-colors duration-500 group-hover:bg-white/80 border-b border-black/5">
+                <div className="relative flex aspect-video md:aspect-[1.6] items-center justify-center overflow-hidden bg-white/50 transition-colors duration-500 group-hover:bg-white/80 border-b border-black/5">
                   {pillar.video ? (
                     pillar.video.match(/\.(mp4|webm|ogg|mov)$/) ? (
                       <video

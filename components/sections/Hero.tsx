@@ -36,10 +36,20 @@ const CARDS = [
   { id: 24, content: "Trend Setter", color: "bg-accent", textColor: "text-white" },
   { id: 25, content: "Impact", color: "bg-accent", textColor: "text-white" },
   { id: 26, content: "Storytelling", color: "bg-black", textColor: "text-white" },
-  { id: 27, content: "Direct Response", color: "bg-white", textColor: "text-black" },
-  { id: 28, content: "High End", color: "bg-accent", textColor: "text-white" },
-  { id: 29, content: "Results", color: "bg-black", textColor: "text-white" },
-  { id: 30, content: "Peak Performance", color: "bg-accent", textColor: "text-white" },
+  { id: 37, content: "Direct Response", color: "bg-white", textColor: "text-black" },
+  { id: 38, content: "High End", color: "bg-accent", textColor: "text-white" },
+  { id: 39, content: "Results", color: "bg-black", textColor: "text-white" },
+  { id: 40, content: "Peak Performance", color: "bg-accent", textColor: "text-white" },
+  { id: 41, content: "Storytelling", color: "bg-accent", textColor: "text-white" },
+  { id: 42, content: "Top 1%", color: "bg-black", textColor: "text-white" },
+  { id: 43, content: "Viral Loops", color: "bg-white", textColor: "text-black" },
+  { id: 44, content: "High Impact", color: "bg-accent", textColor: "text-white" },
+  { id: 45, content: "Growth Hacks", color: "bg-accent", textColor: "text-white" },
+  { id: 46, content: "Brand DNA", color: "bg-black", textColor: "text-white" },
+  { id: 47, content: "Conversion", color: "bg-white", textColor: "text-black" },
+  { id: 48, content: "Masterpiece", color: "bg-accent", textColor: "text-white" },
+  { id: 49, content: "Engagement+", color: "bg-black", textColor: "text-white" },
+  { id: 50, content: "The Viral Duo", color: "bg-accent", textColor: "text-white" },
 ];
 
 export default function Hero() {
@@ -85,12 +95,12 @@ export default function Hero() {
       }, 0);
 
       // Phase 2: Card Reveal (20% - 70%)
-      const columns = isMobile ? 2 : 5;
-      const rows = isMobile ? 8 : 6;
+      const columns = isMobile ? 5 : 10;
+      const rows = isMobile ? 10 : 5;
       const visibleCards = bgCardsRef.current.slice(0, columns * rows);
       const totalCards = visibleCards.length;
       
-      // Hide cards that don't fit the mobile grid
+      // Hide cards that don't fit the grid
       bgCardsRef.current.forEach((card, i) => {
         if (i >= totalCards) {
           gsap.set(card, { display: "none" });
@@ -101,18 +111,19 @@ export default function Hero() {
         const col = i % columns;
         const row = Math.floor(i / columns);
         
-        const baseX = (col / (columns - 1)) * (isMobile ? 70 : 96) - (isMobile ? 35 : 48);
-        const baseY = (row / (rows - 1)) * (isMobile ? 85 : 95) - (isMobile ? 42 : 45);
+        const baseX = (col / (columns - 1)) * (isMobile ? 70 : 90) - (isMobile ? 35 : 45);
+        const baseY = (row / (rows - 1)) * (isMobile ? 110 : 130) - (isMobile ? 55 : 65);
         
-        const jitterX = (Math.random() - 0.5) * 1;
-        const jitterY = (Math.random() - 0.5) * 1;
-        const rotate = (Math.random() - 0.5) * 10;
+        const jitterX = (Math.random() - 0.5) * 12;
+        const jitterY = (Math.random() - 0.5) * 22;
+        const rotate = (Math.random() - 0.5) * 45;
+        const scaleVariation = 0.95 + Math.random() * 0.25;
 
         tl.to(card, {
           x: `${baseX + jitterX}vw`,
           y: `${baseY + jitterY}vh`,
           rotate: rotate,
-          scale: isMobile ? 0.8 : 1,
+          scale: isMobile ? 1.2 * scaleVariation : 1.4 * scaleVariation,
           duration: 0.3,
           ease: "power2.out",
         }, 0.2 + (i / totalCards) * 0.2);
@@ -144,8 +155,60 @@ export default function Hero() {
 
     }, containerRef);
 
+    // Ambient floating animation
+    bgCardsRef.current.forEach((card, i) => {
+      if (!card) return;
+      gsap.to(card.children[0], {
+        y: "random(-10, 10)",
+        x: "random(-5, 5)",
+        rotate: "random(-2, 2)",
+        duration: "random(2, 4)",
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        delay: Math.random() * 2,
+      });
+    });
+
     return () => ctx.revert();
   }, []);
+
+  const handleCardHover = (e: React.MouseEvent, index: number) => {
+    const card = bgCardsRef.current[index]?.children[0];
+    if (!card || (card as any).isFlying) return;
+
+    (card as any).isFlying = true;
+    // Random direction
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 1500;
+    const destX = Math.cos(angle) * distance;
+    const destY = Math.sin(angle) * distance;
+
+    gsap.to(card, {
+      x: destX,
+      y: destY,
+      rotate: Math.random() * 720 - 360,
+      scale: 0.5,
+      opacity: 0,
+      duration: 0.8,
+      ease: "power2.inOut",
+      onComplete: () => {
+        gsap.to(card, {
+          x: 0,
+          y: 0,
+          rotate: 0,
+          scale: 1,
+          opacity: 1,
+          duration: 1.2,
+          delay: 0.7, 
+          ease: "elastic.out(1, 0.5)",
+          onComplete: () => {
+            (card as any).isFlying = false;
+          }
+        });
+      },
+    });
+  };
 
   return (
     <section 
@@ -160,20 +223,25 @@ export default function Hero() {
           <div
             key={card.id}
             ref={(el) => { if (el) bgCardsRef.current[i] = el; }}
-            className={`absolute w-fit h-fit min-w-[100px] md:min-w-[140px] px-4 md:px-8 py-3 md:py-6 ${card.color} border-2 md:border-4 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_rgba(0,0,0,1)] rounded-xl md:rounded-2xl flex items-center justify-center select-none pointer-events-none group`}
+            className="absolute w-fit h-fit select-none z-10"
           >
-            <motion.div
-              className="w-full h-full flex items-center justify-center pointer-events-auto"
-              whileHover={{ 
-                rotate: i % 2 === 0 ? 2 : -2,
-                y: -5,
-                transition: { duration: 0.2 }
-              }}
+            <div 
+              className={`w-fit h-fit min-w-[120px] md:min-w-[180px] px-6 md:px-12 py-3 md:py-6 ${card.color} border-2 md:border-4 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_rgba(0,0,0,1)] rounded-xl md:rounded-2xl flex items-center justify-center cursor-pointer transition-shadow duration-300 hover:shadow-[12px_12px_0px_rgba(0,0,0,1)]`}
+              onMouseEnter={(e) => handleCardHover(e, i)}
             >
-              <span className={`font-display font-black text-center uppercase tracking-tight ${card.textColor} text-sm md:text-2xl whitespace-nowrap leading-none`}>
-                {card.content}
-              </span>
-            </motion.div>
+              <motion.div
+                className="w-full h-full flex items-center justify-center pointer-events-none"
+                whileHover={{ 
+                  rotate: i % 2 === 0 ? 2 : -2,
+                  y: -5,
+                  transition: { duration: 0.2 }
+                }}
+              >
+                <span className={`font-display font-black text-center uppercase tracking-tight ${card.textColor} text-sm md:text-2xl whitespace-nowrap leading-none`}>
+                  {card.content}
+                </span>
+              </motion.div>
+            </div>
           </div>
         ))}
 

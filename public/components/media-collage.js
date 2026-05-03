@@ -562,31 +562,92 @@
           }
 
           @media (max-width: 760px) {
+            :host {
+              --media-collage-radius: 20px;
+            }
+            
             .root {
               min-height: auto;
-              padding: 18px;
+              padding: 0;
+              overflow: visible !important;
+              height: auto !important;
             }
 
             .stage {
-              height: auto;
+              height: auto !important;
               min-height: 0;
-              display: grid;
-              gap: 16px;
+              display: block !important;
+              padding: 0 16px 40px 16px;
               perspective: none;
+              width: 100% !important;
+              transform: none !important;
+            }
+
+            .camera, .carousel {
+              position: relative !important;
+              width: 100% !important;
+              height: auto !important;
+              transform: none !important;
+              perspective: none;
+              display: flex !important;
+              flex-direction: column !important;
+              gap: 32px;
+              left: 0 !important;
+              top: 0 !important;
+              inset: auto !important;
             }
 
             .card {
-              position: relative;
-              left: auto;
-              top: auto;
-              width: 100%;
-              min-width: 0;
-              aspect-ratio: 0.84;
-              transform: rotate(var(--rotate));
+              position: relative !important;
+              left: 0 !important;
+              top: 0 !important;
+              transform: none !important;
+              width: 100% !important;
+              aspect-ratio: auto !important;
+              opacity: 1 !important;
+              margin: 0 !important;
+              z-index: 1 !important;
             }
 
-            :host([active]) .card {
-              transform: rotate(var(--active-rotate));
+            .card-inner {
+              transform: none !important;
+            }
+
+            .card-content {
+              flex-direction: column !important;
+              height: auto !important;
+              min-height: 400px;
+              position: relative !important;
+              box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+              background: #fff !important;
+            }
+
+            .card-part-left {
+              width: 100% !important;
+              height: 220px !important;
+              border-right: none !important;
+              border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            }
+
+            .card-part-right {
+              width: 100% !important;
+              height: auto !important;
+              padding: 2rem 1.5rem 3rem 1.5rem !important;
+              display: block !important;
+            }
+
+            .feedback-text {
+              font-size: 1rem !important;
+              line-height: 1.6 !important;
+              margin-bottom: 2rem !important;
+              opacity: 1 !important;
+            }
+
+            .author {
+              position: absolute !important;
+              bottom: 1.5rem !important;
+              right: 1.5rem !important;
+              margin-top: 0 !important;
             }
           }
         </style>
