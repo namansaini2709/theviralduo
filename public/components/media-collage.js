@@ -276,12 +276,12 @@
             height: 100%;
             border-radius: inherit;
             overflow: hidden;
-            background: linear-gradient(135deg, #080808, #121212);
+            background: linear-gradient(135deg, #FFFFFF, #F9F9F9);
             padding: 0;
             display: flex;
             flex-direction: row;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.15);
             transform: translateZ(0.01px);
           }
 
@@ -289,8 +289,8 @@
             content: "";
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at 0% 0%, var(--card-bg, #fff) 0%, transparent 70%);
-            opacity: 0.15;
+            background: radial-gradient(circle at 0% 0%, var(--card-bg, #000) 0%, transparent 70%);
+            opacity: 0.1;
             pointer-events: none;
             z-index: 1;
           }
@@ -304,7 +304,7 @@
             flex-direction: column;
             justify-content: flex-end;
             padding: 1.5rem;
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
             z-index: 2;
           }
 
@@ -316,13 +316,13 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: grayscale(1) brightness(0.6);
+            filter: grayscale(1) brightness(0.9);
             transition: filter 0.6s ease, transform 0.6s ease;
             z-index: 1;
           }
 
           .card:hover .feedbacker-image {
-            filter: grayscale(0) brightness(0.8);
+            filter: grayscale(0) brightness(1);
             transform: scale(1.05);
           }
 
@@ -336,8 +336,8 @@
           }
 
           .star-box {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.05);
             padding: 3px;
             border-radius: 4px;
             display: flex;
@@ -361,16 +361,16 @@
             flex-direction: column;
             justify-content: center;
             position: relative;
-            background: rgba(255, 255, 255, 0.01);
+            background: rgba(0, 0, 0, 0.01);
             z-index: 2;
           }
 
           .feedback-text {
-            color: #fff;
+            color: #1a1a1a;
             font: 400 0.95rem/1.6 ui-serif, Georgia, serif;
             font-style: italic;
             margin-bottom: 1rem;
-            opacity: 0.95;
+            opacity: 0.85;
             position: relative;
           }
 
@@ -391,9 +391,9 @@
           }
 
           .point {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--card-bg, #fff);
+            background: rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            color: var(--card-bg, #000);
             font-size: 0.65rem;
             font-weight: 800;
             text-transform: uppercase;
@@ -407,7 +407,7 @@
             bottom: 1.5rem;
             right: 1.5rem;
             z-index: 20;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(0, 0, 0, 0.4);
             font-size: 0.6rem;
             text-transform: uppercase;
             letter-spacing: 0.2em;
@@ -562,31 +562,92 @@
           }
 
           @media (max-width: 760px) {
+            :host {
+              --media-collage-radius: 20px;
+            }
+            
             .root {
               min-height: auto;
-              padding: 18px;
+              padding: 0;
+              overflow: visible !important;
+              height: auto !important;
             }
 
             .stage {
-              height: auto;
+              height: auto !important;
               min-height: 0;
-              display: grid;
-              gap: 16px;
+              display: block !important;
+              padding: 0 16px 40px 16px;
               perspective: none;
+              width: 100% !important;
+              transform: none !important;
+            }
+
+            .camera, .carousel {
+              position: relative !important;
+              width: 100% !important;
+              height: auto !important;
+              transform: none !important;
+              perspective: none;
+              display: flex !important;
+              flex-direction: column !important;
+              gap: 32px;
+              left: 0 !important;
+              top: 0 !important;
+              inset: auto !important;
             }
 
             .card {
-              position: relative;
-              left: auto;
-              top: auto;
-              width: 100%;
-              min-width: 0;
-              aspect-ratio: 0.84;
-              transform: rotate(var(--rotate));
+              position: relative !important;
+              left: 0 !important;
+              top: 0 !important;
+              transform: none !important;
+              width: 100% !important;
+              aspect-ratio: auto !important;
+              opacity: 1 !important;
+              margin: 0 !important;
+              z-index: 1 !important;
             }
 
-            :host([active]) .card {
-              transform: rotate(var(--active-rotate));
+            .card-inner {
+              transform: none !important;
+            }
+
+            .card-content {
+              flex-direction: column !important;
+              height: auto !important;
+              min-height: 400px;
+              position: relative !important;
+              box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+              background: #fff !important;
+            }
+
+            .card-part-left {
+              width: 100% !important;
+              height: 220px !important;
+              border-right: none !important;
+              border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            }
+
+            .card-part-right {
+              width: 100% !important;
+              height: auto !important;
+              padding: 2rem 1.5rem 3rem 1.5rem !important;
+              display: block !important;
+            }
+
+            .feedback-text {
+              font-size: 1rem !important;
+              line-height: 1.6 !important;
+              margin-bottom: 2rem !important;
+              opacity: 1 !important;
+            }
+
+            .author {
+              position: absolute !important;
+              bottom: 1.5rem !important;
+              right: 1.5rem !important;
+              margin-top: 0 !important;
             }
           }
         </style>

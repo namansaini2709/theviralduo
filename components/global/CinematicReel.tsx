@@ -13,7 +13,7 @@ export default function CinematicReel({ thumbnails = [] }: { thumbnails?: string
     <div className="relative w-full h-full flex items-center justify-center">
       <svg
         viewBox="0 0 1000 1000"
-        className="w-[90%] h-[90%] drop-shadow-[0_0_50px_rgba(0,0,0,0.8)]"
+        className="w-[90%] h-[90%] drop-shadow-[0_20px_50px_rgba(0,0,0,0.1)]"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -44,8 +44,8 @@ export default function CinematicReel({ thumbnails = [] }: { thumbnails?: string
         {/* Circular Text "OUR WORK" - Split into characters for staggered animation */}
         <text
           id="reelText"
-          fill="white"
-          className="font-display font-black uppercase text-[64px] tracking-[1em] opacity-60"
+          fill="#0a0a0a"
+          className="font-display font-black uppercase text-[64px] tracking-[1em] opacity-40"
         >
           <textPath href="#circumferencePath" startOffset="25%" textAnchor="middle">
             {/* Split "OUR WORK" into individual tspans for GSAP targeting */}
@@ -62,7 +62,7 @@ export default function CinematicReel({ thumbnails = [] }: { thumbnails?: string
           cx="500"
           cy="500"
           r="480"
-          stroke="white"
+          stroke="#000"
           strokeWidth="1"
           strokeOpacity="0.05"
         />
@@ -72,9 +72,9 @@ export default function CinematicReel({ thumbnails = [] }: { thumbnails?: string
           cx="500"
           cy="500"
           r="440"
-          stroke="white"
+          stroke="#000"
           strokeWidth="2"
-          strokeOpacity="0.1"
+          strokeOpacity="0.08"
           strokeDasharray="4 12"
         />
 
@@ -83,8 +83,8 @@ export default function CinematicReel({ thumbnails = [] }: { thumbnails?: string
           cx="500"
           cy="500"
           r="380"
-          fill="#121212"
-          stroke="#1A1A1A"
+          fill="#FAFAFA"
+          stroke="#E5E5E5"
           strokeWidth="2"
         />
 
@@ -101,8 +101,8 @@ export default function CinematicReel({ thumbnails = [] }: { thumbnails?: string
                 cx={x}
                 cy={y}
                 r={cutoutSize}
-                fill="#080808"
-                stroke="#1A1A1A"
+                fill="#F5F5F5"
+                stroke="#E5E5E5"
                 strokeWidth="2"
               />
 
@@ -115,7 +115,7 @@ export default function CinematicReel({ thumbnails = [] }: { thumbnails?: string
                 height={cutoutSize * 2}
                 preserveAspectRatio="xMidYMid slice"
                 clipPath={`url(#clip-hole-${i})`}
-                className="reel-thumb opacity-70 grayscale transition-all duration-500"
+                className="reel-thumb opacity-70 grayscale"
               />
 
               {/* Depth Overlay (Glass Effect) */}
@@ -123,8 +123,8 @@ export default function CinematicReel({ thumbnails = [] }: { thumbnails?: string
                 cx={x}
                 cy={y}
                 r={cutoutSize}
-                fill="black"
-                fillOpacity="0.2"
+                fill="white"
+                fillOpacity="0.1"
                 pointerEvents="none"
               />
             </g>
@@ -152,8 +152,8 @@ export default function CinematicReel({ thumbnails = [] }: { thumbnails?: string
             cx="500"
             cy="500"
             r="45"
-            fill="#1A1A1A"
-            stroke="#2A2A2A"
+            fill="#F5F5F5"
+            stroke="#E5E5E5"
             strokeWidth="2"
           />
 
@@ -173,9 +173,9 @@ export default function CinematicReel({ thumbnails = [] }: { thumbnails?: string
             <text
               x="500"
               y="580"
-              fill="white"
+              fill="#0a0a0a"
               textAnchor="middle"
-              className="font-mono text-[14px] uppercase tracking-[0.4em] opacity-40"
+              className="font-mono text-[14px] uppercase tracking-[0.4em] opacity-30"
             >
               READY TO PLAY
             </text>

@@ -3,12 +3,16 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Heart, MessageCircle, Share2, TrendingUp } from "lucide-react";
+
+const ICONS = [Heart, MessageCircle, Share2, TrendingUp];
 
 export default function ServicesIntro() {
   const sectionRef = useRef<HTMLElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const taglineRef = useRef<HTMLParagraphElement>(null);
   const charRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const iconRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -22,6 +26,7 @@ export default function ServicesIntro() {
         rotateX: 45, 
         filter: "blur(12px)" 
       });
+      gsap.set(iconRefs.current, { scale: 0, opacity: 0, y: 50 });
 
       // 2. Entrance Animation (Triggers on mount/view)
       const entranceTl = gsap.timeline();
@@ -47,6 +52,7 @@ export default function ServicesIntro() {
           scrub: 1.8,
           anticipatePin: 1,
           refreshPriority: 8,
+          invalidateOnRefresh: true,
         },
 
       });
@@ -60,6 +66,17 @@ export default function ServicesIntro() {
         duration: 1.5,
         ease: "power2.inOut",
       }, 0);
+
+      // Icons pop up
+      scrollTl.to(iconRefs.current, {
+        scale: (i) => 1 + (i % 3) * 0.5, // varying sizes
+        opacity: 0.5,
+        y: (i) => -50 - (i * 10), // float up slightly
+        rotation: (i) => (i % 2 === 0 ? 15 : -15),
+        duration: 1,
+        stagger: 0.1,
+        ease: "back.out(1.5)",
+      }, 0.2);
 
       // Tagline reveals
       scrollTl.to(taglineRef.current, {
@@ -76,10 +93,9 @@ export default function ServicesIntro() {
         duration: 0.4,
       }, 1.5);
 
-      scrollTl.to(sectionRef.current, {
-        backgroundColor: "#080808",
-        duration: 0.5,
-      }, 1);
+      scrollTl.to(sectionRef.current, { autoAlpha: 0, duration: 0.1 }, 1.9);
+
+
 
     }, sectionRef);
 
@@ -91,17 +107,37 @@ export default function ServicesIntro() {
   return (
     <section 
       ref={sectionRef}
-      className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-transparent z-30"
+      className="relative min-h-screen w-full flex items-center justify-center overflow-x-hidden bg-transparent z-30"
     >
       {/* Background Cinematic Glow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vw] bg-[radial-gradient(circle,rgba(230,57,70,0.12)_0%,transparent_70%)] opacity-80" />
       </div>
 
+      {/* Popping Icons Container */}
+      <div className="absolute inset-0 pointer-events-none z-20">
+        {[...Array(12)].map((_, i) => {
+          const Icon = ICONS[i % ICONS.length];
+          return (
+            <div
+              key={`pop-icon-${i}`}
+              ref={(el) => { iconRefs.current[i] = el; }}
+              className="absolute text-accent"
+              style={{
+                top: `${20 + (i * 13) % 60}%`,
+                left: `${10 + (i * 27) % 80}%`,
+              }}
+            >
+              <Icon size={40} strokeWidth={2.5} />
+            </div>
+          );
+        })}
+      </div>
+
       <div className="relative z-10 w-full max-w-7xl px-6 flex flex-col items-center">
         <p
           ref={taglineRef}
-          className="font-body text-white/70 uppercase tracking-[0.5em] text-lg md:text-xl font-black mb-16 text-center"
+          className="font-body text-black/70 uppercase tracking-[0.5em] text-lg md:text-xl font-black mb-16 text-center"
         >
           If it&apos;s not viral then its not us
         </p>
@@ -123,9 +159,9 @@ export default function ServicesIntro() {
                   <span
                     key={charIdx}
                     ref={(el) => { charRefs.current[charIndex] = el; }}
-                    className={`inline-block font-serif font-black italic leading-[0.85] md:leading-[0.7] tracking-[-0.05em] uppercase drop-shadow-[0_20px_70px_rgba(230,57,70,0.4)] ${
+                    className={`inline-block font-serif font-black italic leading-[0.85] md:leading-[0.7] tracking-[-0.05em] uppercase drop-shadow-[0_10px_30px_rgba(230,57,70,0.2)] ${
                       isWe 
-                        ? "text-white text-[22vw] md:text-[14vw] lg:text-[13rem]" 
+                        ? "text-black text-[22vw] md:text-[14vw] lg:text-[13rem]" 
                         : "text-[#E63946] text-[10vw] md:text-[6vw] lg:text-[5rem] opacity-90"
                     }`}
                   >
@@ -140,8 +176,8 @@ export default function ServicesIntro() {
 
       {/* Decorative Path Hints */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center opacity-30 animate-bounce">
-        <span className="font-mono text-[8px] uppercase tracking-[0.4em] mb-4">Scroll to Discover</span>
-        <div className="w-px h-12 bg-gradient-to-b from-white to-transparent" />
+        <span className="font-mono text-[8px] uppercase tracking-[0.4em] mb-4 text-black">Scroll to Discover</span>
+        <div className="w-px h-12 bg-gradient-to-b from-black to-transparent" />
       </div>
     </section>
   );

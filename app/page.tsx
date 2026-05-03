@@ -11,6 +11,7 @@ import Services from "@/components/sections/Services";
 import Marquee from "@/components/sections/Marquee";
 import MovieReel from "@/components/sections/MovieReel";
 import Polaroids from "@/components/sections/Polaroids";
+import Results from "@/components/sections/Results";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/sections/Footer";
 
@@ -68,7 +69,7 @@ export default function Home() {
       <Navigation />
       <Loader />
 
-      <main className="relative z-10 flex flex-col">
+      <main className="relative z-10 flex w-full flex-col overflow-x-hidden">
         {/* 1. Hero Section */}
         <Hero />
         
@@ -87,6 +88,9 @@ export default function Home() {
         
         {/* 5. Feedback Section */}
         <Polaroids />
+        
+        {/* 5.5. Results Section */}
+        <Results />
         
         {/* 6. Contact Section */}
         <Contact />

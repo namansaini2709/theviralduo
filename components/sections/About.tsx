@@ -134,60 +134,61 @@ export default function About() {
             scrollTrigger: {
               trigger: sectionRef.current,
               start: "top top",
-              end: "+=240%",
-              scrub: 1.15,
+              end: isDesktop ? "+=240%" : "+=160%",
+              scrub: isDesktop ? 1.15 : 1,
               pin: true,
               pinSpacing: true,
               anticipatePin: 1,
               refreshPriority: 9,
+              invalidateOnRefresh: true,
             },
-
           });
 
           tl.fromTo(
             cards,
-              {
-                autoAlpha: 0,
-                y: isDesktop ? 260 : 180,
-                scale: 0.82,
-                rotateX: 22,
-                rotateZ: (index) => (isDesktop ? desktopRotations[index] * 1.8 : mobileRotations[index]),
-              },
-              {
-                autoAlpha: 1,
-                y: 0,
-                scale: 1,
-                rotateX: 0,
-                rotateZ: (index) => (isDesktop ? desktopRotations[index] : mobileRotations[index]),
-                duration: 1,
-                stagger: 0.12,
-              },
-              0.42
-            )
-            .to(
-              cards,
-              {
-                y: (index) => (isDesktop ? [18, -34, 18][index] : [0, -14, 0][index]),
-                rotateY: (index) => (isDesktop ? [-8, 0, 8][index] : 0),
-                rotateZ: (index) => (isDesktop ? [-1.25, 1.5, 1.25][index] : mobileRotations[index]),
-                scale: (index) => (index === 1 ? 1.035 : 0.96),
-                duration: 1.25,
-                ease: "none",
-              },
-              1.25
-            )
-            .to(
-              cards,
-              {
-                y: isDesktop ? -150 : -90,
-                autoAlpha: 0,
-                scale: 0.92,
-                duration: 0.7,
-                stagger: 0.06,
-                ease: "power2.in",
-              },
-              2.72
-            );
+            {
+              autoAlpha: 0,
+              y: isDesktop ? 260 : 120,
+              scale: 0.82,
+              rotateX: 22,
+              rotateZ: (index) => (isDesktop ? desktopRotations[index] * 1.8 : mobileRotations[index]),
+            },
+            {
+              autoAlpha: 1,
+              y: 0,
+              scale: 1,
+              rotateX: 0,
+              rotateZ: (index) => (isDesktop ? desktopRotations[index] : mobileRotations[index]),
+              duration: 1,
+              stagger: isDesktop ? 0.12 : 0.08,
+            },
+            0.42
+          )
+          .to(
+            cards,
+            {
+              y: (index) => (isDesktop ? [18, -34, 18][index] : [0, -10, 0][index]),
+              rotateY: (index) => (isDesktop ? [-8, 0, 8][index] : 0),
+              rotateZ: (index) => (isDesktop ? [-1.25, 1.5, 1.25][index] : mobileRotations[index]),
+              scale: (index) => (index === 1 ? 1.035 : 0.96),
+              duration: 1.25,
+              ease: "none",
+            },
+            1.25
+          )
+          .to(
+            cards,
+            {
+              y: isDesktop ? -150 : -60,
+              autoAlpha: 0,
+              scale: 0.92,
+              duration: isDesktop ? 0.7 : 0.4,
+              stagger: isDesktop ? 0.06 : 0.04,
+              ease: "power2.in",
+            },
+            isDesktop ? 2.72 : 2.2
+          )
+          .to(sectionRef.current, { autoAlpha: 0, duration: 0.1 }, "+=0");
         }
       );
 
@@ -201,12 +202,12 @@ export default function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="relative min-h-screen overflow-hidden px-5 py-16 text-white"
+      className="relative min-h-screen w-full overflow-hidden px-5 py-16 text-black bg-transparent"
     >
-      <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#080808] to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#080808] to-transparent" />
+      <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-background to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background to-transparent" />
 
-      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-8rem)] w-full max-w-6xl flex-col items-center justify-center">
+      <div className="relative z-10 mx-auto flex min-h-fit md:min-h-[calc(100vh-8rem)] w-full max-w-6xl flex-col items-center justify-center py-10 md:py-0">
         <motion.div 
           initial="hidden"
           whileInView="visible"
@@ -243,17 +244,17 @@ export default function About() {
           </div>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 0.62, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="mx-auto mt-4 max-w-2xl font-body text-sm leading-7 text-white md:text-base"
+            className="mx-auto mt-4 max-w-2xl font-body text-sm leading-7 text-black md:text-base font-bold"
           >
             We don&apos;t post content. We engineer virality through strategy,
             production, and relentless creative iteration.
           </motion.p>
         </motion.div>
 
-        <div className="grid w-full max-w-5xl grid-cols-1 gap-8 [perspective:1200px] md:grid-cols-3 md:gap-10">
+        <div className="grid w-full max-w-5xl grid-cols-1 gap-10 px-5 [perspective:1200px] md:grid-cols-3 md:gap-10 md:px-0">
           {pillars.map((pillar, index) => (
             <div
               key={pillar.title}
@@ -262,15 +263,15 @@ export default function About() {
               }}
               onMouseMove={(e) => handleMouseMove(e, index)}
               onMouseLeave={() => handleMouseLeave(index)}
-              className={`group relative min-h-[280px] overflow-hidden rounded-2xl border bg-gradient-to-br ${pillar.accent} ${pillar.border} shadow-[0_30px_90px_rgba(0,0,0,0.38)] ${pillar.shadow} backdrop-blur-[7px] transition-[border-color,box-shadow,background-color] duration-500 md:min-h-[340px] [transform-style:preserve-3d]`}
+              className={`group relative min-h-[300px] overflow-hidden rounded-[2.5rem] border bg-gradient-to-br ${pillar.accent} ${pillar.border} shadow-[0_15px_45px_rgba(0,0,0,0.15)] md:shadow-[0_30px_90px_rgba(0,0,0,0.38)] ${pillar.shadow} backdrop-blur-[7px] transition-[border-color,box-shadow,background-color] duration-500 md:min-h-[340px] [transform-style:preserve-3d]`}
             >
-              <div className="card-glare pointer-events-none absolute inset-0 z-50 opacity-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.12)_0%,transparent_80%)] blur-2xl" />
-              <div className={`absolute inset-0 ${pillar.tint} opacity-80 mix-blend-screen transition-colors duration-500`} />
-              <div className="absolute inset-0 bg-black/8" />
-              <div className="absolute inset-0 opacity-35 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.22),transparent_52%)]" />
+              <div className="card-glare pointer-events-none absolute inset-0 z-50 opacity-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.05)_0%,transparent_80%)] blur-2xl" />
+              <div className={`absolute inset-0 ${pillar.tint} opacity-40 mix-blend-multiply transition-colors duration-500`} />
+              <div className="absolute inset-0 bg-white/40" />
+              <div className="absolute inset-0 opacity-35 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_50%_0%,rgba(0,0,0,0.05),transparent_52%)]" />
 
               <div className="relative z-10 flex h-full flex-col">
-                <div className="relative flex aspect-[1.6] items-center justify-center overflow-hidden bg-black/8 transition-colors duration-500 group-hover:bg-white/[0.035]">
+                <div className="relative flex aspect-video md:aspect-[1.6] items-center justify-center overflow-hidden bg-white/50 transition-colors duration-500 group-hover:bg-white/80 border-b border-black/5">
                   {pillar.video ? (
                     pillar.video.match(/\.(mp4|webm|ogg|mov)$/) ? (
                       <video
@@ -313,10 +314,10 @@ export default function About() {
                 </div>
 
                 <div className="mt-auto p-4 md:p-5">
-                  <h3 className="font-serif text-xl font-black italic leading-none text-white md:text-3xl">
+                  <h3 className="font-serif text-xl font-black italic leading-none text-black md:text-3xl">
                     {pillar.title}
                   </h3>
-                  <p className="mt-3 md:mt-4 font-body text-[12px] md:text-[13px] leading-relaxed text-white/70">
+                  <p className="mt-3 md:mt-4 font-body text-[12px] md:text-[13px] leading-relaxed text-black/80 font-medium">
                     {pillar.copy}
                   </p>
                 </div>
