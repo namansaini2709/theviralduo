@@ -9,12 +9,18 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#f5f3ef",
-        foreground: "#080808",
-        accent: "#E63946",
-        "accent-warm": "#FF6B6B",
-        "film-black": "#080808",
-        "film-cream": "#F5F0E8",
+        background: "#F0F9FF",
+        foreground: "#2C3E50",
+        "brand-sky": "#4DB8E5",
+        "brand-deep": "#1E5AA8",
+        "brand-soft": "#F0F9FF",
+        "brand-yellow": "#FFD43B",
+        "brand-orange": "#FFA726",
+        "brand-pink": "#FF4D6D",
+        "brand-orange-end": "#FF8C42",
+        "brand-text": "#2C3E50",
+        "brand-subtext": "#6C8AA6",
+        "brand-border": "#D6ECF8",
       },
       fontFamily: {
         display: ["var(--font-outfit)", "sans-serif"],

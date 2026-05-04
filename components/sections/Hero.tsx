@@ -9,53 +9,11 @@ import { motion } from "framer-motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const CARDS = [
-  { id: 1, content: "10M+ Views", color: "bg-accent", textColor: "text-white" },
-  { id: 2, content: "Retention", color: "bg-accent", textColor: "text-white" },
-  { id: 3, content: "Go Viral.", color: "bg-black", textColor: "text-white" },
-  { id: 4, content: "50+ Brands", color: "bg-accent", textColor: "text-white" },
-  { id: 5, content: "Production", color: "bg-white", textColor: "text-black" },
-  { id: 6, content: "Hook. Line. Sinker.", color: "bg-accent", textColor: "text-white" },
-  { id: 7, content: "Strategy", color: "bg-accent", textColor: "text-white" },
-  { id: 8, content: "ROI Focused", color: "bg-black", textColor: "text-white" },
-  { id: 9, content: "Retention Is King", color: "bg-white", textColor: "text-black" },
-  { id: 10, content: "Growth", color: "bg-accent", textColor: "text-white" },
-  { id: 11, content: "Viral Duo", color: "bg-accent", textColor: "text-white" },
-  { id: 12, content: "Creative", color: "bg-black", textColor: "text-white" },
-  { id: 13, content: "High Growth", color: "bg-white", textColor: "text-black" },
-  { id: 14, content: "Scale", color: "bg-accent", textColor: "text-white" },
-  { id: 15, content: "Mastering Reels", color: "bg-accent", textColor: "text-white" },
-  { id: 16, content: "Data Driven", color: "bg-black", textColor: "text-white" },
-  { id: 17, content: "Visuals", color: "bg-white", textColor: "text-black" },
-  { id: 18, content: "Excellence", color: "bg-accent", textColor: "text-white" },
-  { id: 19, content: "Content Machine", color: "bg-accent", textColor: "text-white" },
-  { id: 20, content: "Viral Engineering", color: "bg-black", textColor: "text-white" },
-  { id: 21, content: "Algorithm Hack", color: "bg-white", textColor: "text-black" },
-  { id: 22, content: "Engagement", color: "bg-accent", textColor: "text-white" },
-  { id: 23, content: "Cinematic.", color: "bg-black", textColor: "text-white" },
-  { id: 24, content: "Trend Setter", color: "bg-accent", textColor: "text-white" },
-  { id: 25, content: "Impact", color: "bg-accent", textColor: "text-white" },
-  { id: 26, content: "Storytelling", color: "bg-black", textColor: "text-white" },
-  { id: 37, content: "Direct Response", color: "bg-white", textColor: "text-black" },
-  { id: 38, content: "High End", color: "bg-accent", textColor: "text-white" },
-  { id: 39, content: "Results", color: "bg-black", textColor: "text-white" },
-  { id: 40, content: "Peak Performance", color: "bg-accent", textColor: "text-white" },
-  { id: 41, content: "Storytelling", color: "bg-accent", textColor: "text-white" },
-  { id: 42, content: "Top 1%", color: "bg-black", textColor: "text-white" },
-  { id: 43, content: "Viral Loops", color: "bg-white", textColor: "text-black" },
-  { id: 44, content: "High Impact", color: "bg-accent", textColor: "text-white" },
-  { id: 45, content: "Growth Hacks", color: "bg-accent", textColor: "text-white" },
-  { id: 46, content: "Brand DNA", color: "bg-black", textColor: "text-white" },
-  { id: 47, content: "Conversion", color: "bg-white", textColor: "text-black" },
-  { id: 48, content: "Masterpiece", color: "bg-accent", textColor: "text-white" },
-  { id: 49, content: "Engagement+", color: "bg-black", textColor: "text-white" },
-  { id: 50, content: "The Viral Duo", color: "bg-accent", textColor: "text-white" },
-];
-
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const heroCardRef = useRef<HTMLDivElement>(null);
-  const bgCardsRef = useRef<HTMLDivElement[]>([]);
+  const wordRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -65,8 +23,8 @@ export default function Hero() {
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: isMobile ? "+=150%" : "+=180%",
-          scrub: 1,
+          end: "+=800", // Increased scroll distance for a smoother, longer sequence
+          scrub: 1.2,
           pin: true,
           pinSpacing: true,
           anticipatePin: 1,
@@ -75,140 +33,72 @@ export default function Hero() {
         }
       });
 
-      // Initial state setup for cards behind
-      gsap.set(bgCardsRef.current, {
-        x: (i) => (i % 2 === 0 ? 10 + i : -10 - i),
-        y: (i) => (i % 3 === 0 ? 10 + i : -10 - i),
-        rotate: (i) => (i % 2 === 0 ? 3 : -3),
-        scale: 0.85,
-        opacity: 1,
-        zIndex: 0,
-      });
-
-      // Phase 1: Hero Card Transform (0% - 20%)
+      // Phase 1: Hero Card Transform and Fade Out
       tl.to(heroCardRef.current, {
-        scale: isMobile ? 0.6 : 0.7,
-        y: isMobile ? -50 : -100,
+        scale: isMobile ? 0.8 : 0.85,
+        y: isMobile ? -60 : -120,
         opacity: 0,
-        duration: 0.2,
+        filter: "blur(30px)",
+        duration: 1.5,
         ease: "power2.inOut",
-      }, 0);
-
-      // Phase 2: Card Reveal (20% - 70%)
-      const columns = isMobile ? 5 : 10;
-      const rows = isMobile ? 10 : 5;
-      const visibleCards = bgCardsRef.current.slice(0, columns * rows);
-      const totalCards = visibleCards.length;
-      
-      // Hide cards that don't fit the grid
-      bgCardsRef.current.forEach((card, i) => {
-        if (i >= totalCards) {
-          gsap.set(card, { display: "none" });
-        }
       });
 
-      visibleCards.forEach((card, i) => {
-        const col = i % columns;
-        const row = Math.floor(i / columns);
-        
-        const baseX = (col / (columns - 1)) * (isMobile ? 70 : 90) - (isMobile ? 35 : 45);
-        const baseY = (row / (rows - 1)) * (isMobile ? 110 : 130) - (isMobile ? 55 : 65);
-        
-        const jitterX = (Math.random() - 0.5) * 12;
-        const jitterY = (Math.random() - 0.5) * 22;
-        const rotate = (Math.random() - 0.5) * 45;
-        const scaleVariation = 0.95 + Math.random() * 0.25;
-
-        tl.to(card, {
-          x: `${baseX + jitterX}vw`,
-          y: `${baseY + jitterY}vh`,
-          rotate: rotate,
-          scale: isMobile ? 1.2 * scaleVariation : 1.4 * scaleVariation,
-          duration: 0.3,
-          ease: "power2.out",
-        }, 0.2 + (i / totalCards) * 0.2);
-      });
-
-      // Phase 3: Divergent Vanish (70% - 100%)
-      tl.to(visibleCards, {
-        x: (i) => {
-          const col = i % columns;
-          return col < columns / 2 ? "-160vw" : "160vw";
+      // Phase 2: "THE VIRAL DUO" appears one by one
+      tl.fromTo(wordRefs.current, 
+        { opacity: 0, y: 100, filter: "blur(10px)" },
+        {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          stagger: 0.5,
+          duration: 1.2,
+          ease: "power3.out",
         },
-        y: (i) => {
-          const row = Math.floor(i / columns);
-          return row < rows / 2 ? "-160vh" : "160vh";
-        },
+        "-=0.8" // Starts while card is still fading
+      );
+
+      // Phase 3: Hold the text (The "1.5 sec" equivalent)
+      tl.to({}, { duration: 1.5 });
+
+      // Phase 4: Words vanish one by one
+      tl.to(wordRefs.current, {
         opacity: 0,
-        stagger: {
-          amount: 0.15,
-          from: "center",
-        },
-        duration: 0.3,
+        y: -100,
+        filter: "blur(15px)",
+        stagger: 0.3,
+        duration: 1,
         ease: "power2.in",
-      }, 0.7);
+      });
 
-      tl.to(containerRef.current, {
-        autoAlpha: 0,
-        duration: 0.05,
-      }, 0.95);
+      // Phase 5: Hero Card comes back
+      tl.to(heroCardRef.current, {
+        scale: 1,
+        y: 0,
+        opacity: 1,
+        filter: "blur(0px)",
+        duration: 1.5,
+        ease: "power3.out",
+      }, "-=1"); // Overlap with words vanishing
+
+      // Phase 6: Inner stage moves up significantly and gets smaller
+      tl.to(stageRef.current, {
+        y: isMobile ? "-65vh" : "-75vh",
+        scale: 0.5,
+        duration: 2,
+        ease: "power2.inOut",
+      }, "+=0.5"); // Brief pause after card settles
+
+      // Phase 7: Fade out only when it's mostly out of view (70% out)
+      tl.to(stageRef.current, {
+        opacity: 0,
+        duration: 0.6,
+        ease: "none"
+      }, "-=0.6"); // Starts fading in the final 30% of the movement duration
 
     }, containerRef);
 
-    // Ambient floating animation
-    bgCardsRef.current.forEach((card, i) => {
-      if (!card) return;
-      gsap.to(card.children[0], {
-        y: "random(-10, 10)",
-        x: "random(-5, 5)",
-        rotate: "random(-2, 2)",
-        duration: "random(2, 4)",
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        delay: Math.random() * 2,
-      });
-    });
-
     return () => ctx.revert();
   }, []);
-
-  const handleCardHover = (e: React.MouseEvent, index: number) => {
-    const card = bgCardsRef.current[index]?.children[0];
-    if (!card || (card as any).isFlying) return;
-
-    (card as any).isFlying = true;
-    // Random direction
-    const angle = Math.random() * Math.PI * 2;
-    const distance = 1500;
-    const destX = Math.cos(angle) * distance;
-    const destY = Math.sin(angle) * distance;
-
-    gsap.to(card, {
-      x: destX,
-      y: destY,
-      rotate: Math.random() * 720 - 360,
-      scale: 0.5,
-      opacity: 0,
-      duration: 0.8,
-      ease: "power2.inOut",
-      onComplete: () => {
-        gsap.to(card, {
-          x: 0,
-          y: 0,
-          rotate: 0,
-          scale: 1,
-          opacity: 1,
-          duration: 1.2,
-          delay: 0.7, 
-          ease: "elastic.out(1, 0.5)",
-          onComplete: () => {
-            (card as any).isFlying = false;
-          }
-        });
-      },
-    });
-  };
 
   return (
     <section 
@@ -216,42 +106,42 @@ export default function Hero() {
       id="top"
       className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-transparent"
     >
-      <div className="relative w-full h-full flex items-center justify-center">
+      {/* Inner stage - smaller than the section from all directions */}
+      <div 
+        ref={stageRef}
+        className="relative w-[88vw] h-[88vh] bg-white/40 border-2 border-brand-sky/20 rounded-[3rem] shadow-[0_20px_60px_rgba(77,184,229,0.15)] backdrop-blur-sm overflow-hidden flex items-center justify-center"
+      >
         
-        {/* Background Cards Stack */}
-        {CARDS.map((card, i) => (
-          <div
-            key={card.id}
-            ref={(el) => { if (el) bgCardsRef.current[i] = el; }}
-            className="absolute w-fit h-fit select-none z-10"
+        {/* Cinematic Words (appears after card vanishes) */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-40 px-6">
+          <div 
+            ref={el => { wordRefs.current[0] = el; }} 
+            className="font-display font-black text-[4vw] md:text-[2vw] text-brand-deep uppercase tracking-[0.5em] mb-[-2vw]"
+            style={{ opacity: 0 }}
           >
-            <div 
-              className={`w-fit h-fit min-w-[120px] md:min-w-[180px] px-6 md:px-12 py-3 md:py-6 ${card.color} border-2 md:border-4 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] md:shadow-[8px_8px_0px_rgba(0,0,0,1)] rounded-xl md:rounded-2xl flex items-center justify-center cursor-pointer transition-shadow duration-300 hover:shadow-[12px_12px_0px_rgba(0,0,0,1)]`}
-              onMouseEnter={(e) => handleCardHover(e, i)}
-            >
-              <motion.div
-                className="w-full h-full flex items-center justify-center pointer-events-none"
-                whileHover={{ 
-                  rotate: i % 2 === 0 ? 2 : -2,
-                  y: -5,
-                  transition: { duration: 0.2 }
-                }}
-              >
-                <span className={`font-display font-black text-center uppercase tracking-tight ${card.textColor} text-sm md:text-2xl whitespace-nowrap leading-none`}>
-                  {card.content}
-                </span>
-              </motion.div>
-            </div>
+            THE
           </div>
-        ))}
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+            {["VIRAL", "DUO"].map((word, i) => (
+              <span 
+                key={i} 
+                ref={el => { wordRefs.current[i+1] = el; }}
+                className="viral-text-style text-[15vw] md:text-[10vw] px-4 py-6"
+                style={{ opacity: 0 }}
+              >
+                {word}
+              </span>
+            ))}
+          </div>
+        </div>
 
         {/* Hero Card */}
         <div 
           ref={heroCardRef}
-          className="relative z-50 w-[90vw] md:w-[65vw] max-w-4xl bg-white border-8 border-black shadow-[30px_30px_0px_rgba(0,0,0,1)] rounded-3xl p-10 md:p-20 flex flex-col items-center justify-center text-center space-y-8"
+          className="relative z-50 w-[85vw] md:w-[60vw] max-w-4xl bg-white border border-brand-border shadow-[0_30px_100px_rgba(77,184,229,0.1)] rounded-[2.5rem] p-10 md:p-20 flex flex-col items-center justify-center text-center space-y-8"
         >
           {/* Logo */}
-          <div className="relative w-32 h-32 md:w-44 md:h-44 rounded-full overflow-hidden border-8 border-black shadow-[15px_15px_0px_rgba(0,0,0,1)]">
+          <div className="relative w-32 h-32 md:w-44 md:h-44 rounded-full overflow-hidden border-4 border-brand-sky shadow-xl">
             <Image 
               src="/logo-v2.png" 
               alt="The Viral Duo" 
@@ -261,17 +151,14 @@ export default function Hero() {
             />
           </div>
 
-          <div className="space-y-4">
-            <h1 className="font-display font-black text-4xl md:text-7xl tracking-tight text-black leading-none uppercase relative inline-block">
-              THE VIRAL <span className="relative marker-highlight">DUO</span>
+          <div className="space-y-0 flex flex-col items-center">
+            <span className="font-display font-black text-xl md:text-2xl text-brand-deep tracking-[0.4em] mb-1 opacity-80">THE</span>
+            <h1 className="viral-text-style text-5xl md:text-8xl px-6 py-4">
+              VIRAL DUO
             </h1>
-            <p className="font-handwritten text-2xl md:text-4xl text-black -rotate-1 mt-2">
-              A Marketing Agency
-            </p>
           </div>
 
-          <button className="mt-4 group relative inline-flex items-center justify-center gap-3 px-8 py-4 font-bold text-black uppercase tracking-widest bg-transparent border-4 border-black rounded-full overflow-hidden hover:text-white transition-colors duration-300">
-            <span className="absolute inset-0 w-full h-full bg-accent -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
+          <button className="mt-4 group relative inline-flex items-center justify-center gap-3 px-10 py-5 font-bold text-white uppercase tracking-widest bg-gradient-brand rounded-full overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
             <span className="relative z-10 flex items-center gap-3">
               <Play fill="currentColor" size={20} />
               Watch Showreel

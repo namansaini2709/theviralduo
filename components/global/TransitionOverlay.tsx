@@ -29,13 +29,13 @@ export default function TransitionOverlay({ isTransitioning }: TransitionOverlay
         >
           {/* Main Transition Card */}
           <motion.div 
-            className="w-[90vw] h-[90vh] rounded-[3.5rem] bg-[#050505] border border-white/10 shadow-[0_50px_100px_rgba(0,0,0,0.8)] flex items-center justify-center overflow-hidden"
+            className="w-[90vw] h-[90vh] rounded-[3.5rem] bg-[#0a2a4d] border border-white/10 shadow-[0_50px_100px_rgba(30,90,168,0.3)] flex items-center justify-center overflow-hidden"
             initial={{ borderRadius: "100px" }}
             animate={{ borderRadius: "56px" }}
             exit={{ borderRadius: "100px" }}
           >
             {/* Inner Glow/Aura */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(77,184,229,0.1)_0%,transparent_70%)]" />
             
             {/* Logo in transition */}
             <motion.div 

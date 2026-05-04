@@ -12,30 +12,30 @@ const pillars = [
     copy: "We find the cultural signals, creator angles, and scroll patterns your audience already wants.",
     image: "/assets/services/what-we-are.png",
     video: "/assets/videos/stratgic 2.mp4",
-    accent: "from-cyan-500/22 via-cyan-300/10 to-cyan-100/[0.03]",
-    tint: "bg-cyan-400/[0.18] group-hover:bg-cyan-300/[0.34]",
-    border: "border-cyan-200/[0.22] group-hover:border-cyan-200/[0.48]",
-    shadow: "shadow-cyan-500/10 group-hover:shadow-cyan-400/20",
+    accent: "from-brand-sky/20 via-brand-sky/10 to-transparent",
+    tint: "bg-brand-sky/10 group-hover:bg-brand-sky/20",
+    border: "border-brand-sky/30 group-hover:border-brand-sky/60",
+    shadow: "shadow-brand-sky/10 group-hover:shadow-brand-sky/20",
   },
   {
     title: "Productive",
     copy: "We turn ideas into sharp hooks, repeatable formats, and fast-moving edits built for retention.",
     image: "/assets/services/clapboard.png",
-    accent: "from-red-500/22 via-orange-300/10 to-red-100/[0.03]",
-    tint: "bg-red-500/[0.18] group-hover:bg-red-400/[0.34]",
+    accent: "from-brand-pink/20 via-brand-pink/10 to-transparent",
+    tint: "bg-brand-pink/10 group-hover:bg-brand-pink/20",
     video: "/assets/videos/Screen Recording 2026-05-01 at 12.57.42 PM.mov",
-    border: "border-red-200/[0.22] group-hover:border-red-200/[0.48]",
-    shadow: "shadow-red-500/10 group-hover:shadow-red-400/25",
+    border: "border-brand-pink/30 group-hover:border-brand-pink/60",
+    shadow: "shadow-brand-pink/10 group-hover:shadow-brand-pink/25",
   },
   {
     title: "Creative",
     copy: "We read the data, double down on winners, and keep the content machine compounding.",
     image: "/assets/services/charts.png",
     video: "/assets/videos/creative_reel_trimmed_2.mov",
-    accent: "from-amber-400/22 via-lime-300/10 to-yellow-100/[0.03]",
-    tint: "bg-amber-300/[0.18] group-hover:bg-amber-300/[0.34]",
-    border: "border-amber-100/[0.22] group-hover:border-amber-100/[0.48]",
-    shadow: "shadow-amber-400/10 group-hover:shadow-amber-300/20",
+    accent: "from-brand-yellow/20 via-brand-yellow/10 to-transparent",
+    tint: "bg-brand-yellow/10 group-hover:bg-brand-yellow/20",
+    border: "border-brand-yellow/30 group-hover:border-brand-yellow/60",
+    shadow: "shadow-brand-yellow/10 group-hover:shadow-brand-yellow/20",
   },
 ];
 
@@ -204,9 +204,6 @@ export default function About() {
       id="about"
       className="relative min-h-screen w-full overflow-hidden px-5 py-16 text-black bg-transparent"
     >
-      <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-background to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background to-transparent" />
-
       <div className="relative z-10 mx-auto flex min-h-fit md:min-h-[calc(100vh-8rem)] w-full max-w-6xl flex-col items-center justify-center py-10 md:py-0">
         <motion.div 
           initial="hidden"
@@ -214,7 +211,7 @@ export default function About() {
           viewport={{ once: false, amount: 0.2 }}
           className="mb-10 text-center md:mb-14 flex flex-col items-center"
         >
-          <div className="flex flex-wrap justify-center gap-x-[0.3em] mb-4">
+          <div className="flex flex-wrap justify-center gap-x-[1.5em] mb-4">
             {"WHO WE ARE".split(" ").map((word, wordIdx) => (
               <span key={wordIdx} className="inline-block whitespace-nowrap">
                 {word.split("").map((char, charIdx) => (
@@ -234,7 +231,7 @@ export default function About() {
                         }
                       }
                     }}
-                    className="inline-block font-serif text-[10vw] md:text-[7vw] lg:text-[5.5rem] font-black italic leading-[0.74] tracking-normal text-[#E63946] drop-shadow-[0_0_32px_rgba(230,57,70,0.28)] uppercase"
+                    className="inline-block font-serif text-[10vw] md:text-[7vw] lg:text-[5.5rem] font-black italic leading-[0.74] tracking-normal text-gradient drop-shadow-[0_0_32px_rgba(255,77,109,0.28)] uppercase"
                   >
                     {char}
                   </motion.span>
@@ -247,7 +244,7 @@ export default function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="mx-auto mt-4 max-w-2xl font-body text-sm leading-7 text-black md:text-base font-bold"
+            className="mx-auto mt-4 max-w-2xl font-body text-sm leading-7 text-brand-text md:text-base font-bold"
           >
             We don&apos;t post content. We engineer virality through strategy,
             production, and relentless creative iteration.
@@ -263,7 +260,7 @@ export default function About() {
               }}
               onMouseMove={(e) => handleMouseMove(e, index)}
               onMouseLeave={() => handleMouseLeave(index)}
-              className={`group relative min-h-[300px] overflow-hidden rounded-[2.5rem] border bg-gradient-to-br ${pillar.accent} ${pillar.border} shadow-[0_15px_45px_rgba(0,0,0,0.15)] md:shadow-[0_30px_90px_rgba(0,0,0,0.38)] ${pillar.shadow} backdrop-blur-[7px] transition-[border-color,box-shadow,background-color] duration-500 md:min-h-[340px] [transform-style:preserve-3d]`}
+              className={`group relative min-h-[300px] overflow-hidden rounded-[2.5rem] border bg-white/60 ${pillar.accent} ${pillar.border} shadow-[0_15px_45px_rgba(77,184,229,0.1)] md:shadow-[0_30px_90px_rgba(77,184,229,0.2)] ${pillar.shadow} backdrop-blur-[10px] transition-all duration-500 md:min-h-[340px] [transform-style:preserve-3d]`}
             >
               <div className="card-glare pointer-events-none absolute inset-0 z-50 opacity-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.05)_0%,transparent_80%)] blur-2xl" />
               <div className={`absolute inset-0 ${pillar.tint} opacity-40 mix-blend-multiply transition-colors duration-500`} />
