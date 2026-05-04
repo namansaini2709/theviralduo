@@ -2,6 +2,9 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 
+import { DEFAULT_PROJECTS } from "@/components/sections/MovieReel";
+import { DEFAULT_FEEDBACK } from "@/components/sections/Polaroids";
+
 interface DynamicData {
   reels: any[];
   work: any[];
@@ -12,9 +15,11 @@ interface DynamicDataContextType {
   data: DynamicData;
   addReel: (reel: any) => void;
   addWork: (work: any) => void;
-  removeWork: (id: number) => void;
+  updateWork: (work: any) => void;
+  removeWork: (id: number | string) => void;
   addFeedback: (feedback: any) => void;
-  removeFeedback: (id: number) => void;
+  updateFeedback: (feedback: any) => void;
+  removeFeedback: (id: number | string) => void;
   resetData: () => void;
 }
 
@@ -23,8 +28,8 @@ const DynamicDataContext = createContext<DynamicDataContextType | undefined>(und
 export function DynamicDataProvider({ children }: { children: React.ReactNode }) {
   const [data, setData] = useState<DynamicData>({
     reels: [],
-    work: [],
-    feedback: [],
+    work: DEFAULT_PROJECTS,
+    feedback: DEFAULT_FEEDBACK.map((f, i) => ({ ...f, id: `def-f-${i}` })),
   });
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -34,7 +39,12 @@ export function DynamicDataProvider({ children }: { children: React.ReactNode })
       const savedData = localStorage.getItem("viralDuoDynamicData");
       if (savedData) {
         try {
-          setData(JSON.parse(savedData));
+          const parsed = JSON.parse(savedData);
+          setData({
+            reels: parsed.reels || [],
+            work: parsed.work && parsed.work.length > 0 ? parsed.work : DEFAULT_PROJECTS,
+            feedback: parsed.feedback && parsed.feedback.length > 0 ? parsed.feedback : DEFAULT_FEEDBACK.map((f: any, i: number) => ({ ...f, id: `def-f-${i}` })),
+          });
         } catch (e) {
           console.error("Failed to parse dynamic data", e);
         }
@@ -71,7 +81,14 @@ export function DynamicDataProvider({ children }: { children: React.ReactNode })
     setData((prev) => ({ ...prev, work: [...prev.work, work] }));
   };
 
-  const removeWork = (id: number) => {
+  const updateWork = (work: any) => {
+    setData((prev) => ({
+      ...prev,
+      work: prev.work.map((w) => (w.id === work.id ? work : w)),
+    }));
+  };
+
+  const removeWork = (id: number | string) => {
     setData((prev) => ({ ...prev, work: prev.work.filter(w => w.id !== id) }));
   };
 
@@ -79,17 +96,38 @@ export function DynamicDataProvider({ children }: { children: React.ReactNode })
     setData((prev) => ({ ...prev, feedback: [...prev.feedback, feedback] }));
   };
 
-  const removeFeedback = (id: number) => {
+  const updateFeedback = (feedback: any) => {
+    setData((prev) => ({
+      ...prev,
+      feedback: prev.feedback.map((f) => (f.id === feedback.id ? feedback : f)),
+    }));
+  };
+
+  const removeFeedback = (id: number | string) => {
     setData((prev) => ({ ...prev, feedback: prev.feedback.filter(f => f.id !== id) }));
   };
 
   const resetData = () => {
-    setData({ reels: [], work: [], feedback: [] });
+    setData({ 
+      reels: [], 
+      work: DEFAULT_PROJECTS, 
+      feedback: DEFAULT_FEEDBACK.map((f, i) => ({ ...f, id: `def-f-${i}` })) 
+    });
     localStorage.removeItem("viralDuoDynamicData");
   };
 
   return (
-    <DynamicDataContext.Provider value={{ data, addReel, addWork, removeWork, addFeedback, removeFeedback, resetData }}>
+    <DynamicDataContext.Provider value={{ 
+      data, 
+      addReel, 
+      addWork, 
+      updateWork, 
+      removeWork, 
+      addFeedback, 
+      updateFeedback, 
+      removeFeedback, 
+      resetData 
+    }}>
       {children}
     </DynamicDataContext.Provider>
   );

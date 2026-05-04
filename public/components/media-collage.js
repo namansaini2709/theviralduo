@@ -277,7 +277,8 @@
             height: 100%;
             transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
             transform-style: preserve-3d;
-            border-radius: 2.5rem;
+            transform: translateY(calc(var(--lift, 0px) * -1)) translateZ(0) rotateY(0deg);
+            border-radius: clamp(24px, 3.5vw, 42px);
             will-change: transform;
           }
 
@@ -288,131 +289,138 @@
             height: 100%;
             border-radius: inherit;
             overflow: hidden;
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 1.5rem;
             display: flex;
-            flex-direction: row;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.15);
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.1);
             transform: translateZ(0.01px);
           }
 
-          .brand-glow {
-            position: absolute;
-            top: -20%;
-            right: -20%;
-            width: 70%;
-            height: 70%;
-            border-radius: 50%;
-            background: radial-gradient(circle, var(--card-bg, #4DB8E5) 0%, transparent 70%);
-            filter: blur(60px);
-            opacity: 0.12;
-            z-index: 0;
-            pointer-events: none;
-          }
-
-          .card-part-left {
-            width: 42%;
-            height: 100%;
-            position: relative;
-            background: #f8f9fa;
-            border-right: 1px solid rgba(0,0,0,0.03);
-            overflow: hidden;
-            z-index: 1;
-          }
-
-          .feedbacker-image {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: grayscale(1) contrast(1.1) brightness(0.9);
-            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-          }
-
-          .card:hover .feedbacker-image {
-            filter: grayscale(0) contrast(1) brightness(1);
-            transform: scale(1.08);
-          }
-
-          .card-part-right {
-            width: 58%;
-            height: 100%;
-            padding: 2.5rem;
+          .card-header {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(8px);
-            z-index: 2;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            width: 100%;
           }
 
           .stars-container {
             display: flex;
             gap: 4px;
-            margin-bottom: 1.5rem;
+            color: #FFD43B;
           }
 
           .star {
-            width: 14px;
-            height: 14px;
-            fill: #ffb800;
-            filter: drop-shadow(0 0 8px rgba(255, 184, 0, 0.4));
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+          }
+
+          .quote-icon {
+            font-size: 3rem;
+            color: rgba(0, 0, 0, 0.05);
+            font-family: serif;
+            line-height: 1;
+            font-weight: 900;
           }
 
           .card-quote {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.8rem;
+            font-family: var(--font-serif, serif);
+            font-size: 1rem;
             font-weight: 900;
-            line-height: 1.15;
-            color: #111;
-            margin-bottom: 1.2rem;
-            letter-spacing: -0.02em;
+            font-style: italic;
+            color: #1e5aa8;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+            text-align: left;
           }
 
-          .feedback-text {
-            color: #444;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            font-weight: 500;
-            margin-bottom: 1.5rem;
+          .card-feedback {
+            font-family: var(--font-body, sans-serif);
+            font-size: 0.75rem;
+            line-height: 1.5;
+            color: rgba(0, 0, 0, 0.7);
+            margin-bottom: auto;
+            text-align: left;
           }
 
-          .key-points {
+          .card-footer {
+            margin-top: 1.5rem;
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-            margin-bottom: 2rem;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
           }
 
-          .point {
-            background: rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            color: #111;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            padding: 0.5rem 1rem;
-            border-radius: 100px;
+          .brand-logo-container {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            background: #ffffff;
+            flex-shrink: 0;
+          }
+
+          .brand-logo-glow {
+            position: absolute;
+            inset: -10px;
+            filter: blur(15px);
+            opacity: 0.2;
+            z-index: 0;
+          }
+
+          .feedbacker-image {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            transition: transform 0.6s ease;
+          }
+
+          .card:hover .feedbacker-image {
+            transform: scale(1.1);
           }
 
           .brand-info {
             display: flex;
             flex-direction: column;
-            gap: 0.2rem;
+            gap: 0.5rem;
+            flex: 1;
           }
 
-          .author {
-            color: var(--card-bg, #4DB8E5);
-            font-family: 'Outfit', sans-serif;
+          .brand-name {
+            font-family: var(--font-display, sans-serif);
+            font-weight: 900;
             font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 0.2em;
-            font-weight: 900;
+            letter-spacing: 0.1em;
+            color: #1e5aa8;
+          }
+
+          .brand-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+          }
+
+          .tag {
+            padding: 2px 8px;
+            background: rgba(77, 184, 229, 0.1);
+            color: #4db8e5;
+            font-size: 0.55rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-radius: 2rem;
+            border: 1px solid rgba(77, 184, 229, 0.2);
+            white-space: nowrap;
           }
 
           .card {
@@ -423,8 +431,8 @@
             position: absolute;
             left: 50%;
             top: 50%;
-            width: min(var(--active-w), calc(100% - 24px));
-            aspect-ratio: 1.5;
+            width: 260px;
+            aspect-ratio: 0.78;
             
             /* CSS-based scroll offset calculation for better performance */
             --scroll-offset: calc(var(--index, 0) - var(--scroll-index, 0));
@@ -672,26 +680,27 @@
 
     _cardTemplate(item, index) {
       const title = item.title || DEFAULT_ITEMS[index % DEFAULT_ITEMS.length].title;
-      const subtitle = item.subtitle || DEFAULT_ITEMS[index % DEFAULT_ITEMS.length].subtitle;
       const color = item.color || DEFAULT_ITEMS[index % DEFAULT_ITEMS.length].color;
 
-      // Active state layout - Rigid 3D wheel physics
-      const activeW = "clamp(280px, 30vw, 420px)";
+      const activeW = "320px";
       const theta = 18; // degrees
       const radius = 1800; // cylinder push
       const fixedRotateY = `${index * theta}deg`;
 
       const stars = parseInt(item.stars || "5");
-      const starsHtml = Array(5).fill(0).map((_, i) => {
-        const isFilled = i < stars;
-        return `
-          <div class="star-box" style="opacity: 1">
-            <svg class="star" style="color: ${isFilled ? '#FFD700' : '#ff3b3b'}" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-            </svg>
-          </div>
-        `;
-      }).join('');
+      const starsHtml = Array(stars).fill(0).map(() => `
+        <svg class="star" viewBox="0 0 24 24">
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+      `).join('');
+
+      const feedback = item.feedback || "Exceptional performance and cinematic vision. The Viral Duo transformed our digital presence.";
+      const feedbackLength = feedback.length;
+      const titleLength = title.length;
+
+      // Dynamic font sizing
+      const feedbackSize = feedbackLength > 160 ? "0.6rem" : (feedbackLength > 100 ? "0.7rem" : "0.75rem");
+      const nameSize = titleLength > 20 ? "0.6rem" : (titleLength > 15 ? "0.7rem" : "0.75rem");
 
       return `
         <article
@@ -707,25 +716,29 @@
         >
           <div class="card-inner">
             <div class="card-content">
-              <div class="brand-glow"></div>
+              <div class="card-header">
+                <div class="stars-container">${starsHtml}</div>
+                <div class="quote-icon">”</div>
+              </div>
               
-              <div class="card-part-left">
-                <img src="${escapeAttr(item.image || item.src)}" class="feedbacker-image" alt="${escapeAttr(title)}" />
+              <div class="card-quote">
+                ${escapeAttr(item.subtitle || item.title)}
+              </div>
+              
+              <div class="card-feedback" style="font-size: ${feedbackSize}">
+                ${escapeAttr(feedback)}
               </div>
 
-              <div class="card-part-right">
-                <div class="stars-container">${starsHtml}</div>
-                
-                <h3 class="card-quote">"${escapeAttr(item.quote || "The ROI is insane.")}"</h3>
-                
-                <div class="feedback-text">${escapeAttr(item.feedback || "Exceptional performance and cinematic vision. The Viral Duo transformed our digital presence.")}</div>
-                
-                <div class="key-points">
-                  ${(item.points || "Growth, Viral, Strategy").split(',').map(p => `<span class="point">${escapeAttr(p.trim())}</span>`).join('')}
+              <div class="card-footer">
+                <div class="brand-logo-container">
+                  <div class="brand-logo-glow" style="background: ${escapeAttr(color)}"></div>
+                  <img src="${escapeAttr(item.image || item.src)}" class="feedbacker-image" alt="${escapeAttr(title)}" />
                 </div>
-
                 <div class="brand-info">
-                  <div class="author">Feedback by ${escapeAttr(title)}</div>
+                  <div class="brand-tags">
+                    ${(item.points || "Growth, Viral, Strategy").split(',').map(p => `<span class="tag">${escapeAttr(p.trim())}</span>`).join('')}
+                  </div>
+                  <div class="brand-name" style="font-size: ${nameSize}">${escapeAttr(title)}</div>
                 </div>
               </div>
             </div>

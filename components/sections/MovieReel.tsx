@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import CinematicReel from "../global/CinematicReel";
 import { useDynamicData } from "@/lib/DynamicDataContext";
 
-const projects = [
+export const DEFAULT_PROJECTS = [
   {
     id: 1,
     client: "Anytime Fitness",
@@ -141,14 +141,13 @@ const projects = [
     thumbnail: "/assets/projects/career-launcher-thumb.jpg",
     video: "/assets/projects/career-launcher-video.mp4",
     logo: "/assets/projects/career-launcher-logo.jpg",
-    link: "https://www.instagram.com/cl_ashokvihar?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
     logoLink: "https://www.instagram.com/cl_ashokvihar?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
   },
 ];
 
 export default function MovieReel() {
   const { data } = useDynamicData();
-  const finalProjects = [...projects, ...(data?.work || [])];
+  const finalProjects = data?.work || [];
   const sectionRef = useRef<HTMLDivElement>(null);
   const horizontalReelRef = useRef<HTMLDivElement>(null);
   const spinningReelRef = useRef<HTMLDivElement>(null);

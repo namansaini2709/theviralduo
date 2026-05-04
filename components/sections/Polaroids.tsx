@@ -10,7 +10,7 @@ const collageStyle = {
   "--media-collage-shadow": "0 40px 100px rgba(0, 0, 0, 0.6)",
 } as CSSProperties;
 
-const feedbackItems = [
+export const DEFAULT_FEEDBACK = [
   {
     title: "Anytime Fitness",
     quote: "Poore India mein aag laga di! 1.2M views.",
@@ -99,7 +99,7 @@ export default function Polaroids() {
 
   if (!mounted) return <section id="testimonials" className="min-h-[60vh] bg-transparent" />;
 
-  const finalFeedback = [...feedbackItems, ...(data?.feedback || [])];
+  const finalFeedback = data?.feedback || [];
 
   const mediaCollage = createElement(
     "media-collage",
@@ -208,7 +208,10 @@ export default function Polaroids() {
               <p className="font-serif italic text-2xl leading-[1.2] text-brand-deep mb-4">
                 {item.quote}
               </p>
-              <p className="text-[13px] leading-relaxed text-black/60 font-body">
+              <p 
+                className="leading-relaxed text-black/60 font-body"
+                style={{ fontSize: (item.feedback || item.quote).length > 150 ? '11px' : '13px' }}
+              >
                 {item.feedback || item.quote}
               </p>
             </blockquote>
@@ -230,7 +233,10 @@ export default function Polaroids() {
               </div>
               
               <div className="flex flex-col gap-1.5">
-                <h4 className="font-display font-black text-[11px] uppercase tracking-[0.15em] text-brand-deep leading-none">
+                <h4 
+                  className="font-display font-black uppercase tracking-[0.15em] text-brand-deep leading-none"
+                  style={{ fontSize: item.title.length > 20 ? '9px' : (item.title.length > 15 ? '10px' : '11px') }}
+                >
                   {item.title}
                 </h4>
                 <div className="flex flex-wrap gap-1.5">
