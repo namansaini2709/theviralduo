@@ -138,7 +138,7 @@ export default function Polaroids() {
 
       <div className="relative z-10 mb-8 px-6 text-center">
         <h2 className="font-serif text-4xl md:text-8xl font-black tracking-tight text-brand-deep uppercase">
-          THE <span className="font-serif italic text-gradient">FEEDBACK</span>
+          THE <span className="font-serif italic text-gradient px-4">FEEDBACK</span>
         </h2>
         <div className="mx-auto mt-4 flex max-w-2xl items-center justify-center gap-4">
           <div className="h-px w-8 md:w-12 bg-black/20" />

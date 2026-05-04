@@ -77,14 +77,14 @@ export default function Results() {
 
   return (
     <section ref={sectionRef} id="results" className="py-24 px-6 md:px-20 bg-brand-soft border-y border-brand-border z-10 relative overflow-x-hidden">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
-        <div className="md:w-1/3 results-heading">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12 md:gap-20">
+        <div className="md:w-[40%] results-heading translate-y-12">
           <h2 className="font-serif font-black text-5xl md:text-7xl uppercase leading-tight text-brand-deep">
-            The <span className="text-gradient inline-block py-2">Proof</span> Is In The <span className="font-handwritten text-4xl lowercase text-brand-sky inline-block py-2 px-1">numbers</span>
+            The <span className="text-gradient inline-block py-2">Proof</span> Is In The <span className="font-handwritten text-4xl lowercase text-brand-sky inline-block py-2 ml-48 relative left-8">numbers</span>
           </h2>
         </div>
         
-        <div className="md:w-2/3 grid grid-cols-1 md:grid-cols-3 gap-8 w-full stats-container">
+        <div className="md:w-[60%] grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 w-full stats-container">
           {STATS.map((stat, i) => (
             <div key={i} className="stat-card flex flex-col items-center justify-center p-8 card-brand rounded-3xl transform hover:-translate-y-2 transition-transform duration-300">
               <div className="flex items-baseline font-serif font-black text-6xl md:text-8xl text-brand-deep">

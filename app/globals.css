@@ -83,23 +83,9 @@
   font-family: var(--font-cooper), serif;
   font-weight: 900;
   text-transform: uppercase;
-  background: linear-gradient(to bottom, #FFA726 0%, #FF8C42 50%, #FF4D6D 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--brand-deep);
   display: inline-block;
   padding: 0.25em 0.1em;
-  color: transparent;
-  /* Thick Outline and 3D Shadow */
-  filter: drop-shadow(0px 4px 0px #1E5AA8);
-  /* Layered text-shadow for a smooth thick outline and extrusion */
-  text-shadow: 
-    -3px -3px 0 #1E5AA8,  
-    3px -3px 0 #1E5AA8,
-    -3px  3px 0 #1E5AA8,
-    3px  3px 0 #1E5AA8,
-    0px  6px 0px #14457A, /* Darker blue for extrusion */
-    0px  8px 15px rgba(20, 69, 122, 0.3);
   letter-spacing: -0.04em;
   line-height: 1.1;
   padding: 0.3em 0.1em;
@@ -109,18 +95,7 @@
   font-family: var(--font-cooper), serif;
   font-weight: 900;
   text-transform: uppercase;
-  background: linear-gradient(to bottom, #FFA726 0%, #FF8C42 50%, #FF4D6D 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0px 1px 0px #1E5AA8);
-  text-shadow: 
-    -1px -1px 0 #1E5AA8,  
-    1px -1px 0 #1E5AA8,
-    -1px  1px 0 #1E5AA8,
-    1px  1px 0 #1E5AA8,
-    0px  2px 0px #14457A;
+  color: var(--brand-deep);
   display: inline-block;
   padding: 0.2em 0.1em;
   line-height: 1.2;
