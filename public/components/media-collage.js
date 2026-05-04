@@ -328,8 +328,10 @@
             inset: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            filter: grayscale(1) brightness(0.9);
+            object-fit: contain;
+            background: #ffffff;
+            padding: 1.2rem;
+            filter: grayscale(1) brightness(0.95);
             transition: filter 0.6s ease, transform 0.6s ease;
             z-index: 1;
           }

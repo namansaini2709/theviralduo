@@ -220,11 +220,11 @@ export default function Polaroids() {
                   className="absolute inset-0 rounded-full blur-md opacity-20"
                   style={{ backgroundColor: item.color }}
                 />
-                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-sm relative z-10 bg-brand-soft">
+                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-sm relative z-10 bg-white p-2">
                   <img 
                     src={item.image} 
                     alt={item.title} 
-                    className="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-110" 
+                    className="w-full h-full object-contain grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" 
                   />
                 </div>
               </div>
