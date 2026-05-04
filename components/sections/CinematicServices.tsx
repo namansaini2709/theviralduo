@@ -55,6 +55,7 @@ const SERVICES_DATA = [
 export default function CinematicServices() {
   const containerRef = useRef<HTMLDivElement>(null);
   const openingTextRef = useRef<HTMLDivElement>(null);
+  const stickyHeaderRef = useRef<HTMLDivElement>(null);
   const taglineRef = useRef<HTMLDivElement>(null);
   const taglinePart1Ref = useRef<HTMLSpanElement>(null);
   const taglinePart2Ref = useRef<HTMLSpanElement>(null);
@@ -152,6 +153,15 @@ export default function CinematicServices() {
         ease: "power2.inOut",
       });
 
+      // 3b. Sticky Header Reappears in one line at the top
+      gsap.set(stickyHeaderRef.current, { y: -50, opacity: 0 });
+      tl.to(stickyHeaderRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 1.5,
+        ease: "power3.out",
+      }, "-=1.5");
+
       // 4. Card Entry Animation
       gsap.set(cardRefs.current, { 
         opacity: 0, 
@@ -175,6 +185,14 @@ export default function CinematicServices() {
       // 5. Final Hold to allow interaction
       tl.to({}, { duration: 2 });
 
+      // 6. Sticky Header Fades Out after everything is settled
+      tl.to(stickyHeaderRef.current, {
+        opacity: 0,
+        y: -20,
+        duration: 1,
+        ease: "power2.inOut"
+      });
+
     }, containerRef);
 
     return () => {
@@ -192,6 +210,16 @@ export default function CinematicServices() {
       {/* Background Cinematic Glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vh] bg-[radial-gradient(circle,rgba(77,184,229,0.08)_0%,transparent_70%)] opacity-60" />
+      </div>
+
+      {/* Sticky Header (Reappears at the top) */}
+      <div 
+        ref={stickyHeaderRef} 
+        className="fixed top-[84px] left-0 right-0 z-[60] flex justify-center pointer-events-none px-6"
+      >
+        <h2 className="font-serif font-black text-2xl md:text-3xl text-brand-deep tracking-tight uppercase text-center bg-white/40 backdrop-blur-md px-8 py-3 rounded-full border border-black/5 shadow-sm">
+          SERVICES <span className="text-orange-gradient">WE</span> PROVIDE
+        </h2>
       </div>
 
       {/* Opening Text Container */}
