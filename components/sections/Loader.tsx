@@ -29,7 +29,7 @@ const HeroAnimationLoader: React.FC<HeroAnimationLoaderProps> = ({ onComplete })
   useEffect(() => {
     const isMobile = window.innerWidth < 768;
     // Check for low memory if browser supports it
-    const isLowMemory = (navigator as any).deviceMemory && (navigator as any).deviceMemory < 4;
+    const isLowMemory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory && (navigator as Navigator & { deviceMemory?: number }).deviceMemory! < 4;
     
     if (isMobile || isLowMemory) {
       setSettings({

@@ -199,7 +199,7 @@ export default function About() {
           const paragraphs = gsap.utils.toArray(".about-paragraph") as HTMLElement[];
           
           paragraphs.forEach((p, i) => {
-            let fromVars: gsap.TweenVars = { autoAlpha: 0 };
+            const fromVars: gsap.TweenVars = { autoAlpha: 0 };
             
             if (i === 0) fromVars.x = 100; // From Right
             if (i === 1) fromVars.x = -100; // From Left

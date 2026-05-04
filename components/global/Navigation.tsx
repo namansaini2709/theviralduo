@@ -7,9 +7,9 @@ import { UserRound } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 
 const NAV_LINKS = [
-  { label: "Work", href: "#movie-reel" },
-  { label: "Services", href: "#services" },
   { label: "About Us", href: "#about" },
+  { label: "Services", href: "#services" },
+  { label: "Work", href: "#movie-reel" },
   { label: "Results", href: "#results" },
   { label: "Contact", href: "#contact" },
 ];
@@ -89,7 +89,6 @@ export default function Navigation() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [activeSection, setActiveSection] = useState("Home");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
@@ -114,7 +113,6 @@ export default function Navigation() {
         for (const section of currentSections) {
           const element = document.getElementById(section);
           if (element && window.scrollY >= element.offsetTop - 200) {
-            setActiveSection(NAV_LINKS.find(l => l.href === `#${section}`)?.label || "Home");
             break;
           }
         }
@@ -126,9 +124,8 @@ export default function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 
-  const scrollTo = (href: string, label: string) => {
+  const scrollTo = (href: string) => {
     setIsMobileMenuOpen(false);
-    setActiveSection(label);
 
     if (href.startsWith("#")) {
       if (pathname !== "/") {
@@ -220,7 +217,7 @@ export default function Navigation() {
               onMouseLeave={() => setHoveredIndex(null)}
             >
               <MagneticLink
-                onClick={() => scrollTo(link.href, link.label)}
+                onClick={() => scrollTo(link.href)}
               >
                 {link.label}
               </MagneticLink>
@@ -233,7 +230,7 @@ export default function Navigation() {
           variants={itemVariants}
           whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(30, 90, 168, 0.4)" }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => scrollTo("#contact", "Contact")}
+          onClick={() => scrollTo("#contact")}
           className="hidden md:flex items-center gap-2 bg-brand-deep text-white px-5 py-2 rounded-full font-bold text-xs transition-all duration-300 z-10"
         >
           <UserRound size={14} strokeWidth={2.5} />
@@ -277,7 +274,7 @@ export default function Navigation() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1, duration: 0.4 }}
-                  onClick={() => scrollTo(link.href, link.label)}
+                  onClick={() => scrollTo(link.href)}
                   className="text-3xl font-display font-bold text-left transition-all text-black/50 hover:text-black"
                 >
                   {link.label}
@@ -287,7 +284,7 @@ export default function Navigation() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                onClick={() => scrollTo("#contact", "Contact")}
+                onClick={() => scrollTo("#contact")}
                 className="mt-4 bg-accent text-white py-5 rounded-3xl font-bold text-xl shadow-[0_10px_30px_rgba(230,57,70,0.4)]"
               >
                 GET IN TOUCH

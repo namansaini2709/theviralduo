@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import Image from "next/image";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -50,10 +51,13 @@ export default function Footer() {
               href="mailto:hello@viralduo.com"
               className="group flex flex-col items-center gap-2 transition-transform duration-300 hover:scale-105"
             >
-              <img 
+              <Image 
                 src="https://cdn-icons-gif.flaticon.com/8717/8717939.gif" 
                 alt="Email Icon" 
+                width={112}
+                height={112}
                 className="w-20 h-20 md:w-28 md:h-28 transition-all duration-300"
+                unoptimized
               />
               <span className="font-serif font-bold text-xs tracking-[0.4em] text-white/40 group-hover:text-white transition-colors duration-300">EMAIL US</span>
             </a>

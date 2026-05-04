@@ -1,9 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useDynamicData } from "@/lib/DynamicDataContext";
-import { DEFAULT_PROJECTS } from "@/components/sections/MovieReel";
-import { DEFAULT_FEEDBACK } from "@/components/sections/Polaroids";
+import { useDynamicData, type Work, type Feedback } from "@/lib/DynamicDataContext";
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -12,13 +10,16 @@ export default function AdminPage() {
     addWork, removeWork, updateWork, 
     addFeedback, updateFeedback, removeFeedback, 
     restoreFromTrash, permanentlyDelete,
-    resetData, data 
+    updateStats, resetData, data 
   } = useDynamicData();
   
   const [editingWorkId, setEditingWorkId] = useState<number | string | null>(null);
   const [editingFeedbackId, setEditingFeedbackId] = useState<number | string | null>(null);
 
+  const [mounted, setMounted] = useState(false);
+  
   React.useEffect(() => {
+    setMounted(true);
     if (sessionStorage.getItem("viralDuoAdminSession") === "true") {
       setIsAuthenticated(true);
     }
@@ -46,7 +47,9 @@ export default function AdminPage() {
   const [points, setPoints] = useState("");
   const [stars, setStars] = useState("5");
 
-  const handleEditWork = (item: any) => {
+  if (!mounted) return null;
+
+  const handleEditWork = (item: Work) => {
     setEditingWorkId(item.id);
     setClient(item.client || "");
     setPlatform(item.platform || "");
@@ -61,7 +64,7 @@ export default function AdminPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleEditFeedback = (item: any) => {
+  const handleEditFeedback = (item: Feedback) => {
     setEditingFeedbackId(item.id);
     setTitle(item.title || "");
     setQuote(item.quote || "");
@@ -78,7 +81,7 @@ export default function AdminPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === "admin123") {
+    if (password.trim() === "admin123") {
       setIsAuthenticated(true);
       sessionStorage.setItem("viralDuoAdminSession", "true");
     } else {
@@ -209,6 +212,72 @@ export default function AdminPage() {
           </div>
         </div>
 
+        {/* Stats Section */}
+        <div className="mb-12 bg-[#111] p-6 md:p-8 rounded-2xl border border-white/10">
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h2 className="text-2xl font-display">Metrics & Proof</h2>
+              <p className="text-xs text-white/40 mt-1">Update the counter values and labels in the Results section.</p>
+            </div>
+            <button 
+              onClick={() => {
+                updateStats(data.stats);
+                alert("Stats updated successfully!");
+              }}
+              className="bg-brand-sky hover:bg-brand-sky/80 text-white px-6 py-2 rounded-lg font-bold transition-colors"
+            >
+              Save Metrics
+            </button>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {(data?.stats || []).map((stat, idx) => (
+              <div key={idx} className="space-y-4 p-4 bg-black/30 rounded-xl border border-white/5">
+                <div className="flex justify-between items-center">
+                  <span className="text-[10px] uppercase font-bold text-white/30 tracking-widest">Metric #{idx + 1}</span>
+                </div>
+                <div>
+                  <label className="block text-[10px] text-white/50 mb-1 uppercase">Value (Number Only)</label>
+                  <input 
+                    type="number" 
+                    value={stat.value} 
+                    onChange={(e) => {
+                      const newStats = [...data.stats];
+                      newStats[idx].value = Number(e.target.value);
+                      updateStats(newStats);
+                    }} 
+                    className="w-full bg-black border border-white/20 p-2 rounded text-sm font-mono" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] text-white/50 mb-1 uppercase">Suffix (e.g. M+, X, %)</label>
+                  <input 
+                    value={stat.suffix} 
+                    onChange={(e) => {
+                      const newStats = [...data.stats];
+                      newStats[idx].suffix = e.target.value;
+                      updateStats(newStats);
+                    }} 
+                    className="w-full bg-black border border-white/20 p-2 rounded text-sm" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] text-white/50 mb-1 uppercase">Label</label>
+                  <input 
+                    value={stat.label} 
+                    onChange={(e) => {
+                      const newStats = [...data.stats];
+                      newStats[idx].label = e.target.value;
+                      updateStats(newStats);
+                    }} 
+                    className="w-full bg-black border border-white/20 p-2 rounded text-sm" 
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Projects Section */}
           <div className="space-y-8">
@@ -317,9 +386,9 @@ export default function AdminPage() {
             </div>
 
             <div className="bg-[#111] p-6 md:p-8 rounded-2xl border border-white/10">
-              <h2 className="text-xl font-display mb-6">Manage Projects ({data.work.length})</h2>
+              <h2 className="text-xl font-display mb-6">Manage Projects ({data?.work?.length || 0})</h2>
               <div className="space-y-3">
-                {data.work.map((item) => (
+                {(data?.work || []).map((item) => (
                   <div key={item.id} className={`flex items-center justify-between p-3 rounded-lg border transition-colors ${editingWorkId === item.id ? "bg-brand-sky/20 border-brand-sky" : "bg-black/50 border-white/5"}`}>
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded bg-cover bg-center" style={{ backgroundImage: `url(${item.thumbnail})` }} />
@@ -433,9 +502,9 @@ export default function AdminPage() {
             </div>
 
             <div className="bg-[#111] p-6 md:p-8 rounded-2xl border border-white/10">
-              <h2 className="text-xl font-display mb-6">Manage Feedback ({data.feedback.length})</h2>
+              <h2 className="text-xl font-display mb-6">Manage Feedback ({data?.feedback?.length || 0})</h2>
               <div className="space-y-3">
-                {data.feedback.map((item, idx) => (
+                {(data?.feedback || []).map((item, idx) => (
                   <div key={item.id || idx} className={`flex items-center justify-between p-3 rounded-lg border transition-colors ${editingFeedbackId === item.id ? "bg-brand-sky/20 border-brand-sky" : "bg-black/50 border-white/5"}`}>
                     <div>
                       <p className="text-sm font-bold">{item.name || item.title}</p>
@@ -463,7 +532,7 @@ export default function AdminPage() {
         </div>
 
         {/* Trash Bin Section */}
-        {data.trash.length > 0 && (
+        {data?.trash && data.trash.length > 0 && (
           <div className="mt-16 bg-[#111] p-6 md:p-8 rounded-2xl border border-red-500/20">
             <div className="flex justify-between items-center mb-6">
               <div>
@@ -476,7 +545,8 @@ export default function AdminPage() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {data.trash.map((item) => (
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              {(data?.trash || []).map((item: any) => (
                 <div key={item.id} className="p-4 bg-black/50 rounded-xl border border-white/5 flex flex-col gap-4">
                   <div className="flex justify-between items-start">
                     <div>

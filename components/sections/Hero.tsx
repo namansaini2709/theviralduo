@@ -5,7 +5,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import { Play } from "lucide-react";
-import { motion } from "framer-motion";
 
 gsap.registerPlugin(ScrollTrigger);
 

@@ -1,18 +1,15 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-const STATS = [
-  { value: 10, suffix: "M+", label: "Views Generated" },
-  { value: 5, suffix: "X", label: "Average Growth" },
-  { value: 50, suffix: "+", label: "Brands Scaled" },
-];
+import { useDynamicData } from "@/lib/DynamicDataContext";
 
 export default function Results() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const countersRef = useRef<(HTMLSpanElement | null)[]>([]);
+  const { data } = useDynamicData();
+  const STATS = useMemo(() => data?.stats || [], [data?.stats]);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -50,9 +47,9 @@ export default function Results() {
       });
 
       countersRef.current.forEach((counter, i) => {
-        if (!counter) return;
+        if (!counter || !STATS[i]) return;
         const targetValue = STATS[i].value;
-        
+
         gsap.to(counter, {
           innerHTML: targetValue,
           duration: 2.5,
@@ -73,7 +70,7 @@ export default function Results() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [STATS]);
 
   return (
     <section ref={sectionRef} id="results" className="py-24 px-6 md:px-20 bg-brand-soft border-y border-brand-border z-10 relative overflow-x-hidden">
@@ -83,7 +80,7 @@ export default function Results() {
             The <span className="text-gradient inline-block py-2">Proof</span> Is In The <span className="font-handwritten text-3xl md:text-4xl lowercase text-brand-sky inline-block py-2 ml-2 md:ml-4 relative">numbers</span>
           </h2>
         </div>
-        
+
         <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 stats-container w-full">
           {STATS.map((stat, i) => (
             <div key={i} className="flex-1 stat-card flex flex-col items-center justify-center p-6 md:p-8 card-brand rounded-3xl transform hover:-translate-y-2 transition-transform duration-300 min-h-[180px] md:min-h-[220px]">

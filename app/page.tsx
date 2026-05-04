@@ -85,14 +85,14 @@ export default function Home() {
         {/* 4. Our Work Section */}
         <MovieReel />
 
-        {/* 4.5. Brands We Worked With */}
-        <Brands />
+        {/* 4.5. Results Section */}
+        <Results />
         
         {/* 5. Feedback Section */}
         <Polaroids />
         
-        {/* 5.5. Results Section */}
-        <Results />
+        {/* 5.5. Brands We Worked With */}
+        <Brands />
         
         {/* 6. Contact Section */}
         <Contact />
