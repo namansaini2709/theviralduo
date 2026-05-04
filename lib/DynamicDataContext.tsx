@@ -9,6 +9,7 @@ interface DynamicData {
   reels: any[];
   work: any[];
   feedback: any[];
+  trash: any[];
 }
 
 interface DynamicDataContextType {
@@ -20,6 +21,8 @@ interface DynamicDataContextType {
   addFeedback: (feedback: any) => void;
   updateFeedback: (feedback: any) => void;
   removeFeedback: (id: number | string) => void;
+  restoreFromTrash: (id: number | string) => void;
+  permanentlyDelete: (id: number | string) => void;
   resetData: () => void;
 }
 
@@ -30,6 +33,7 @@ export function DynamicDataProvider({ children }: { children: React.ReactNode })
     reels: [],
     work: DEFAULT_PROJECTS,
     feedback: DEFAULT_FEEDBACK.map((f, i) => ({ ...f, id: `def-f-${i}` })),
+    trash: [],
   });
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -44,6 +48,7 @@ export function DynamicDataProvider({ children }: { children: React.ReactNode })
             reels: parsed.reels || [],
             work: parsed.work && parsed.work.length > 0 ? parsed.work : DEFAULT_PROJECTS,
             feedback: parsed.feedback && parsed.feedback.length > 0 ? parsed.feedback : DEFAULT_FEEDBACK.map((f: any, i: number) => ({ ...f, id: `def-f-${i}` })),
+            trash: parsed.trash || [],
           });
         } catch (e) {
           console.error("Failed to parse dynamic data", e);
@@ -89,7 +94,15 @@ export function DynamicDataProvider({ children }: { children: React.ReactNode })
   };
 
   const removeWork = (id: number | string) => {
-    setData((prev) => ({ ...prev, work: prev.work.filter(w => w.id !== id) }));
+    setData((prev) => {
+      const itemToTrash = prev.work.find(w => w.id === id);
+      if (!itemToTrash) return prev;
+      return {
+        ...prev,
+        work: prev.work.filter(w => w.id !== id),
+        trash: [...prev.trash, { ...itemToTrash, trashType: 'work', trashedAt: Date.now() }]
+      };
+    });
   };
 
   const addFeedback = (feedback: any) => {
@@ -104,14 +117,46 @@ export function DynamicDataProvider({ children }: { children: React.ReactNode })
   };
 
   const removeFeedback = (id: number | string) => {
-    setData((prev) => ({ ...prev, feedback: prev.feedback.filter(f => f.id !== id) }));
+    setData((prev) => {
+      const itemToTrash = prev.feedback.find(f => f.id === id);
+      if (!itemToTrash) return prev;
+      return {
+        ...prev,
+        feedback: prev.feedback.filter(f => f.id !== id),
+        trash: [...prev.trash, { ...itemToTrash, trashType: 'feedback', trashedAt: Date.now() }]
+      };
+    });
+  };
+
+  const restoreFromTrash = (id: number | string) => {
+    setData((prev) => {
+      const itemToRestore = prev.trash.find(t => t.id === id);
+      if (!itemToRestore) return prev;
+      
+      const { trashType, trashedAt, ...originalItem } = itemToRestore;
+      const newTrash = prev.trash.filter(t => t.id !== id);
+      
+      if (trashType === 'work') {
+        return { ...prev, work: [...prev.work, originalItem], trash: newTrash };
+      } else {
+        return { ...prev, feedback: [...prev.feedback, originalItem], trash: newTrash };
+      }
+    });
+  };
+
+  const permanentlyDelete = (id: number | string) => {
+    setData((prev) => ({
+      ...prev,
+      trash: prev.trash.filter(t => t.id !== id)
+    }));
   };
 
   const resetData = () => {
     setData({ 
       reels: [], 
       work: DEFAULT_PROJECTS, 
-      feedback: DEFAULT_FEEDBACK.map((f, i) => ({ ...f, id: `def-f-${i}` })) 
+      feedback: DEFAULT_FEEDBACK.map((f, i) => ({ ...f, id: `def-f-${i}` })),
+      trash: []
     });
     localStorage.removeItem("viralDuoDynamicData");
   };
@@ -125,7 +170,9 @@ export function DynamicDataProvider({ children }: { children: React.ReactNode })
       removeWork, 
       addFeedback, 
       updateFeedback, 
-      removeFeedback, 
+      removeFeedback,
+      restoreFromTrash,
+      permanentlyDelete,
       resetData 
     }}>
       {children}

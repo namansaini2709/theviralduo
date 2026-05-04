@@ -8,7 +8,12 @@ import { DEFAULT_FEEDBACK } from "@/components/sections/Polaroids";
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
-  const { addWork, removeWork, updateWork, addFeedback, updateFeedback, removeFeedback, resetData, data } = useDynamicData();
+  const { 
+    addWork, removeWork, updateWork, 
+    addFeedback, updateFeedback, removeFeedback, 
+    restoreFromTrash, permanentlyDelete,
+    resetData, data 
+  } = useDynamicData();
   
   const [editingWorkId, setEditingWorkId] = useState<number | string | null>(null);
   const [editingFeedbackId, setEditingFeedbackId] = useState<number | string | null>(null);
@@ -456,6 +461,58 @@ export default function AdminPage() {
             </div>
           </div>
         </div>
+
+        {/* Trash Bin Section */}
+        {data.trash.length > 0 && (
+          <div className="mt-16 bg-[#111] p-6 md:p-8 rounded-2xl border border-red-500/20">
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h2 className="text-2xl font-display text-red-400">Trash Bin</h2>
+                <p className="text-xs text-white/40 mt-1">Items deleted from the lists above are moved here for safety.</p>
+              </div>
+              <span className="bg-red-500/10 text-red-400 text-[10px] px-2 py-1 rounded uppercase font-bold tracking-widest">
+                {data.trash.length} Items
+              </span>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {data.trash.map((item) => (
+                <div key={item.id} className="p-4 bg-black/50 rounded-xl border border-white/5 flex flex-col gap-4">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <span className={`text-[9px] px-1.5 py-0.5 rounded uppercase font-bold tracking-tighter ${item.trashType === 'work' ? 'bg-brand-sky/10 text-brand-sky' : 'bg-brand-pink/10 text-brand-pink'}`}>
+                        {item.trashType === 'work' ? 'Project' : 'Feedback'}
+                      </span>
+                      <h4 className="text-sm font-bold mt-2">{item.client || item.name || item.title}</h4>
+                    </div>
+                    {item.thumbnail && (
+                      <div className="w-10 h-10 rounded bg-cover bg-center border border-white/10" style={{ backgroundImage: `url(${item.thumbnail})` }} />
+                    )}
+                  </div>
+                  
+                  <div className="flex gap-2 mt-auto">
+                    <button 
+                      onClick={() => restoreFromTrash(item.id)}
+                      className="flex-1 py-2 bg-white/5 hover:bg-white/10 text-white text-[10px] font-bold uppercase tracking-widest rounded transition-colors"
+                    >
+                      Restore
+                    </button>
+                    <button 
+                      onClick={() => {
+                        if (window.confirm("This will delete this item forever. Are you sure?")) {
+                          permanentlyDelete(item.id);
+                        }
+                      }}
+                      className="flex-1 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-[10px] font-bold uppercase tracking-widest rounded transition-colors"
+                    >
+                      Delete Forever
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
