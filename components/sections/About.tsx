@@ -236,7 +236,7 @@ export default function About() {
                     }}
                     className={`${
                       wordIdx === 0 || wordIdx === 2 
-                        ? "text-brand-sky" 
+                        ? "text-brand-deep" 
                         : "text-orange-gradient"
                     } font-serif font-black inline-block text-[12vw] md:text-[8vw] lg:text-[6.5rem] italic leading-[1.15] px-4 py-2 -mx-4 uppercase`}
                   >
