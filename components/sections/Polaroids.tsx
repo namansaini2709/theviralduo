@@ -12,48 +12,66 @@ const collageStyle = {
 
 const feedbackItems = [
   {
-    title: "Mindful Coffee",
-    quote: "Flawless execution, absolute growth.",
-    image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80",
-    color: "#4DB8E5",
-    feedback: "The Viral Duo didn't just post for us; they engineered a community. Our engagement rate tripled within the first month.",
-    points: "Engagement, Community, Scaling",
+    title: "Anytime Fitness",
+    quote: "1.2M views in 2 weeks. The ROI is insane.",
+    image: "/brands/anytime-fitness.jpg",
+    color: "#8E24AA",
+    feedback: "The Viral Duo transformed our gym's digital presence. Their cinematic reels brought in a wave of new memberships we haven't seen in years.",
+    points: "Growth, Memberships, Viral",
     stars: "5"
   },
   {
-    title: "Tech Guru",
-    quote: "Viral Duo understands the algorithm.",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80",
-    color: "#FF4D6D",
-    feedback: "Technical precision met creative genius. They navigated the complex B2B space with ease and delivered results.",
-    points: "B2B, Lead Gen, Precision",
+    title: "Vdmc",
+    quote: "Our engagement tripled overnight.",
+    image: "/brands/vdmc.jpg",
+    color: "#1E88E5",
+    feedback: "Exceptional storytelling and execution. They don't just post content; they build communities that actually interact with our brand.",
+    points: "Engagement, Strategy, Results",
     stars: "5"
   },
   {
-    title: "Rust Rooster",
-    quote: "The cinematic quality is unmatched.",
-    image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80",
-    color: "#FFD43B",
-    feedback: "Every frame they produced felt like a high-budget movie. They truly elevated our brand's visual identity.",
-    points: "Cinematic, Visuals, Luxury",
+    title: "Make Your Trip Possible",
+    quote: "The best travel content we've ever had.",
+    image: "/brands/make-your-trip.jpg",
+    color: "#F4511E",
+    feedback: "They captured the essence of our travel experiences perfectly. Every frame feels like a high-budget movie. Absolutely brilliant team.",
+    points: "Cinematic, Travel, Premium",
+    stars: "5"
+  },
+  {
+    title: "FOF Fitness",
+    quote: "Relentless creative iteration that wins.",
+    image: "/brands/fof-fitness.jpeg",
+    color: "#43A047",
+    feedback: "Their data-driven approach to content is what sets them apart. They double down on what works and keep the growth compounding.",
+    points: "Data-Driven, Iteration, Scale",
+    stars: "5"
+  },
+  {
+    title: "Sharma Ji Ke Bhature",
+    quote: "3.4M views! Our outlet is always full now.",
+    image: "/brands/sharma-ji.jpg",
+    color: "#FB8C00",
+    feedback: "The viral reel they created for our food vlog series was a game changer. We went from local to famous almost overnight.",
+    points: "Footfall, Viral, Foodie",
+    stars: "5"
+  },
+  {
+    title: "Global Holidays",
+    quote: "A true partner in our digital growth.",
+    image: "/brands/global-holidays.png",
+    color: "#00ACC1",
+    feedback: "Professional, creative, and highly strategic. They managed our multi-creator campaign with zero friction and delivered massive ROI.",
+    points: "ROI, Creators, Partnership",
     stars: "4"
   },
   {
-    title: "FitFlow",
-    quote: "3.1M views in 48 hours. Unreal.",
-    image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1200&q=80",
-    color: "#FFA726",
-    feedback: "Unprecedented reach. We went from a local gym to a global fitness brand almost overnight.",
-    points: "Viral, Global, Fitness",
-    stars: "5"
-  },
-  {
-    title: "Bloom",
-    quote: "Our sales doubled after the first reel.",
-    image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=1200&q=80",
-    color: "#1E5AA8",
-    feedback: "Direct ROI. Every piece of content they created led to measurable sales growth and brand loyalty.",
-    points: "Sales, ROI, Loyalty",
+    title: "Career Launcher",
+    quote: "Iconic identity designed for recognition.",
+    image: "/brands/career-launcher.jpg",
+    color: "#3949AB",
+    feedback: "They helped us build a brand identity that stands out in the crowded education space. Methodical analysis meets true creative genius.",
+    points: "Branding, Education, Impact",
     stars: "5"
   }
 ];
