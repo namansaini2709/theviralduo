@@ -128,17 +128,18 @@ export default function CinematicServices() {
         duration: 1.5,
         stagger: 0.2,
         ease: "power3.out",
-        onComplete: () => {
-          // Step 3: Viral starts jumping continuously
-          gsap.to(viralWordRef.current, {
-            y: -20,
-            duration: 0.5,
-            repeat: -1,
-            yoyo: true,
-            ease: "power2.inOut",
-            overwrite: "auto"
-          });
-        }
+      });
+
+      // Step 3: Trigger the continuous jumping once settled
+      tl.add(() => {
+        gsap.to(viralWordRef.current, {
+          y: -20,
+          duration: 0.4,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+          id: "viralJump"
+        });
       });
 
       tl.to({}, { duration: 1 }); // Short hold
