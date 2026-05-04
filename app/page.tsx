@@ -9,6 +9,7 @@ import About from "@/components/sections/About";
 import CinematicServices from "@/components/sections/CinematicServices";
 import Marquee from "@/components/sections/Marquee";
 import MovieReel from "@/components/sections/MovieReel";
+import Brands from "@/components/sections/Brands";
 import Polaroids from "@/components/sections/Polaroids";
 import Results from "@/components/sections/Results";
 import Contact from "@/components/sections/Contact";
@@ -83,6 +84,9 @@ export default function Home() {
         
         {/* 4. Our Work Section */}
         <MovieReel />
+
+        {/* 4.5. Brands We Worked With */}
+        <Brands />
         
         {/* 5. Feedback Section */}
         <Polaroids />
