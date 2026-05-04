@@ -96,12 +96,13 @@ const HeroAnimationLoader: React.FC<HeroAnimationLoaderProps> = ({ onComplete })
     if (img && img.complete) {
       const hRatio = canvas.width / img.width;
       const vRatio = canvas.height / img.height;
-      const ratio = Math.max(hRatio, vRatio);
+      const ratio = Math.max(hRatio, vRatio) * 1.10;
       
       const w = img.width * ratio;
       const h = img.height * ratio;
-      const x = (canvas.width - w) / 2;
-      const y = (canvas.height - h) / 2;
+      // Align top-left to ensure all "extra" image from the zoom is cropped from the bottom-right
+      const x = 0;
+      const y = 0;
       
       ctx.drawImage(img, 0, 0, img.width, img.height, x, y, w, h);
     }
