@@ -15,7 +15,7 @@ const feedbackItems = [
     title: "Mindful Coffee",
     quote: "Flawless execution, absolute growth.",
     image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80",
-    color: "#F5F0E8",
+    color: "#4DB8E5",
     feedback: "The Viral Duo didn't just post for us; they engineered a community. Our engagement rate tripled within the first month.",
     points: "Engagement, Community, Scaling",
     stars: "5"
@@ -24,7 +24,7 @@ const feedbackItems = [
     title: "Tech Guru",
     quote: "Viral Duo understands the algorithm.",
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80",
-    color: "#FF6B6B",
+    color: "#FF4D6D",
     feedback: "Technical precision met creative genius. They navigated the complex B2B space with ease and delivered results.",
     points: "B2B, Lead Gen, Precision",
     stars: "5"
@@ -33,7 +33,7 @@ const feedbackItems = [
     title: "Rust Rooster",
     quote: "The cinematic quality is unmatched.",
     image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80",
-    color: "#F2DC78",
+    color: "#FFD43B",
     feedback: "Every frame they produced felt like a high-budget movie. They truly elevated our brand's visual identity.",
     points: "Cinematic, Visuals, Luxury",
     stars: "4"
@@ -42,7 +42,7 @@ const feedbackItems = [
     title: "FitFlow",
     quote: "3.1M views in 48 hours. Unreal.",
     image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1200&q=80",
-    color: "#A8F275",
+    color: "#FFA726",
     feedback: "Unprecedented reach. We went from a local gym to a global fitness brand almost overnight.",
     points: "Viral, Global, Fitness",
     stars: "5"
@@ -51,7 +51,7 @@ const feedbackItems = [
     title: "Bloom",
     quote: "Our sales doubled after the first reel.",
     image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=1200&q=80",
-    color: "#8998F2",
+    color: "#1E5AA8",
     feedback: "Direct ROI. Every piece of content they created led to measurable sales growth and brand loyalty.",
     points: "Sales, ROI, Loyalty",
     stars: "5"
@@ -118,7 +118,7 @@ export default function Polaroids() {
     <section 
       id="testimonials" 
       ref={sectionRef}
-      className="py-12 md:py-24 min-h-fit md:min-h-[80vh] overflow-hidden relative isolate bg-transparent z-10"
+      className="py-12 md:py-24 min-h-fit md:min-h-[80vh] overflow-hidden relative isolate bg-transparent z-10 flex flex-col items-center justify-center"
       onMouseMove={(e) => {
         if (!sectionRef.current) return;
         const rect = sectionRef.current.getBoundingClientRect();
@@ -132,13 +132,13 @@ export default function Polaroids() {
         className="pointer-events-none absolute inset-0 z-20 transition-opacity duration-500"
         style={{
           opacity: isHovering ? 1 : 0,
-          background: `radial-gradient(600px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(230, 57, 70, 0.15), transparent 60%)`,
+          background: `radial-gradient(600px circle at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(77, 184, 229, 0.15), transparent 60%)`,
         }}
       />
 
       <div className="relative z-10 mb-8 px-6 text-center">
-        <h2 className="font-display text-4xl md:text-8xl font-bold tracking-tighter text-black">
-          THE <span className="italic text-accent">FEEDBACK</span>
+        <h2 className="font-display text-4xl md:text-8xl font-bold tracking-tighter text-brand-deep">
+          THE <span className="italic text-gradient">FEEDBACK</span>
         </h2>
         <div className="mx-auto mt-4 flex max-w-2xl items-center justify-center gap-4">
           <div className="h-px w-8 md:w-12 bg-black/20" />
@@ -150,7 +150,7 @@ export default function Polaroids() {
         </div>
       </div>
 
-      <div className="relative z-10 px-0 md:px-4">
+      <div className="relative z-10 px-0 md:px-4 w-full">
         {mediaCollage}
       </div>
     </section>

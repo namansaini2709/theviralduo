@@ -21,8 +21,8 @@ const services: Service[] = [
     title: "Short-Form Content",
     description: "Our cinematic approach captures attention in 0.5 seconds. We craft scroll-stopping reels and TikToks.",
     icon: <Play className="w-5 h-5" />,
-    color: "#FF8C42",
-    gradient: "from-[#FF8C42]/40 to-transparent",
+    color: "#FF4D6D",
+    gradient: "from-[#FF4D6D]/40 to-transparent",
     image: "https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=800&auto=format&fit=crop",
   },
   {
@@ -30,8 +30,8 @@ const services: Service[] = [
     title: "Brand Strategy",
     description: "Methodical analysis meets creative storytelling. We build iconic identities designed for recognition.",
     icon: <Target className="w-5 h-5" />,
-    color: "#00E5FF",
-    gradient: "from-[#00E5FF]/40 to-transparent",
+    color: "#4DB8E5",
+    gradient: "from-[#4DB8E5]/40 to-transparent",
     image: "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=800&auto=format&fit=crop",
   },
   {
@@ -39,8 +39,8 @@ const services: Service[] = [
     title: "Growth & Management",
     description: "Data-driven strategies that turn followers into communities and impressions into impact.",
     icon: <BarChart3 className="w-5 h-5" />,
-    color: "#FFD700",
-    gradient: "from-[#FFD700]/40 to-transparent",
+    color: "#FFD43B",
+    gradient: "from-[#FFD43B]/40 to-transparent",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop",
   },
   {
@@ -48,8 +48,8 @@ const services: Service[] = [
     title: "Influencer Coordination",
     description: "Bridging the gap between brands and creators. We manage complex multi-creator orchestrations.",
     icon: <Users className="w-5 h-5" />,
-    color: "#ADFF2F",
-    gradient: "from-[#ADFF2F]/40 to-transparent",
+    color: "#FFA726",
+    gradient: "from-[#FFA726]/40 to-transparent",
     image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop",
   },
   {
@@ -57,8 +57,8 @@ const services: Service[] = [
     title: "Paid Ads & Boosting",
     description: "Strategic amplification that multiplies organic wins. We optimize every dollar for maximum ROI.",
     icon: <Zap className="w-5 h-5" />,
-    color: "#FF1493",
-    gradient: "from-[#FF1493]/40 to-transparent",
+    color: "#FF4D6D",
+    gradient: "from-[#FF4D6D]/40 to-transparent",
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=800&auto=format&fit=crop",
   },
 ];
@@ -67,7 +67,7 @@ export default function Services() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <section id="services" className="relative min-h-screen bg-transparent flex flex-col items-center justify-center py-24 overflow-hidden">
+    <section id="services" className="relative min-h-fit bg-transparent flex flex-col items-center justify-center pt-0 pb-12 overflow-hidden">
       {/* Background Atmosphere */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vh] bg-[radial-gradient(circle,rgba(230,57,70,0.03)_0%,transparent_70%)] opacity-50" />
@@ -90,7 +90,7 @@ export default function Services() {
                 animate={{ 
                   width: typeof window !== 'undefined' && window.innerWidth < 768 ? "100%" : (isHovered ? "45%" : (isAnyHovered ? "13.75%" : "20%")),
                   height: typeof window !== 'undefined' && window.innerWidth < 768 ? (isHovered ? "400px" : "120px") : "500px",
-                  backgroundColor: isHovered ? "#000000" : "#E63946"
+                  backgroundColor: isHovered ? "#0a2a4d" : "#1E5AA8"
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30, mass: 1 }}
                 className="relative h-full overflow-hidden rounded-[2rem] border border-white/10 cursor-pointer group"
@@ -106,8 +106,8 @@ export default function Services() {
                   <motion.div 
                     animate={{
                       background: isHovered 
-                        ? "linear-gradient(to top, #000000 0%, rgba(0,0,0,0.8) 50%, transparent 100%)"
-                        : "linear-gradient(to top, #E63946 0%, rgba(230,57,70,0.8) 50%, transparent 100%)"
+                        ? "linear-gradient(to top, #0a2a4d 0%, rgba(10,42,77,0.8) 50%, transparent 100%)"
+                        : "linear-gradient(to top, #1E5AA8 0%, rgba(30,90,168,0.8) 50%, transparent 100%)"
                     }}
                     className="absolute inset-0 opacity-90" 
                   />
@@ -156,7 +156,7 @@ export default function Services() {
                           {service.description}
                         </p>
                         
-                        <button className="flex items-center gap-3 px-6 py-3 bg-white text-black rounded-full font-display font-bold text-xs uppercase tracking-widest hover:bg-black hover:text-white transition-all transform hover:scale-105">
+                        <button className="flex items-center gap-3 px-6 py-3 bg-white text-brand-deep rounded-full font-display font-bold text-xs uppercase tracking-widest hover:bg-brand-pink hover:text-white transition-all transform hover:scale-105">
                           Learn More
                           <ArrowUpRight size={16} />
                         </button>

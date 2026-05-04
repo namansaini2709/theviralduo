@@ -61,7 +61,7 @@ export default function FloatingParticlesBackground() {
   return (
     <div 
       ref={containerRef} 
-      className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[#f5f3ef] bg-gradient-to-br from-[#f5f3ef] to-[#e8e4d9]"
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[#F0F9FF] bg-gradient-to-br from-[#F0F9FF] to-[#E0F2FE]"
     >
       {/* Layer 2: Watermarks and Large Icons Grid */}
       {GRID_ITEMS.map((item, i) => {
@@ -72,7 +72,7 @@ export default function FloatingParticlesBackground() {
           return (
             <div
               key={`grid-${i}`}
-              className="absolute font-display font-black text-black uppercase opacity-[0.06] whitespace-nowrap"
+              className="absolute font-display font-black text-brand-deep uppercase opacity-[0.04] whitespace-nowrap"
               style={{
                 top: `${topPos}%`,
                 left: `${leftPos}%`,
@@ -89,7 +89,7 @@ export default function FloatingParticlesBackground() {
           return (
             <div
               key={`grid-${i}`}
-              className="absolute text-accent opacity-[0.25] drop-shadow-sm"
+              className="absolute text-brand-sky opacity-[0.2] drop-shadow-sm"
               style={{
                 top: `${topPos + 5}%`,
                 left: `${leftPos + 20}%`,
@@ -111,7 +111,7 @@ export default function FloatingParticlesBackground() {
         return (
           <div
             key={`icon-${i}`}
-            className="absolute text-accent opacity-[0.35] drop-shadow-sm"
+            className="absolute text-brand-sky opacity-[0.25] drop-shadow-sm"
             style={{
               top: `${(i * 17) % 90 + 5}%`,
               left: `${(i * 23) % 90 + 5}%`,

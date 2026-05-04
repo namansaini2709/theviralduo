@@ -3,10 +3,94 @@
 @tailwind utilities;
 
 :root {
-  --background: #f5f3ef;
-  --foreground: #080808;
-  --accent: #E63946;
-  --accent-warm: #FF6B6B;
+  --background: #F0F9FF;
+  --foreground: #2C3E50;
+  --brand-sky: #4DB8E5;
+  --brand-deep: #1E5AA8;
+  --brand-soft: #F0F9FF;
+  --brand-yellow: #FFD43B;
+  --brand-orange: #FFA726;
+  --brand-pink: #FF4D6D;
+  --brand-orange-end: #FF8C42;
+  --brand-gradient: linear-gradient(90deg, #FF4D6D, #FF8C42);
+}
+
+.text-gradient {
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-gradient-brand {
+  background: var(--brand-gradient);
+}
+
+.btn-primary {
+  background-color: var(--brand-deep);
+  color: #FFFFFF;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #14457A;
+}
+
+.btn-cta {
+  background: var(--brand-gradient);
+  color: #FFFFFF;
+  transition: opacity 0.3s ease;
+}
+
+.btn-cta:hover {
+  opacity: 0.9;
+}
+
+.card-brand {
+  background: #FFFFFF;
+  border: 1px solid #D6ECF8;
+  box-shadow: 0 4px 20px rgba(77, 184, 229, 0.1);
+}
+
+.viral-text-style {
+  font-family: var(--font-outfit), sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  background: linear-gradient(to bottom, #FFA726 0%, #FF8C42 50%, #FF4D6D 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  /* Thick Outline and 3D Shadow */
+  filter: drop-shadow(0px 4px 0px #1E5AA8);
+  /* Layered text-shadow for a smooth thick outline and extrusion */
+  text-shadow: 
+    -3px -3px 0 #1E5AA8,  
+     3px -3px 0 #1E5AA8,
+    -3px  3px 0 #1E5AA8,
+     3px  3px 0 #1E5AA8,
+     0px  6px 0px #14457A, /* Darker blue for extrusion */
+     0px  8px 15px rgba(20, 69, 122, 0.3);
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+}
+
+.viral-text-style-mini {
+  font-family: var(--font-outfit), sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  background: linear-gradient(to bottom, #FFA726 0%, #FF8C42 50%, #FF4D6D 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0px 1px 0px #1E5AA8);
+  text-shadow: 
+    -1px -1px 0 #1E5AA8,  
+     1px -1px 0 #1E5AA8,
+    -1px  1px 0 #1E5AA8,
+     1px  1px 0 #1E5AA8,
+     0px  2px 0px #14457A;
 }
 
 * {

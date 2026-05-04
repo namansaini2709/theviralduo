@@ -46,54 +46,60 @@ export default function ServicesIntro() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=180%",
+          end: "+=1200", // Increased distance for a more deliberate sequence
           pin: true,
           pinSpacing: true,
-          scrub: 1.8,
+          scrub: 1.5,
           anticipatePin: 1,
           refreshPriority: 8,
           invalidateOnRefresh: true,
         },
-
       });
 
-      // Heading recedes
+      // Heading recedes and vanishes
       scrollTl.to(textRef.current, {
-        y: -120,
-        scale: 0.88,
+        y: -150,
+        scale: 0.8,
         opacity: 0,
-        filter: "blur(20px)",
+        filter: "blur(25px)",
         duration: 1.5,
         ease: "power2.inOut",
-      }, 0);
+      });
 
-      // Icons pop up
+      // Icons pop up as the heading is leaving
       scrollTl.to(iconRefs.current, {
-        scale: (i) => 1 + (i % 3) * 0.5, // varying sizes
-        opacity: 0.5,
-        y: (i) => -50 - (i * 10), // float up slightly
-        rotation: (i) => (i % 2 === 0 ? 15 : -15),
+        scale: (i) => 1 + (i % 3) * 0.4,
+        opacity: 0.4,
+        y: (i) => -40 - (i * 8),
+        rotation: (i) => (i % 2 === 0 ? 10 : -10),
         duration: 1,
-        stagger: 0.1,
-        ease: "back.out(1.5)",
-      }, 0.2);
+        stagger: 0.08,
+        ease: "back.out(1.2)",
+      }, "-=0.5"); // Slight overlap with heading fade
 
-      // Tagline reveals
+      // A "pause" in the scroll to fulfill the "comes after 1 sec" request
+      scrollTl.to({}, { duration: 1.2 }); // Empty tween for scroll-gap
+
+      // Tagline reveals after the heading has vanished and the pause
       scrollTl.to(taglineRef.current, {
         y: 0,
         opacity: 1,
-        duration: 1.2,
-        ease: "power2.out",
-      }, 0.6);
+        duration: 1.5,
+        ease: "power3.out",
+      });
 
-      // Final fade out
-      scrollTl.to(taglineRef.current, {
+      // Hold the tagline for a bit
+      scrollTl.to({}, { duration: 0.8 });
+
+      // Final fade out of everything
+      scrollTl.to([taglineRef.current, iconRefs.current], {
         opacity: 0,
-        y: -20,
-        duration: 0.4,
-      }, 1.5);
+        y: -30,
+        duration: 0.8,
+        stagger: 0.05
+      });
 
-      scrollTl.to(sectionRef.current, { autoAlpha: 0, duration: 0.1 }, 1.9);
+      scrollTl.to(sectionRef.current, { autoAlpha: 0, duration: 0.5 });
 
 
 
@@ -111,7 +117,7 @@ export default function ServicesIntro() {
     >
       {/* Background Cinematic Glow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vw] bg-[radial-gradient(circle,rgba(230,57,70,0.12)_0%,transparent_70%)] opacity-80" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vw] bg-[radial-gradient(circle,rgba(77,184,229,0.15)_0%,transparent_70%)] opacity-80" />
       </div>
 
       {/* Popping Icons Container */}
@@ -122,7 +128,7 @@ export default function ServicesIntro() {
             <div
               key={`pop-icon-${i}`}
               ref={(el) => { iconRefs.current[i] = el; }}
-              className="absolute text-accent"
+              className="absolute text-brand-sky/40"
               style={{
                 top: `${20 + (i * 13) % 60}%`,
                 left: `${10 + (i * 27) % 80}%`,
@@ -137,9 +143,9 @@ export default function ServicesIntro() {
       <div className="relative z-10 w-full max-w-7xl px-6 flex flex-col items-center">
         <p
           ref={taglineRef}
-          className="font-body text-black/70 uppercase tracking-[0.5em] text-lg md:text-xl font-black mb-16 text-center"
+          className="font-display text-brand-deep uppercase tracking-tight text-[5vw] md:text-[4.5vw] lg:text-[4vw] font-black mb-10 md:mb-12 text-center whitespace-nowrap w-full [word-spacing:0.4em]"
         >
-          If it&apos;s not viral then its not us
+          If its not viral then its not us
         </p>
         
         <div ref={textRef} className="relative flex flex-col md:flex-row items-center justify-center gap-0 md:gap-0">
@@ -147,8 +153,8 @@ export default function ServicesIntro() {
             <div 
               key={wordIdx} 
               className={`inline-block whitespace-nowrap relative ${
-                word === "SERVICES" ? "-translate-y-4 md:-translate-x-8 md:-translate-y-20 z-0" : 
-                word === "PROVIDE" ? "translate-y-4 md:translate-x-8 md:translate-y-20 z-0" : 
+                word === "SERVICES" ? "-translate-y-2 md:-translate-x-8 md:-translate-y-10 z-0" : 
+                word === "PROVIDE" ? "translate-y-2 md:translate-x-8 md:translate-y-10 z-0" : 
                 "z-10" 
               } transition-transform duration-700`}
             >
@@ -159,10 +165,10 @@ export default function ServicesIntro() {
                   <span
                     key={charIdx}
                     ref={(el) => { charRefs.current[charIndex] = el; }}
-                    className={`inline-block font-serif font-black italic leading-[0.85] md:leading-[0.7] tracking-[-0.05em] uppercase drop-shadow-[0_10px_30px_rgba(230,57,70,0.2)] ${
+                    className={`inline-block font-serif font-black italic leading-[0.85] md:leading-[0.7] tracking-[-0.05em] uppercase drop-shadow-[0_10px_30px_rgba(77,184,229,0.2)] ${
                       isWe 
-                        ? "text-black text-[22vw] md:text-[14vw] lg:text-[13rem]" 
-                        : "text-[#E63946] text-[10vw] md:text-[6vw] lg:text-[5rem] opacity-90"
+                        ? "text-brand-deep text-[22vw] md:text-[14vw] lg:text-[13rem]" 
+                        : "text-gradient text-[10vw] md:text-[6vw] lg:text-[5rem]"
                     }`}
                   >
                     {char}
