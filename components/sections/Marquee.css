@@ -3,14 +3,14 @@
   width: 110vw;
   left: -5vw;
   overflow: hidden;
-  background-color: #FF3333;
+  background-color: #1E5AA8;
   padding-top: 1rem;
   padding-bottom: 1rem;
   transform: rotate(1.5deg);
   margin-top: 6rem;
   margin-bottom: 6rem;
-  border-top: 4px solid black;
-  border-bottom: 4px solid black;
+  border-top: 2px solid #14457A;
+  border-bottom: 2px solid #14457A;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   z-index: 5;
 }
@@ -35,7 +35,6 @@
 .marquee-text {
   font-size: 4rem; /* 64px on desktop */
   font-weight: 900;
-  color: black;
   letter-spacing: 0.1em;
   padding-left: 2rem;
   padding-right: 2rem;
@@ -47,7 +46,7 @@
   width: 1rem;
   height: 1rem;
   border-radius: 9999px;
-  background-color: black;
+  background-color: #FFA726;
   margin-left: 1rem;
   margin-right: 1rem;
   margin-top: 0.25rem;

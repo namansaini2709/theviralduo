@@ -6,10 +6,10 @@ import Navigation from "@/components/global/Navigation";
 import Loader from "@/components/sections/Loader";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
-import ServicesIntro from "@/components/sections/ServicesIntro";
-import Services from "@/components/sections/Services";
+import CinematicServices from "@/components/sections/CinematicServices";
 import Marquee from "@/components/sections/Marquee";
 import MovieReel from "@/components/sections/MovieReel";
+import Brands from "@/components/sections/Brands";
 import Polaroids from "@/components/sections/Polaroids";
 import Results from "@/components/sections/Results";
 import Contact from "@/components/sections/Contact";
@@ -76,15 +76,17 @@ export default function Home() {
         {/* 2. Who We Are Section */}
         <About />
         
-        {/* 3. Services We Provide Section */}
+        {/* 3. Cinematic Services Section */}
         <div id="services-group">
-          <ServicesIntro />
-          <Services />
+          <CinematicServices />
           <Marquee />
         </div>
         
         {/* 4. Our Work Section */}
         <MovieReel />
+
+        {/* 4.5. Brands We Worked With */}
+        <Brands />
         
         {/* 5. Feedback Section */}
         <Polaroids />

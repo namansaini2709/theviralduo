@@ -163,6 +163,19 @@
 
       this.shadowRoot.innerHTML = `
         <style>
+          @font-face {
+            font-family: 'ITC Avant Garde Gothic Std';
+            font-style: normal;
+            font-weight: 400;
+            src: local('ITC Avant Garde Gothic Std'), url('https://fonts.cdnfonts.com/s/30933/ITCAvantGardeStdBk.woff') format('woff');
+          }
+          @font-face {
+            font-family: 'Cooper';
+            font-style: normal;
+            font-weight: 900;
+            src: local('Cooper'), url('https://fonts.cdnfonts.com/s/136141/Cooper-Black.woff') format('woff');
+          }
+
           :host {
             --media-collage-bg: #050505;
             --media-collage-text: #050505;
@@ -367,7 +380,7 @@
 
           .feedback-text {
             color: #1a1a1a;
-            font: 400 0.95rem/1.6 ui-serif, Georgia, serif;
+            font: 400 0.95rem/1.6 'Cooper', ui-serif, Georgia, serif;
             font-style: italic;
             margin-bottom: 1rem;
             opacity: 0.85;
@@ -381,7 +394,7 @@
             left: -1rem;
             font-size: 3rem;
             opacity: 0.2;
-            font-family: serif;
+            font-family: 'Cooper', serif;
           }
 
           .key-points {
@@ -394,6 +407,7 @@
             background: rgba(0, 0, 0, 0.04);
             border: 1px solid rgba(0, 0, 0, 0.08);
             color: var(--card-bg, #000);
+            font-family: 'ITC Avant Garde Gothic Std', sans-serif;
             font-size: 0.65rem;
             font-weight: 800;
             text-transform: uppercase;
@@ -408,6 +422,7 @@
             right: 1.5rem;
             z-index: 20;
             color: rgba(0, 0, 0, 0.4);
+            font-family: 'ITC Avant Garde Gothic Std', sans-serif;
             font-size: 0.6rem;
             text-transform: uppercase;
             letter-spacing: 0.2em;
@@ -502,7 +517,7 @@
             display: grid;
             place-items: center;
             color: rgba(255, 255, 255, 0.84);
-            font: 800 clamp(28px, 4vw, 72px) / 0.9 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font: 800 clamp(28px, 4vw, 72px) / 0.9 'ITC Avant Garde Gothic Std', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             text-align: center;
             background:
               linear-gradient(135deg, rgba(255, 255, 255, 0.12), transparent 32%),
@@ -528,7 +543,7 @@
             max-width: 100%;
             overflow-wrap: anywhere;
             color: #fff;
-            font: 400 clamp(24px, 3.2vw, 46px) / 1.05 ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+            font: 400 clamp(24px, 3.2vw, 46px) / 1.05 'Cooper', ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
             letter-spacing: -0.02em;
             text-transform: none;
           }
@@ -537,7 +552,7 @@
             margin: 0;
             max-width: 96%;
             color: rgba(255, 255, 255, 0.8);
-            font: 400 clamp(14px, 1.5vw, 20px) / 1.3 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font: 400 clamp(14px, 1.5vw, 20px) / 1.3 'ITC Avant Garde Gothic Std', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             letter-spacing: 0;
           }
 

@@ -76,22 +76,22 @@ export default function Results() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="results" className="py-24 px-6 md:px-20 bg-white border-y-8 border-black z-10 relative overflow-x-hidden">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
-        <div className="md:w-1/3 results-heading">
-          <h2 className="font-display font-black text-5xl md:text-7xl uppercase leading-tight text-black">
-            The <span className="text-accent marker-highlight">Proof</span> Is In The <span className="font-handwritten text-4xl lowercase">numbers</span>
+    <section ref={sectionRef} id="results" className="py-24 px-6 md:px-20 bg-brand-soft border-y border-brand-border z-10 relative overflow-x-hidden">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 md:gap-32">
+        <div className="md:w-[380px] flex-shrink-0 results-heading translate-y-6">
+          <h2 className="font-serif font-black text-5xl md:text-7xl uppercase leading-tight text-brand-deep">
+            The <span className="text-gradient inline-block py-2">Proof</span> Is In The <span className="font-handwritten text-4xl lowercase text-brand-sky inline-block py-2 ml-4 relative">numbers</span>
           </h2>
         </div>
         
-        <div className="md:w-2/3 grid grid-cols-1 md:grid-cols-3 gap-8 w-full stats-container">
+        <div className="flex-1 flex flex-col md:flex-row gap-6 md:gap-8 stats-container w-full">
           {STATS.map((stat, i) => (
-            <div key={i} className="stat-card flex flex-col items-center justify-center p-8 border-4 border-black shadow-[10px_10px_0px_rgba(230,57,70,1)] rounded-2xl transform hover:-translate-y-2 transition-transform duration-300 bg-background">
-              <div className="flex items-baseline font-display font-black text-6xl md:text-8xl text-black">
+            <div key={i} className="flex-1 stat-card flex flex-col items-center justify-center p-8 card-brand rounded-3xl transform hover:-translate-y-2 transition-transform duration-300 min-h-[220px]">
+              <div className="flex items-baseline font-serif font-black text-5xl lg:text-7xl text-brand-deep">
                 <span ref={(el) => { countersRef.current[i] = el; }}>0</span>
-                <span className="text-accent">{stat.suffix}</span>
+                <span className="text-gradient">{stat.suffix}</span>
               </div>
-              <p className="mt-4 font-mono uppercase tracking-widest text-sm font-bold text-black/70 text-center">
+              <p className="mt-4 font-mono uppercase tracking-widest text-[10px] font-bold text-black/70 text-center">
                 {stat.label}
               </p>
             </div>

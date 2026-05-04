@@ -30,8 +30,8 @@ export default function ScrollProgress() {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 right-0 h-[2px] z-[9997] origin-left bg-accent">
-      <div ref={progressRef} className="h-full bg-accent-warm origin-left" style={{ transform: "scaleX(0)" }} />
+    <div className="fixed top-0 left-0 right-0 h-[3px] z-[9997] origin-left bg-white/20 backdrop-blur-sm">
+      <div ref={progressRef} className="h-full bg-gradient-brand origin-left" style={{ transform: "scaleX(0)" }} />
     </div>
   );
 }

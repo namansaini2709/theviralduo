@@ -151,19 +151,19 @@ export default function Navigation() {
         animate="visible"
         variants={containerVariants}
         style={{ 
-          height: isMobile ? 64 : (isScrolled ? 56 : 84),
-          width: (isScrolled && !isMobile) ? "min(880px, 92vw)" : "100%",
-          backgroundColor: isScrolled ? "rgba(255, 255, 255, 0.85)" : "rgba(255, 255, 255, 0.3)",
-          backdropFilter: "blur(20px)",
-        }}
+          height: isMobile ? 64 : (isScrolled ? 56 : 84), 
+          width: (isScrolled && !isMobile) ? "75vw" : "100%", 
+          backgroundColor: isScrolled ? "rgba(255, 167, 38, 0.65)" : "rgba(240, 249, 255, 0.25)", 
+          backdropFilter: "blur(12px)", 
+        }} 
         className={`fixed top-0 left-1/2 -translate-x-1/2 z-[100] flex items-center justify-between pl-4 pr-6 md:pl-6 md:pr-10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          isScrolled && !isMobile ? "top-4 rounded-full border border-black/10 shadow-[0_8px_32px_rgba(0,0,0,0.05)]" : "border-b border-black/10"
+          isScrolled && !isMobile ? "top-4 rounded-full border border-brand-orange/20 shadow-[0_8px_32px_rgba(255,167,38,0.1)]" : "border-b border-brand-deep/10"
         }`}
       >
         {/* Premium Animated Gradient Line (only when not scrolled) */}
         {!isScrolled && (
           <motion.div 
-            className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-accent/50 to-transparent"
+            className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-brand-pink to-transparent"
             animate={{
               x: ["-100%", "100%"],
             }}
@@ -178,7 +178,7 @@ export default function Navigation() {
         {/* Glow Follower Effect */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-full">
           <motion.div
-            className="absolute w-40 h-40 bg-accent/15 blur-[80px] rounded-full"
+            className="absolute w-40 h-40 bg-brand-pink/15 blur-[80px] rounded-full"
             animate={{
               x: hoveredIndex !== null ? (hoveredIndex * 80) + 220 : -400,
               opacity: hoveredIndex !== null ? 1 : 0
@@ -204,8 +204,9 @@ export default function Navigation() {
               className="object-cover group-hover:scale-110 transition-transform duration-500"
             />
           </div>
-          <span className="hidden md:block font-display font-bold text-base tracking-tight text-black group-hover:text-accent transition-colors duration-300">
-            THE VIRAL <span className="text-accent">DUO</span>
+          <span className="hidden md:flex flex-col items-start leading-none group-hover:scale-105 transition-all duration-300">
+            <span className="text-[10px] font-black tracking-[0.3em] text-brand-deep/60 ml-0.5">THE</span>
+            <span className="viral-text-style-mini text-lg tracking-tight">VIRAL DUO</span>
           </span>
         </motion.div>
 
@@ -230,10 +231,10 @@ export default function Navigation() {
         {/* Action Button */}
         <motion.button
           variants={itemVariants}
-          whileHover={{ scale: 1.05, backgroundColor: "#E63946", color: "#FFFFFF" }}
+          whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(30, 90, 168, 0.4)" }}
           whileTap={{ scale: 0.95 }}
           onClick={() => scrollTo("#contact", "Contact")}
-          className="hidden md:flex items-center gap-2 bg-transparent text-black px-5 py-2 rounded-full font-bold text-xs transition-colors duration-300 z-10 border-2 border-accent"
+          className="hidden md:flex items-center gap-2 bg-brand-deep text-white px-5 py-2 rounded-full font-bold text-xs transition-all duration-300 z-10"
         >
           <UserRound size={14} strokeWidth={2.5} />
           LET&apos;S TALK

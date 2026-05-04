@@ -214,7 +214,7 @@ export default function About() {
           viewport={{ once: false, amount: 0.2 }}
           className="mb-10 text-center md:mb-14 flex flex-col items-center"
         >
-          <div className="flex flex-wrap justify-center gap-x-[0.3em] mb-4">
+          <div className="flex flex-wrap justify-center gap-x-8 md:gap-x-12 mb-4 md:mb-6 pt-8 md:pt-12">
             {"WHO WE ARE".split(" ").map((word, wordIdx) => (
               <span key={wordIdx} className="inline-block whitespace-nowrap">
                 {word.split("").map((char, charIdx) => (
@@ -234,7 +234,11 @@ export default function About() {
                         }
                       }
                     }}
-                    className="inline-block font-serif text-[10vw] md:text-[7vw] lg:text-[5.5rem] font-black italic leading-[0.74] tracking-normal text-[#E63946] drop-shadow-[0_0_32px_rgba(230,57,70,0.28)] uppercase"
+                    className={`${
+                      wordIdx === 0 || wordIdx === 2 
+                        ? "text-brand-deep" 
+                        : "text-orange-gradient"
+                    } font-serif font-black inline-block text-[12vw] md:text-[8vw] lg:text-[6.5rem] italic leading-[1.15] px-4 py-2 -mx-4 uppercase`}
                   >
                     {char}
                   </motion.span>
@@ -247,7 +251,7 @@ export default function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="mx-auto mt-4 max-w-2xl font-body text-sm leading-7 text-black md:text-base font-bold"
+            className="mx-auto mt-0 max-w-2xl font-body text-sm leading-7 text-black md:text-base font-bold"
           >
             We don&apos;t post content. We engineer virality through strategy,
             production, and relentless creative iteration.

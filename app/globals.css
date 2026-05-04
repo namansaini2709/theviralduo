@@ -1,12 +1,104 @@
+@font-face {
+    font-family: 'ITC Avant Garde Gothic Std';
+    font-style: normal;
+    font-weight: 400;
+    src: local('ITC Avant Garde Gothic Std'), url('https://fonts.cdnfonts.com/s/30933/ITCAvantGardeStdBk.woff') format('woff');
+}
+@font-face {
+    font-family: 'ITC Avant Garde Gothic Std';
+    font-style: normal;
+    font-weight: 700;
+    src: local('ITC Avant Garde Gothic Std'), url('https://fonts.cdnfonts.com/s/30933/ITCAvantGardeStdBold.woff') format('woff');
+}
+@font-face {
+    font-family: 'Cooper';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Cooper'), url('https://fonts.cdnfonts.com/s/136141/Cooper-Regular.woff') format('woff');
+}
+@font-face {
+    font-family: 'Cooper';
+    font-style: normal;
+    font-weight: 900;
+    src: local('Cooper'), url('https://fonts.cdnfonts.com/s/136141/Cooper-Black.woff') format('woff');
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: #f5f3ef;
-  --foreground: #080808;
-  --accent: #E63946;
-  --accent-warm: #FF6B6B;
+  --background: #F0F9FF;
+  --foreground: #2C3E50;
+  --brand-sky: #4DB8E5;
+  --brand-deep: #1E5AA8;
+  --brand-soft: #F0F9FF;
+  --brand-yellow: #FFD43B;
+  --brand-orange: #FFA726;
+  --brand-pink: #FF4D6D;
+  --brand-orange-end: #FF8C42;
+  --brand-gradient: linear-gradient(90deg, #FF4D6D, #FF8C42);
+  --font-avant-garde: 'ITC Avant Garde Gothic Std', sans-serif;
+  --font-cooper: 'Cooper', serif;
+}
+
+.text-gradient {
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-gradient-brand {
+  background: var(--brand-gradient);
+}
+
+.btn-primary {
+  background-color: var(--brand-deep);
+  color: #FFFFFF;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #14457A;
+}
+
+.btn-cta {
+  background: var(--brand-gradient);
+  color: #FFFFFF;
+  transition: opacity 0.3s ease;
+}
+
+.btn-cta:hover {
+  opacity: 0.9;
+}
+
+.card-brand {
+  background: #FFFFFF;
+  border: 1px solid #D6ECF8;
+  box-shadow: 0 4px 20px rgba(77, 184, 229, 0.1);
+}
+
+.viral-text-style {
+  font-family: var(--font-cooper), serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--brand-deep);
+  display: inline-block;
+  padding: 0.25em 0.1em;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  padding: 0.3em 0.1em;
+}
+
+.viral-text-style-mini {
+  font-family: var(--font-cooper), serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--brand-deep);
+  display: inline-block;
+  padding: 0.2em 0.1em;
+  line-height: 1.2;
 }
 
 * {
@@ -20,7 +112,7 @@ html {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-family: var(--font-avant-garde), system-ui, sans-serif;
   overflow-x: hidden;
 }
 
@@ -101,4 +193,11 @@ body {
   70% { transform: translate(0%, 15%) }
   80% { transform: translate(3%, 35%) }
   90% { transform: translate(-10%, 10%) }
+}
+
+.text-orange-gradient {
+  background: linear-gradient(to bottom, #FFA726 0%, #FF8C42 50%, #FF4D6D 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

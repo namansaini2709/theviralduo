@@ -122,7 +122,7 @@ const projects = [
     client: "Saral",
     platform: "Instagram Reels",
     views: "2.3M",
-    color: "#E63946",
+    color: "#FF4D6D",
     gradient: "from-red-900/50 to-black",
     thumbnail: "/assets/projects/saral-gym-thumb.jpg",
     video: "/assets/projects/saral-gym.mp4",
@@ -269,33 +269,28 @@ export default function MovieReel() {
           ))}
 
           {/* Final Call to Action */}
-          <div className="flex-shrink-0 w-[85vw] md:w-[450px] h-[480px] md:h-[520px] rounded-2xl border-2 border-dashed border-black/20 flex flex-col items-center justify-center bg-black/5 hover:border-accent/50 transition-all duration-500 group">
-            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border border-black/20 flex items-center justify-center mb-6 md:mb-8 group-hover:scale-110 transition-transform">
-              <span className="text-3xl md:text-4xl text-black/40 group-hover:text-accent">+</span>
+          <div className="flex-shrink-0 w-[85vw] md:w-[450px] h-[480px] md:h-[520px] rounded-2xl border-2 border-dashed border-brand-sky/20 flex flex-col items-center justify-center bg-brand-sky/5 hover:border-brand-pink/50 transition-all duration-500 group">
+            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border border-brand-sky/20 flex items-center justify-center mb-6 md:mb-8 group-hover:scale-110 transition-transform">
+              <span className="text-3xl md:text-4xl text-brand-sky/40 group-hover:text-brand-pink">+</span>
             </div>
-            <h3 className="font-display text-3xl md:text-4xl font-bold text-black/40 group-hover:text-black">YOUR STORY</h3>
+            <h3 className="font-serif text-3xl md:text-4xl font-bold text-black/40 group-hover:text-black">YOUR STORY</h3>
             <p className="font-body text-black/40 mt-2 text-sm md:text-base">Next Frame: 2024</p>
-            <button className="mt-8 md:mt-12 px-8 md:px-10 py-3 md:py-4 bg-accent text-white rounded-full font-bold uppercase text-[10px] md:text-xs tracking-[0.2em] hover:bg-black transition-colors shadow-xl shadow-accent/20">
+            <button className="mt-8 md:mt-12 px-8 md:px-10 py-3 md:py-4 bg-gradient-brand text-white rounded-full font-bold uppercase text-[10px] md:text-xs tracking-[0.2em] hover:scale-105 transition-all shadow-xl shadow-brand-pink/20">
               Start Project
             </button>
           </div>
         </div>
       </div>
 
-      {/* UI Accents */}
-      <div className="absolute top-12 left-12 z-40 hidden md:block">
-        <div className="flex items-center gap-4">
-          <div className="w-2 h-2 rounded-full bg-accent" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-black/50">Cinematic Portfolio // Vol 1.0</span>
-        </div>
-      </div>
+      {/* UI Accents Removed */}
+
       
       <div className="absolute bottom-12 right-12 z-40">
         <div className="flex flex-col items-end gap-2">
           <span className="font-mono text-[10px] uppercase tracking-widest text-black/50">Scroll Down</span>
           <div className="w-32 h-[1px] bg-black/10 overflow-hidden">
             <motion.div 
-              className="w-full h-full bg-accent origin-left"
+              className="w-full h-full bg-brand-pink origin-left"
               style={{ scaleX: activeFrame >= 0 ? (activeFrame + 1) / finalProjects.length : 0 }}
             />
           </div>
@@ -375,7 +370,7 @@ function FilmFrame({ project, index, isActive }: { project: Project, index: numb
         {/* Frame Metadata */}
         <div className="absolute top-8 left-8 right-8 z-30 flex justify-between font-mono text-[10px] text-white/30 uppercase tracking-[0.2em] pointer-events-none transition-all duration-500 group-hover:opacity-0 group-hover:-translate-y-4">
           <span>Scene // 0{index + 1}</span>
-          <span className="flex items-center gap-2">REC <span className="w-2 h-2 rounded-full bg-[#E63946] animate-pulse" /> 00:0{index + 1}:24</span>
+          <span className="flex items-center gap-2">REC <span className="w-2 h-2 rounded-full bg-brand-pink animate-pulse" /> 00:0{index + 1}:24</span>
         </div>
 
         {/* Visual Content */}
@@ -408,7 +403,7 @@ function FilmFrame({ project, index, isActive }: { project: Project, index: numb
         {/* Interface Overlay */}
         <div className="absolute inset-0 p-10 flex flex-col justify-end z-30">
           <div className="flex items-center gap-3 mb-4">
-            <span className="px-2 py-0.5 border border-accent text-accent font-mono text-[9px] uppercase font-bold tracking-tighter rounded">
+            <span className="px-2 py-0.5 border border-brand-sky text-brand-sky font-mono text-[9px] uppercase font-bold tracking-tighter rounded">
               {project.views} Views
             </span>
             <span className="text-white/40 font-mono text-[10px] uppercase tracking-widest">{project.platform}</span>
@@ -425,7 +420,7 @@ function FilmFrame({ project, index, isActive }: { project: Project, index: numb
                 className="flex-1"
                 onClick={(e) => e.stopPropagation()}
               >
-                <button className="w-full py-4 bg-white text-black font-bold text-xs uppercase tracking-[0.2em] rounded-xl hover:bg-accent hover:text-white transition-colors">
+                <button className="w-full py-4 bg-white text-brand-deep font-bold text-xs uppercase tracking-[0.2em] rounded-xl hover:bg-brand-pink hover:text-white transition-colors">
                   {showVideo ? "Click to watch more" : "Play the case study"}
                 </button>
               </a>
