@@ -13,65 +13,65 @@ const collageStyle = {
 const feedbackItems = [
   {
     title: "Anytime Fitness",
-    quote: "1.2M views in 2 weeks. The ROI is insane.",
+    quote: "Poore India mein aag laga di! 1.2M views.",
     image: "/brands/anytime-fitness.jpg",
     color: "#8E24AA",
-    feedback: "The Viral Duo transformed our gym's digital presence. Their cinematic reels brought in a wave of new memberships we haven't seen in years.",
-    points: "Growth, Memberships, Viral",
+    feedback: "The Viral Duo understands the Indian pulse perfectly. Our gym memberships skyrocketed across all branches. Unki cinematic editing ka koi muqabla nahi!",
+    points: "India-wide, Memberships, Desi Hustle",
     stars: "5"
   },
   {
     title: "Vdmc",
-    quote: "Our engagement tripled overnight.",
+    quote: "Malai Chaap ki virality, Viral Duo ke saath!",
     image: "/brands/vdmc.jpg",
     color: "#1E88E5",
-    feedback: "Exceptional storytelling and execution. They don't just post content; they build communities that actually interact with our brand.",
-    points: "Engagement, Strategy, Results",
+    feedback: "They captured the 'asli swaad' of our brand. Content itna engaging tha ki log door-door se humari outlet par aa rahe hain. Sahi mein amazing kaam hai!",
+    points: "Engagement, Foodies, Results",
     stars: "5"
   },
   {
     title: "Make Your Trip Possible",
-    quote: "The best travel content we've ever had.",
+    quote: "Desi travelers ke liye best content creator.",
     image: "/brands/make-your-trip.jpg",
     color: "#F4511E",
-    feedback: "They captured the essence of our travel experiences perfectly. Every frame feels like a high-budget movie. Absolutely brilliant team.",
-    points: "Cinematic, Travel, Premium",
+    feedback: "Indian scenery ko cinematic banana inki khoobi hai. Our travel packages sold out for the season thanks to their viral reels. Super proud of this partnership!",
+    points: "Cinematic, Travel Goals, Premium",
     stars: "5"
   },
   {
     title: "FOF Fitness",
-    quote: "Relentless creative iteration that wins.",
+    quote: "Retention levels are off the charts, boss!",
     image: "/brands/fof-fitness.jpeg",
     color: "#43A047",
-    feedback: "Their data-driven approach to content is what sets them apart. They double down on what works and keep the growth compounding.",
-    points: "Data-Driven, Iteration, Scale",
+    feedback: "Data toh sab padhte hain, par audience ka dil kaise jeetna hai yeh Viral Duo jaante hain. Every reel felt like a Bollywood blockbuster in 60 seconds.",
+    points: "Audience Love, Iteration, Scale",
     stars: "5"
   },
   {
     title: "Sharma Ji Ke Bhature",
-    quote: "3.4M views! Our outlet is always full now.",
+    quote: "Dilli ki virality at its best! 3.4M views.",
     image: "/brands/sharma-ji.jpg",
     color: "#FB8C00",
-    feedback: "The viral reel they created for our food vlog series was a game changer. We went from local to famous almost overnight.",
-    points: "Footfall, Viral, Foodie",
+    feedback: "Viral Duo ne toh Sharma ji ke bhature ko poore Internet par famous kar diya. Humare yahan ab bheed sambhalti nahi hai. Solid work team!",
+    points: "Dilli Swag, Viral, Footfall",
     stars: "5"
   },
   {
     title: "Global Holidays",
-    quote: "A true partner in our digital growth.",
+    quote: "Indian families ka favorite vacation content.",
     image: "/brands/global-holidays.png",
     color: "#00ACC1",
-    feedback: "Professional, creative, and highly strategic. They managed our multi-creator campaign with zero friction and delivered massive ROI.",
-    points: "ROI, Creators, Partnership",
+    feedback: "Professionalism aur creativity ka perfect mix. They know how to target the Indian middle class and high-net-worth families perfectly. Paisa vasool results!",
+    points: "Paisa Vasool, ROI, Vacation",
     stars: "4"
   },
   {
     title: "Career Launcher",
-    quote: "Iconic identity designed for recognition.",
+    quote: "Students are loving the new brand vibe.",
     image: "/brands/career-launcher.jpg",
     color: "#3949AB",
-    feedback: "They helped us build a brand identity that stands out in the crowded education space. Methodical analysis meets true creative genius.",
-    points: "Branding, Education, Impact",
+    feedback: "Educational content itna cool ho sakta hai, humne socha nahi tha. Students everywhere are recognizing us now. They made learning look cinematic and viral!",
+    points: "Students, Impact, Branding",
     stars: "5"
   }
 ];
