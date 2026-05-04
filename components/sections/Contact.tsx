@@ -32,12 +32,12 @@ export default function Contact() {
     <section id="contact" className="py-24 px-6 relative">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16 relative">
-          <span className="text-black/40 text-sm font-body tracking-[0.2em] uppercase mb-2 block">
+          <span className="text-black/40 text-sm font-display font-black tracking-[0.4em] uppercase mb-2 block">
             Let&apos;s Create
           </span>
-          <h2 className="font-serif text-5xl md:text-6xl font-medium text-brand-deep mb-6 leading-tight">
+          <h2 className="font-display text-5xl md:text-6xl font-black text-brand-deep mb-6 leading-tight uppercase tracking-tight">
             Let&apos;s Create <br />
-            <span className="text-gradient">Something Viral.</span>
+            <span className="font-serif italic text-gradient lowercase">Something Viral.</span>
           </h2>
         </div>
 
@@ -58,7 +58,7 @@ export default function Contact() {
                     required
                     value={formState.name}
                     onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                    className="w-full bg-brand-sky/5 border border-brand-sky/20 rounded-xl px-4 py-3.5 font-body text-brand-text focus:outline-none focus:border-brand-sky transition-all duration-300 placeholder:text-brand-text/30 focus:shadow-[0_0_15px_rgba(77,184,229,0.2)]"
+                    className="w-full bg-white/60 backdrop-blur-xl border border-brand-sky/40 rounded-xl px-4 py-3.5 font-body text-brand-text focus:outline-none focus:border-brand-sky transition-all duration-300 placeholder:text-brand-text/30 focus:shadow-[0_0_20px_rgba(77,184,229,0.3)] shadow-sm"
                     placeholder="Your name"
                   />
                 </div>
@@ -71,7 +71,7 @@ export default function Contact() {
                   required
                   value={formState.brand}
                   onChange={(e) => setFormState({ ...formState, brand: e.target.value })}
-                  className="w-full bg-brand-sky/5 border border-brand-sky/20 rounded-xl px-4 py-3.5 font-body text-brand-text focus:outline-none focus:border-brand-sky transition-all duration-300 placeholder:text-brand-text/30 focus:shadow-[0_0_15px_rgba(77,184,229,0.2)]"
+                  className="w-full bg-white/60 backdrop-blur-xl border border-brand-sky/40 rounded-xl px-4 py-3.5 font-body text-brand-text focus:outline-none focus:border-brand-sky transition-all duration-300 placeholder:text-brand-text/30 focus:shadow-[0_0_20px_rgba(77,184,229,0.3)] shadow-sm"
                   placeholder="Your brand or company"
                 />
               </div>
@@ -83,7 +83,7 @@ export default function Contact() {
                     required
                     value={formState.need}
                     onChange={(e) => setFormState({ ...formState, need: e.target.value })}
-                    className="w-full bg-brand-sky/5 border border-brand-sky/20 rounded-xl px-4 py-3.5 font-body text-brand-text focus:outline-none focus:border-brand-sky transition-all duration-300 appearance-none cursor-pointer focus:shadow-[0_0_15px_rgba(77,184,229,0.2)]"
+                    className="w-full bg-white/60 backdrop-blur-xl border border-brand-sky/40 rounded-xl px-4 py-3.5 font-body text-brand-text focus:outline-none focus:border-brand-sky transition-all duration-300 appearance-none cursor-pointer focus:shadow-[0_0_20px_rgba(77,184,229,0.3)] shadow-sm"
                   >
                     <option value="" className="bg-white">Select a service</option>
                     <option value="content" className="bg-white">Content Creation</option>
@@ -106,7 +106,7 @@ export default function Contact() {
                   rows={4}
                   value={formState.message}
                   onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                  className="w-full bg-brand-sky/5 border border-brand-sky/20 rounded-xl px-4 py-3.5 font-body text-brand-text focus:outline-none focus:border-brand-sky transition-all duration-300 resize-none placeholder:text-brand-text/30 focus:shadow-[0_0_15px_rgba(77,184,229,0.2)]"
+                  className="w-full bg-white/60 backdrop-blur-xl border border-brand-sky/40 rounded-xl px-4 py-3.5 font-body text-brand-text focus:outline-none focus:border-brand-sky transition-all duration-300 resize-none placeholder:text-brand-text/30 focus:shadow-[0_0_20px_rgba(77,184,229,0.3)] shadow-sm"
                   placeholder="Tell us about your project..."
                 />
               </div>
@@ -129,14 +129,14 @@ export default function Contact() {
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="card-brand rounded-3xl p-6 md:p-8 flex flex-col h-full bg-white shadow-xl shadow-brand-sky/10"
+            className="card-brand rounded-3xl p-6 md:p-8 flex flex-col h-full bg-brand-sky/5 backdrop-blur-xl border border-brand-sky/20 shadow-xl shadow-brand-sky/10"
           >
             <h3 className="font-serif text-3xl font-medium text-black mb-3">Book a Discovery Call</h3>
             <p className="font-body text-black/60 text-lg max-w-md leading-relaxed">
               Got a vision? We&apos;ve got the tools to make it a reality.
             </p>
             
-            <div className="flex-grow flex flex-col items-center justify-center space-y-6 bg-black/[0.02] rounded-2xl p-6 border border-dashed border-black/10 relative overflow-hidden">
+            <div className="flex-grow flex flex-col items-center justify-center space-y-6 bg-white/20 backdrop-blur-md rounded-2xl p-6 border border-brand-sky/20 relative overflow-hidden">
               {/* Soft Glow behind icon */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-brand-sky/20 blur-3xl rounded-full" />
               

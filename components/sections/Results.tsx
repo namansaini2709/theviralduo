@@ -80,7 +80,7 @@ export default function Results() {
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
         <div className="md:w-1/3 results-heading">
           <h2 className="font-display font-black text-5xl md:text-7xl uppercase leading-tight text-brand-deep">
-            The <span className="text-gradient">Proof</span> Is In The <span className="font-handwritten text-4xl lowercase text-brand-sky">numbers</span>
+            The <span className="text-gradient inline-block py-2">Proof</span> Is In The <span className="font-handwritten text-4xl lowercase text-brand-sky inline-block py-2 px-1">numbers</span>
           </h2>
         </div>
         

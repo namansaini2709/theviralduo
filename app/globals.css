@@ -1,3 +1,28 @@
+@font-face {
+    font-family: 'ITC Avant Garde Gothic Std';
+    font-style: normal;
+    font-weight: 400;
+    src: local('ITC Avant Garde Gothic Std'), url('https://fonts.cdnfonts.com/s/30933/ITCAvantGardeStdBk.woff') format('woff');
+}
+@font-face {
+    font-family: 'ITC Avant Garde Gothic Std';
+    font-style: normal;
+    font-weight: 700;
+    src: local('ITC Avant Garde Gothic Std'), url('https://fonts.cdnfonts.com/s/30933/ITCAvantGardeStdBold.woff') format('woff');
+}
+@font-face {
+    font-family: 'Cooper';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Cooper'), url('https://fonts.cdnfonts.com/s/136141/Cooper-Regular.woff') format('woff');
+}
+@font-face {
+    font-family: 'Cooper';
+    font-style: normal;
+    font-weight: 900;
+    src: local('Cooper'), url('https://fonts.cdnfonts.com/s/136141/Cooper-Black.woff') format('woff');
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,6 +38,8 @@
   --brand-pink: #FF4D6D;
   --brand-orange-end: #FF8C42;
   --brand-gradient: linear-gradient(90deg, #FF4D6D, #FF8C42);
+  --font-avant-garde: 'ITC Avant Garde Gothic Std', sans-serif;
+  --font-cooper: 'Cooper', serif;
 }
 
 .text-gradient {
@@ -53,30 +80,33 @@
 }
 
 .viral-text-style {
-  font-family: var(--font-outfit), sans-serif;
+  font-family: var(--font-avant-garde), sans-serif;
   font-weight: 900;
   text-transform: uppercase;
   background: linear-gradient(to bottom, #FFA726 0%, #FF8C42 50%, #FF4D6D 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  display: inline-block;
+  padding: 0.25em 0.1em;
   color: transparent;
   /* Thick Outline and 3D Shadow */
   filter: drop-shadow(0px 4px 0px #1E5AA8);
   /* Layered text-shadow for a smooth thick outline and extrusion */
   text-shadow: 
     -3px -3px 0 #1E5AA8,  
-     3px -3px 0 #1E5AA8,
+    3px -3px 0 #1E5AA8,
     -3px  3px 0 #1E5AA8,
-     3px  3px 0 #1E5AA8,
-     0px  6px 0px #14457A, /* Darker blue for extrusion */
-     0px  8px 15px rgba(20, 69, 122, 0.3);
+    3px  3px 0 #1E5AA8,
+    0px  6px 0px #14457A, /* Darker blue for extrusion */
+    0px  8px 15px rgba(20, 69, 122, 0.3);
   letter-spacing: -0.04em;
-  line-height: 0.9;
+  line-height: 1.1;
+  padding: 0.3em 0.1em;
 }
 
 .viral-text-style-mini {
-  font-family: var(--font-outfit), sans-serif;
+  font-family: var(--font-avant-garde), sans-serif;
   font-weight: 900;
   text-transform: uppercase;
   background: linear-gradient(to bottom, #FFA726 0%, #FF8C42 50%, #FF4D6D 100%);
@@ -87,10 +117,13 @@
   filter: drop-shadow(0px 1px 0px #1E5AA8);
   text-shadow: 
     -1px -1px 0 #1E5AA8,  
-     1px -1px 0 #1E5AA8,
+    1px -1px 0 #1E5AA8,
     -1px  1px 0 #1E5AA8,
-     1px  1px 0 #1E5AA8,
-     0px  2px 0px #14457A;
+    1px  1px 0 #1E5AA8,
+    0px  2px 0px #14457A;
+  display: inline-block;
+  padding: 0.2em 0.1em;
+  line-height: 1.2;
 }
 
 * {
@@ -104,7 +137,7 @@ html {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-family: var(--font-avant-garde), system-ui, sans-serif;
   overflow-x: hidden;
 }
 
@@ -185,4 +218,11 @@ body {
   70% { transform: translate(0%, 15%) }
   80% { transform: translate(3%, 35%) }
   90% { transform: translate(-10%, 10%) }
+}
+
+.text-orange-gradient {
+  background: linear-gradient(to bottom, #FFA726 0%, #FF8C42 50%, #FF4D6D 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

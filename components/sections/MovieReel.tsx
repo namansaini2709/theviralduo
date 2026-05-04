@@ -282,13 +282,8 @@ export default function MovieReel() {
         </div>
       </div>
 
-      {/* UI Accents */}
-      <div className="absolute top-12 left-12 z-40 hidden md:block">
-        <div className="flex items-center gap-4">
-          <div className="w-2 h-2 rounded-full bg-brand-sky" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.5em] text-black/50">Cinematic Portfolio // Vol 1.0</span>
-        </div>
-      </div>
+      {/* UI Accents Removed */}
+
       
       <div className="absolute bottom-12 right-12 z-40">
         <div className="flex flex-col items-end gap-2">

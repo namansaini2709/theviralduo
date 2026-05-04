@@ -152,12 +152,12 @@ export default function Navigation() {
         variants={containerVariants}
         style={{ 
           height: isMobile ? 64 : (isScrolled ? 56 : 84), 
-          width: (isScrolled && !isMobile) ? "min(880px, 92vw)" : "100%", 
-          backgroundColor: isScrolled ? "rgba(77, 184, 229, 0.65)" : "rgba(240, 249, 255, 0.25)", 
+          width: (isScrolled && !isMobile) ? "75vw" : "100%", 
+          backgroundColor: isScrolled ? "rgba(255, 167, 38, 0.65)" : "rgba(240, 249, 255, 0.25)", 
           backdropFilter: "blur(12px)", 
         }} 
         className={`fixed top-0 left-1/2 -translate-x-1/2 z-[100] flex items-center justify-between pl-4 pr-6 md:pl-6 md:pr-10 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          isScrolled && !isMobile ? "top-4 rounded-full border border-brand-deep/20 shadow-[0_8px_32px_rgba(30,90,168,0.1)]" : "border-b border-brand-deep/10"
+          isScrolled && !isMobile ? "top-4 rounded-full border border-brand-orange/20 shadow-[0_8px_32px_rgba(255,167,38,0.1)]" : "border-b border-brand-deep/10"
         }`}
       >
         {/* Premium Animated Gradient Line (only when not scrolled) */}
@@ -231,10 +231,10 @@ export default function Navigation() {
         {/* Action Button */}
         <motion.button
           variants={itemVariants}
-          whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(255, 77, 109, 0.4)" }}
+          whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(30, 90, 168, 0.4)" }}
           whileTap={{ scale: 0.95 }}
           onClick={() => scrollTo("#contact", "Contact")}
-          className="hidden md:flex items-center gap-2 btn-cta px-5 py-2 rounded-full font-bold text-xs transition-all duration-300 z-10"
+          className="hidden md:flex items-center gap-2 bg-brand-deep text-white px-5 py-2 rounded-full font-bold text-xs transition-all duration-300 z-10"
         >
           <UserRound size={14} strokeWidth={2.5} />
           LET&apos;S TALK

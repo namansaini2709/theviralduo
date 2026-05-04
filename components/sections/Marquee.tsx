@@ -18,7 +18,7 @@ export default function Marquee() {
             {[...Array(4)].map((_, i) => (
               marqueeItems.map((item, index) => (
                 <div key={`${groupIndex}-${i}-${index}`} className="marquee-item">
-                  <span className="marquee-text">{item}</span>
+                  <span className={`marquee-text ${item === "VIRAL" ? "text-[#FFA726]" : "text-white"}`}>{item}</span>
                   <div className="marquee-dot" />
                 </div>
               ))

@@ -138,7 +138,7 @@ export default function Hero() {
         {/* Hero Card */}
         <div 
           ref={heroCardRef}
-          className="relative z-50 w-[85vw] md:w-[60vw] max-w-4xl bg-white border border-brand-border shadow-[0_30px_100px_rgba(77,184,229,0.1)] rounded-[2.5rem] p-10 md:p-20 flex flex-col items-center justify-center text-center space-y-8"
+          className="relative z-50 w-full h-full bg-white flex flex-col items-center justify-center text-center space-y-8 p-10 md:p-20"
         >
           {/* Logo */}
           <div className="relative w-32 h-32 md:w-44 md:h-44 rounded-full overflow-hidden border-4 border-brand-sky shadow-xl">

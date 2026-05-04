@@ -23,10 +23,10 @@ const config: Config = {
         "brand-border": "#D6ECF8",
       },
       fontFamily: {
-        display: ["var(--font-outfit)", "sans-serif"],
-        body: ["var(--font-dm-sans)", "sans-serif"],
-        handwritten: ["var(--font-caveat)", "cursive"],
-        serif: ["var(--font-fraunces)", "serif"],
+        display: ["var(--font-avant-garde)", "sans-serif"],
+        body: ["var(--font-avant-garde)", "sans-serif"],
+        handwritten: ["var(--font-cooper)", "cursive"],
+        serif: ["var(--font-cooper)", "serif"],
       },
       animation: {
         "spin-slow": "spin 20s linear infinite",
@@ -55,6 +55,9 @@ const config: Config = {
           "80%": { transform: "translate(1%, -1%)" },
           "90%": { transform: "translate(-2%, -1%)" },
         },
+      },
+      transitionTimingFunction: {
+        'out-expo': 'cubic-bezier(0.19, 1, 0.22, 1)',
       },
     },
   },
