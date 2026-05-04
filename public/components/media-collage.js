@@ -277,8 +277,7 @@
             height: 100%;
             transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
             transform-style: preserve-3d;
-            transform: translateY(calc(var(--lift, 0px) * -1)) translateZ(0) rotateY(0deg);
-            border-radius: clamp(24px, 3.5vw, 42px);
+            border-radius: 2.5rem;
             will-change: transform;
           }
 
@@ -289,39 +288,37 @@
             height: 100%;
             border-radius: inherit;
             overflow: hidden;
-            background: linear-gradient(135deg, #FFFFFF, #F9F9F9);
-            padding: 0;
+            background: #ffffff;
             display: flex;
             flex-direction: row;
-            border: 1px solid rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
             box-shadow: 0 40px 100px rgba(0, 0, 0, 0.15);
             transform: translateZ(0.01px);
           }
 
-          .card-content::before {
-            content: "";
+          .brand-glow {
             position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 0% 0%, var(--card-bg, #000) 0%, transparent 70%);
-            opacity: 0.1;
+            top: -20%;
+            right: -20%;
+            width: 70%;
+            height: 70%;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--card-bg, #4DB8E5) 0%, transparent 70%);
+            filter: blur(60px);
+            opacity: 0.12;
+            z-index: 0;
             pointer-events: none;
-            z-index: 1;
           }
 
           .card-part-left {
-            width: 35%;
+            width: 42%;
             height: 100%;
             position: relative;
+            background: #f8f9fa;
+            border-right: 1px solid rgba(0,0,0,0.03);
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 1.5rem;
-            border-right: 1px solid rgba(0, 0, 0, 0.05);
-            z-index: 2;
+            z-index: 1;
           }
-
-
 
           .feedbacker-image {
             position: absolute;
@@ -329,105 +326,93 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            background: #ffffff;
-            filter: grayscale(1) brightness(0.9);
-            transition: filter 0.6s ease, transform 0.6s ease;
-            z-index: 1;
+            filter: grayscale(1) contrast(1.1) brightness(0.9);
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
           }
 
           .card:hover .feedbacker-image {
-            filter: grayscale(0) brightness(1);
-            transform: scale(1.05);
-          }
-
-          .stars-container {
-            position: absolute;
-            bottom: 1.2rem;
-            left: 1.2rem;
-            z-index: 20;
-            display: flex;
-            gap: 4px;
-          }
-
-          .star-box {
-            background: rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            padding: 3px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(4px);
-          }
-
-          .star {
-            width: 10px;
-            height: 10px;
-            fill: currentColor;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+            filter: grayscale(0) contrast(1) brightness(1);
+            transform: scale(1.08);
           }
 
           .card-part-right {
-            width: 65%;
+            width: 58%;
             height: 100%;
-            padding: 1.5rem;
+            padding: 2.5rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
             position: relative;
-            background: rgba(0, 0, 0, 0.01);
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(8px);
             z-index: 2;
           }
 
-          .feedback-text {
-            color: #1a1a1a;
-            font: 400 0.95rem/1.6 'Cooper', ui-serif, Georgia, serif;
-            font-style: italic;
-            margin-bottom: 1rem;
-            opacity: 0.85;
-            position: relative;
+          .stars-container {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 1.5rem;
           }
 
-          .feedback-text::before {
-            content: '"';
-            position: absolute;
-            top: -1rem;
-            left: -1rem;
-            font-size: 3rem;
-            opacity: 0.2;
-            font-family: 'Cooper', serif;
+          .star {
+            width: 14px;
+            height: 14px;
+            fill: #ffb800;
+            filter: drop-shadow(0 0 8px rgba(255, 184, 0, 0.4));
+          }
+
+          .card-quote {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            line-height: 1.15;
+            color: #111;
+            margin-bottom: 1.2rem;
+            letter-spacing: -0.02em;
+          }
+
+          .feedback-text {
+            color: #444;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
           }
 
           .key-points {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 0.6rem;
+            margin-bottom: 2rem;
           }
 
           .point {
-            background: rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            color: var(--card-bg, #000);
-            font-family: 'ITC Avant Garde Gothic Std', sans-serif;
-            font-size: 0.65rem;
-            font-weight: 800;
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            color: #111;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
+            letter-spacing: 0.05em;
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+          }
+
+          .brand-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
           }
 
           .author {
-            position: absolute;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            z-index: 20;
-            color: rgba(0, 0, 0, 0.4);
-            font-family: 'ITC Avant Garde Gothic Std', sans-serif;
-            font-size: 0.6rem;
+            color: var(--card-bg, #4DB8E5);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.2em;
-            font-weight: 800;
+            font-weight: 900;
           }
 
           .card {
@@ -722,18 +707,27 @@
         >
           <div class="card-inner">
             <div class="card-content">
+              <div class="brand-glow"></div>
+              
               <div class="card-part-left">
                 <img src="${escapeAttr(item.image || item.src)}" class="feedbacker-image" alt="${escapeAttr(title)}" />
-                <div class="stars-container">${starsHtml}</div>
-
               </div>
+
               <div class="card-part-right">
+                <div class="stars-container">${starsHtml}</div>
+                
+                <h3 class="card-quote">"${escapeAttr(item.quote || "The ROI is insane.")}"</h3>
+                
                 <div class="feedback-text">${escapeAttr(item.feedback || "Exceptional performance and cinematic vision. The Viral Duo transformed our digital presence.")}</div>
+                
                 <div class="key-points">
                   ${(item.points || "Growth, Viral, Strategy").split(',').map(p => `<span class="point">${escapeAttr(p.trim())}</span>`).join('')}
                 </div>
+
+                <div class="brand-info">
+                  <div class="author">Feedback by ${escapeAttr(title)}</div>
+                </div>
               </div>
-              <div class="author" part="author">FEEDBACK BY ${escapeAttr(title)}</div>
             </div>
           </div>
         </article>
