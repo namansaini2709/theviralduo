@@ -24,16 +24,16 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="font-serif text-5xl md:text-8xl font-black italic tracking-tighter leading-[0.9] mb-6"
+              className="font-serif text-4xl md:text-8xl font-black italic tracking-tighter leading-[0.95] md:leading-[0.9] mb-6"
             >
-              READY TO GO <span className="text-gradient">VIRAL?</span>
+              READY TO GO <span className="text-gradient inline-block px-2 md:px-4">VIRAL?</span>
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="font-body text-white/60 font-medium text-lg md:text-xl max-w-md"
+              className="font-body text-white/60 font-medium text-base md:text-xl max-w-md"
             >
               Stop posting content. Start engineering attention. Drop us a line and let&apos;s build something massive.
             </motion.p>

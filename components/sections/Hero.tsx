@@ -109,24 +109,24 @@ export default function Hero() {
       {/* Inner stage - smaller than the section from all directions */}
       <div 
         ref={stageRef}
-        className="relative w-[88vw] h-[88vh] bg-white/40 border-2 border-brand-sky/20 rounded-[3rem] shadow-[0_20px_60px_rgba(77,184,229,0.15)] backdrop-blur-sm overflow-hidden flex items-center justify-center"
+        className="relative w-[92vw] h-[85vh] md:w-[88vw] md:h-[88vh] bg-white/40 border-2 border-brand-sky/20 rounded-[2rem] md:rounded-[3rem] shadow-[0_20px_60px_rgba(77,184,229,0.15)] backdrop-blur-sm overflow-hidden flex items-center justify-center"
       >
         
         {/* Cinematic Words (appears after card vanishes) */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-40 px-6">
+        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-40 px-4">
           <div 
             ref={el => { wordRefs.current[0] = el; }} 
-            className="font-serif font-black text-[4vw] md:text-[2vw] text-brand-deep uppercase tracking-[0.5em] mb-[-2vw]"
+            className="font-serif font-black text-[6vw] md:text-[2vw] text-brand-deep uppercase tracking-[0.3em] md:tracking-[0.5em] mb-[-4vw] md:mb-[-2vw]"
             style={{ opacity: 0 }}
           >
             THE
           </div>
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-8">
             {["VIRAL", "DUO"].map((word, i) => (
               <span 
                 key={i} 
                 ref={el => { wordRefs.current[i+1] = el; }}
-                className="viral-text-style text-[15vw] md:text-[10vw] px-4 py-6"
+                className="viral-text-style text-[20vw] md:text-[10vw] px-4 py-2 md:py-6"
                 style={{ opacity: 0 }}
               >
                 {word}
@@ -138,10 +138,10 @@ export default function Hero() {
         {/* Hero Card */}
         <div 
           ref={heroCardRef}
-          className="relative z-50 w-full h-full bg-white flex flex-col items-center justify-center text-center space-y-8 p-10 md:p-20"
+          className="relative z-50 w-full h-full bg-white flex flex-col items-center justify-center text-center space-y-6 md:space-y-8 p-6 md:p-20"
         >
           {/* Logo */}
-          <div className="relative w-32 h-32 md:w-44 md:h-44 rounded-full overflow-hidden border-4 border-brand-sky shadow-xl">
+          <div className="relative w-28 h-28 md:w-44 md:h-44 rounded-full overflow-hidden border-4 border-brand-sky shadow-xl">
             <Image 
               src="/logo-v2.png" 
               alt="The Viral Duo" 
@@ -152,15 +152,15 @@ export default function Hero() {
           </div>
 
           <div className="space-y-0 flex flex-col items-center">
-            <span className="font-serif font-black text-xl md:text-2xl text-brand-deep tracking-[0.4em] mb-1 opacity-80">THE</span>
-            <h1 className="viral-text-style text-5xl md:text-8xl px-6 py-4">
+            <span className="font-serif font-black text-lg md:text-2xl text-brand-deep tracking-[0.3em] md:tracking-[0.4em] mb-1 opacity-80 uppercase">THE</span>
+            <h1 className="viral-text-style text-5xl md:text-8xl px-4 py-2 md:px-6 md:py-4">
               VIRAL DUO
             </h1>
           </div>
 
-          <button className="mt-4 group relative inline-flex items-center justify-center gap-3 px-10 py-5 font-bold text-white uppercase tracking-widest bg-gradient-brand rounded-full overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
-            <span className="relative z-10 flex items-center gap-3">
-              <Play fill="currentColor" size={20} />
+          <button className="mt-4 group relative inline-flex items-center justify-center gap-3 px-8 py-4 md:px-10 md:py-5 font-bold text-white uppercase tracking-widest bg-gradient-brand rounded-full overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
+            <span className="relative z-10 flex items-center gap-2 md:gap-3 text-xs md:text-sm">
+              <Play fill="currentColor" size={18} />
               Watch Showreel
             </span>
           </button>

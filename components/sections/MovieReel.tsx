@@ -256,14 +256,14 @@ export default function MovieReel() {
 
       {/* SVG Movie Reel Intro */}
       <div ref={spinningReelRef} className="absolute inset-0 flex items-center justify-center z-10 p-4">
-        <div className="relative w-full h-full max-w-[600px] max-h-[600px] aspect-square">
+        <div className="relative w-full h-full max-w-[85vw] md:max-w-[600px] max-h-[600px] aspect-square">
           <CinematicReel thumbnails={finalProjects.map(p => p.logo || p.thumbnail)} />
         </div>
       </div>
 
       {/* Horizontal Scroller */}
       <div ref={horizontalReelRef} className="absolute inset-0 flex items-center opacity-0 z-20">
-        <div className="flex items-center gap-12 md:gap-24 pl-[7.5vw] md:pl-[40vw] pr-[50vw] md:pr-[60vw]">
+        <div className="flex items-center gap-8 md:gap-24 pl-[7.5vw] md:pl-[40vw] pr-[50vw] md:pr-[60vw]">
           {finalProjects.map((project, i) => (
             <FilmFrame key={project.id || i} project={project} index={i} isActive={activeFrame === i} />
           ))}

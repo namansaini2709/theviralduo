@@ -236,10 +236,10 @@ export default function CinematicServices() {
 
       {/* Tagline Container */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none px-6">
-        <div ref={taglineRef} className="flex flex-col items-center justify-center max-w-[400px] md:max-w-[800px] mx-auto overflow-visible">
-          <p className="font-serif font-black text-[8vw] md:text-[6vw] lg:text-[7.5rem] text-brand-deep tracking-tight flex flex-row flex-wrap justify-center items-center gap-x-6 gap-y-0 text-center leading-[1.1] py-10">
+        <div ref={taglineRef} className="flex flex-col items-center justify-center max-w-full md:max-w-[800px] mx-auto overflow-visible">
+          <p className="font-serif font-black text-[10vw] md:text-[6vw] lg:text-[7.5rem] text-brand-deep tracking-tight flex flex-row flex-wrap justify-center items-center gap-x-4 md:gap-x-6 gap-y-0 text-center leading-[1.1] py-10">
             <span ref={taglinePart1Ref} className="whitespace-nowrap">IF IT&apos;s NOT</span>
-            <span ref={viralWordRef} className="text-orange-gradient whitespace-nowrap">Viral</span>
+            <span ref={viralWordRef} className="text-orange-gradient whitespace-nowrap px-2 md:px-0">Viral</span>
             <span ref={taglinePart2Ref} className="whitespace-nowrap">THEN IT&apos;s NOT US</span>
           </p>
         </div>
@@ -248,9 +248,9 @@ export default function CinematicServices() {
       {/* Cards Container */}
       <div 
         ref={cardsContainerRef}
-        className="absolute inset-0 flex items-center justify-center z-10 px-6 pt-24"
+        className="absolute inset-0 flex items-center justify-center z-10 px-0 md:px-6 pt-24"
       >
-        <div className="relative w-full max-w-[1400px] h-[60vh] md:h-[500px] flex items-center justify-center gap-4">
+        <div className={`relative w-full max-w-[1400px] ${isMobile ? 'flex overflow-x-auto snap-x snap-mandatory px-6 gap-4 pb-12 scrollbar-hide' : 'h-[500px] flex items-center justify-center gap-4'}`}>
           {SERVICES_DATA.map((service, index) => {
             const isHovered = hoveredIndex === index;
             const isAnyHovered = hoveredIndex !== null;
@@ -259,16 +259,15 @@ export default function CinematicServices() {
               <div
                 key={service.id}
                 ref={(el) => { cardRefs.current[index] = el; }}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                className={`relative h-full transition-all duration-700 ease-out-expo rounded-[2.5rem] overflow-hidden border border-white/10 group cursor-pointer
-                  ${isMobile ? 'absolute inset-0' : 'flex-1'}
+                onMouseEnter={() => !isMobile && setHoveredIndex(index)}
+                onMouseLeave={() => !isMobile && setHoveredIndex(null)}
+                onClick={() => isMobile && setHoveredIndex(hoveredIndex === index ? null : index)}
+                className={`relative transition-all duration-700 ease-out-expo rounded-[2rem] md:rounded-[2.5rem] overflow-hidden border border-white/10 group cursor-pointer shrink-0
+                  ${isMobile ? 'w-[85vw] h-[55vh] snap-center' : 'h-full flex-1'}
                 `}
                 style={{
                   zIndex: isHovered ? 50 : 10 + index,
-                  transform: isMobile && !isHovered ? `translateY(${index * 15}px) scale(${1 - index * 0.05})` : 'none',
                   flex: isMobile ? 'none' : (isHovered ? "2.5" : (isAnyHovered ? "0.6" : "1")),
-                  opacity: isMobile && isAnyHovered && !isHovered ? 0 : 1
                 }}
               >
                 {/* Background Image */}

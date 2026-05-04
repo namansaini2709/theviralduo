@@ -144,14 +144,90 @@ export default function Polaroids() {
           <div className="h-px w-8 md:w-12 bg-black/20" />
           <p className="font-mono text-[9px] md:text-[10px] uppercase tracking-[0.3em] md:tracking-[0.5em] text-black/40">
             <span className="hidden md:inline">Scroll to unlock the cylinder</span>
-            <span className="md:hidden">Scroll to see the feedback</span>
+            <span className="md:hidden">Swipe for growth stories</span>
           </p>
           <div className="h-px w-8 md:w-12 bg-black/20" />
         </div>
       </div>
 
-      <div className="relative z-10 px-0 md:px-4 w-full">
+      {/* Desktop Version */}
+      <div className="hidden md:block relative z-10 px-0 md:px-4 w-full">
         {mediaCollage}
+      </div>
+
+      {/* Mobile Version - Horizontal Scroll */}
+      <div className="md:hidden w-full overflow-x-auto snap-x snap-mandatory flex gap-5 px-6 pb-12 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        {finalFeedback.map((item, index) => (
+          <div 
+            key={index} 
+            className="snap-center shrink-0 w-[88vw] bg-white rounded-[40px] p-8 flex flex-col gap-6 shadow-2xl border border-black/5 relative overflow-hidden group"
+          >
+            {/* Background Glow */}
+            <div 
+              className="absolute -top-20 -right-20 w-64 h-64 opacity-[0.07] blur-[80px] rounded-full transition-transform duration-1000 group-hover:scale-110"
+              style={{ backgroundColor: item.color }}
+            />
+            
+            {/* Header: Stars & Quote Icon */}
+            <div className="flex justify-between items-start">
+              <div className="flex gap-1.5">
+                {[...Array(5)].map((_, i) => (
+                  <svg 
+                    key={i} 
+                    className="w-4 h-4" 
+                    viewBox="0 0 24 24" 
+                    fill={i < parseInt(item.stars || "5") ? "#FFD43B" : "#E5E7EB"}
+                  >
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                  </svg>
+                ))}
+              </div>
+              <span className="font-serif text-5xl text-black/[0.03] select-none italic absolute right-8 top-6">"</span>
+            </div>
+
+            {/* Quote */}
+            <blockquote className="relative z-10">
+              <p className="font-serif italic text-2xl leading-[1.2] text-brand-deep mb-4">
+                {item.quote}
+              </p>
+              <p className="text-[13px] leading-relaxed text-black/60 font-body">
+                {item.feedback || item.quote}
+              </p>
+            </blockquote>
+
+            {/* Client Info */}
+            <div className="mt-auto flex items-center gap-4">
+              <div className="relative shrink-0">
+                <div 
+                  className="absolute inset-0 rounded-full blur-md opacity-20"
+                  style={{ backgroundColor: item.color }}
+                />
+                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-sm relative z-10 bg-brand-soft">
+                  <img 
+                    src={item.image} 
+                    alt={item.title} 
+                    className="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-110" 
+                  />
+                </div>
+              </div>
+              
+              <div className="flex flex-col gap-1.5">
+                <h4 className="font-display font-black text-[11px] uppercase tracking-[0.15em] text-brand-deep leading-none">
+                  {item.title}
+                </h4>
+                <div className="flex flex-wrap gap-1.5">
+                   {(item.points || "").split(',').map((p, i) => (
+                     <span key={i} className="text-[8px] uppercase font-bold px-2.5 py-1 rounded-full bg-brand-soft text-brand-sky border border-brand-border/50">
+                       {p.trim()}
+                     </span>
+                   ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+        {/* Invisible spacer to allow full centering of the last card */}
+        <div className="shrink-0 w-6" />
       </div>
     </section>
   );
