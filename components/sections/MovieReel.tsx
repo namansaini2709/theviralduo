@@ -273,7 +273,7 @@ export default function MovieReel() {
             <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border border-brand-sky/20 flex items-center justify-center mb-6 md:mb-8 group-hover:scale-110 transition-transform">
               <span className="text-3xl md:text-4xl text-brand-sky/40 group-hover:text-brand-pink">+</span>
             </div>
-            <h3 className="font-display text-3xl md:text-4xl font-bold text-black/40 group-hover:text-black">YOUR STORY</h3>
+            <h3 className="font-serif text-3xl md:text-4xl font-bold text-black/40 group-hover:text-black">YOUR STORY</h3>
             <p className="font-body text-black/40 mt-2 text-sm md:text-base">Next Frame: 2024</p>
             <button className="mt-8 md:mt-12 px-8 md:px-10 py-3 md:py-4 bg-gradient-brand text-white rounded-full font-bold uppercase text-[10px] md:text-xs tracking-[0.2em] hover:scale-105 transition-all shadow-xl shadow-brand-pink/20">
               Start Project

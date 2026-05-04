@@ -56,6 +56,9 @@ export default function CinematicServices() {
   const containerRef = useRef<HTMLDivElement>(null);
   const openingTextRef = useRef<HTMLDivElement>(null);
   const taglineRef = useRef<HTMLDivElement>(null);
+  const taglinePart1Ref = useRef<HTMLSpanElement>(null);
+  const taglinePart2Ref = useRef<HTMLSpanElement>(null);
+  const viralWordRef = useRef<HTMLSpanElement>(null);
   const cardsContainerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -103,16 +106,39 @@ export default function CinematicServices() {
         ease: "power2.inOut",
       });
 
-      // 2. Tagline Entry: "If it's not viral, then it's not us"
-      gsap.set(taglineRef.current, { opacity: 0, filter: "blur(20px)", scale: 1.1 });
+      // 2. Tagline Entry Sequence
+      gsap.set(viralWordRef.current, { opacity: 0, x: -150, filter: "blur(10px)" });
+      gsap.set([taglinePart1Ref.current, taglinePart2Ref.current], { opacity: 0, x: 150, filter: "blur(10px)" });
       
-      tl.to(taglineRef.current, {
+      // Step 1: "Viral" comes from the left
+      tl.to(viralWordRef.current, {
         opacity: 1,
+        x: 0,
         filter: "blur(0px)",
-        scale: 1,
-        duration: 2,
+        duration: 1.5,
         ease: "power3.out",
       }, "-=0.5");
+
+      // Step 2: The other parts come from the right
+      tl.to([taglinePart1Ref.current, taglinePart2Ref.current], {
+        opacity: 1,
+        x: 0,
+        filter: "blur(0px)",
+        duration: 1.5,
+        stagger: 0.2,
+        ease: "power3.out",
+        onComplete: () => {
+          // Step 3: Viral starts jumping continuously
+          gsap.to(viralWordRef.current, {
+            y: -20,
+            duration: 0.5,
+            repeat: -1,
+            yoyo: true,
+            ease: "power2.inOut",
+            overwrite: "auto"
+          });
+        }
+      });
 
       tl.to({}, { duration: 1 }); // Short hold
 
@@ -171,7 +197,7 @@ export default function CinematicServices() {
       {/* Opening Text Container */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none px-6">
         <div ref={openingTextRef} className="text-center">
-          <h2 className="font-display font-black text-[8vw] md:text-[6vw] text-brand-deep tracking-tight leading-none uppercase flex flex-wrap justify-center items-center gap-x-8 md:gap-x-12">
+          <h2 className="font-serif font-black text-[8vw] md:text-[6vw] text-brand-deep tracking-tight leading-none uppercase flex flex-wrap justify-center items-center gap-x-8 md:gap-x-12">
             <span className="opacity-90 -translate-y-6 md:-translate-y-10">SERVICES</span>
             <span className="text-[1.8em] md:text-[2.2em] leading-none text-orange-gradient">WE</span>
             <span className="font-serif italic inline-block translate-y-6 md:translate-y-10 pr-10">PROVIDE</span>
@@ -182,10 +208,10 @@ export default function CinematicServices() {
       {/* Tagline Container */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none px-6">
         <div ref={taglineRef} className="flex flex-col items-center justify-center max-w-[400px] md:max-w-[800px] mx-auto overflow-visible">
-          <p className="font-display font-black text-[8vw] md:text-[6vw] lg:text-[7.5rem] text-brand-deep tracking-tight flex flex-row flex-wrap justify-center items-center gap-x-6 gap-y-0 text-center leading-[1.1] py-10">
-            <span className="whitespace-nowrap">IF IT&apos;s NOT</span>
-            <span className="text-orange-gradient whitespace-nowrap">Viral</span>
-            <span className="whitespace-nowrap">THEN IT&apos;s NOT US</span>
+          <p className="font-serif font-black text-[8vw] md:text-[6vw] lg:text-[7.5rem] text-brand-deep tracking-tight flex flex-row flex-wrap justify-center items-center gap-x-6 gap-y-0 text-center leading-[1.1] py-10">
+            <span ref={taglinePart1Ref} className="whitespace-nowrap">IF IT&apos;s NOT</span>
+            <span ref={viralWordRef} className="text-orange-gradient whitespace-nowrap">Viral</span>
+            <span ref={taglinePart2Ref} className="whitespace-nowrap">THEN IT&apos;s NOT US</span>
           </p>
         </div>
       </div>

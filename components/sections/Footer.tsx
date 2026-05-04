@@ -55,7 +55,7 @@ export default function Footer() {
                 alt="Email Icon" 
                 className="w-20 h-20 md:w-28 md:h-28 transition-all duration-300"
               />
-              <span className="font-display font-bold text-xs tracking-[0.4em] text-white/40 group-hover:text-white transition-colors duration-300">EMAIL US</span>
+              <span className="font-serif font-bold text-xs tracking-[0.4em] text-white/40 group-hover:text-white transition-colors duration-300">EMAIL US</span>
             </a>
           </motion.div>
 
@@ -100,7 +100,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-white/5">
-          <p className="font-display font-black text-2xl tracking-tighter text-white">
+          <p className="font-serif font-black text-2xl tracking-tighter text-white">
             VIRAL<span className="text-gradient">DUO</span>
           </p>
           <div className="flex flex-col md:flex-row items-center gap-2 md:gap-6">

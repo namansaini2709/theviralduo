@@ -116,7 +116,7 @@ export default function Hero() {
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-40 px-6">
           <div 
             ref={el => { wordRefs.current[0] = el; }} 
-            className="font-display font-black text-[4vw] md:text-[2vw] text-brand-deep uppercase tracking-[0.5em] mb-[-2vw]"
+            className="font-serif font-black text-[4vw] md:text-[2vw] text-brand-deep uppercase tracking-[0.5em] mb-[-2vw]"
             style={{ opacity: 0 }}
           >
             THE
@@ -152,7 +152,7 @@ export default function Hero() {
           </div>
 
           <div className="space-y-0 flex flex-col items-center">
-            <span className="font-display font-black text-xl md:text-2xl text-brand-deep tracking-[0.4em] mb-1 opacity-80">THE</span>
+            <span className="font-serif font-black text-xl md:text-2xl text-brand-deep tracking-[0.4em] mb-1 opacity-80">THE</span>
             <h1 className="viral-text-style text-5xl md:text-8xl px-6 py-4">
               VIRAL DUO
             </h1>

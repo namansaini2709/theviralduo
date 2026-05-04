@@ -12,36 +12,35 @@ const pillars = [
     copy: "We find the cultural signals, creator angles, and scroll patterns your audience already wants.",
     image: "/assets/services/what-we-are.png",
     video: "/assets/videos/stratgic 2.mp4",
-    accent: "from-brand-sky/20 via-brand-sky/10 to-transparent",
-    tint: "bg-brand-sky/10 group-hover:bg-brand-sky/20",
-    border: "border-brand-sky/30 group-hover:border-brand-sky/60",
-    shadow: "shadow-brand-sky/10 group-hover:shadow-brand-sky/20",
+    accent: "from-cyan-500/22 via-cyan-300/10 to-cyan-100/[0.03]",
+    tint: "bg-cyan-400/[0.18] group-hover:bg-cyan-300/[0.34]",
+    border: "border-cyan-200/[0.22] group-hover:border-cyan-200/[0.48]",
+    shadow: "shadow-cyan-500/10 group-hover:shadow-cyan-400/20",
   },
   {
     title: "Productive",
     copy: "We turn ideas into sharp hooks, repeatable formats, and fast-moving edits built for retention.",
     image: "/assets/services/clapboard.png",
-    accent: "from-brand-pink/20 via-brand-pink/10 to-transparent",
-    tint: "bg-brand-pink/10 group-hover:bg-brand-pink/20",
+    accent: "from-red-500/22 via-orange-300/10 to-red-100/[0.03]",
+    tint: "bg-red-500/[0.18] group-hover:bg-red-400/[0.34]",
     video: "/assets/videos/Screen Recording 2026-05-01 at 12.57.42 PM.mov",
-    border: "border-brand-pink/30 group-hover:border-brand-pink/60",
-    shadow: "shadow-brand-pink/10 group-hover:shadow-brand-pink/25",
+    border: "border-red-200/[0.22] group-hover:border-red-200/[0.48]",
+    shadow: "shadow-red-500/10 group-hover:shadow-red-400/25",
   },
   {
     title: "Creative",
     copy: "We read the data, double down on winners, and keep the content machine compounding.",
     image: "/assets/services/charts.png",
     video: "/assets/videos/creative_reel_trimmed_2.mov",
-    accent: "from-brand-yellow/20 via-brand-yellow/10 to-transparent",
-    tint: "bg-brand-yellow/10 group-hover:bg-brand-yellow/20",
-    border: "border-brand-yellow/30 group-hover:border-brand-yellow/60",
-    shadow: "shadow-brand-yellow/10 group-hover:shadow-brand-yellow/20",
+    accent: "from-amber-400/22 via-lime-300/10 to-yellow-100/[0.03]",
+    tint: "bg-amber-300/[0.18] group-hover:bg-amber-300/[0.34]",
+    border: "border-amber-100/[0.22] group-hover:border-amber-100/[0.48]",
+    shadow: "shadow-amber-400/10 group-hover:shadow-amber-300/20",
   },
 ];
 
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null);
-  const headerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
@@ -53,7 +52,7 @@ export default function About() {
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-
+    
     // Tilt from opposite direction logic (Tilting AWAY from mouse)
     const rX = (centerY - y) / 12;
     const rY = (x - centerX) / 12;
@@ -87,7 +86,7 @@ export default function About() {
       ease: "power4.out",
       overwrite: "auto",
     });
-
+    
     const glare = card.querySelector(".card-glare") as HTMLDivElement;
     if (glare) {
       gsap.to(glare, {
@@ -121,9 +120,6 @@ export default function About() {
         ({ conditions }) => {
           const isDesktop = Boolean(conditions?.desktop);
           const cards = cardsRef.current.filter(Boolean) as HTMLDivElement[];
-          const headerChars = headerRef.current?.querySelectorAll(".char") || [];
-          const headerPara = headerRef.current?.querySelector("p");
-
           const desktopRotations = [-3.5, 2.5, 3.5];
           const mobileRotations = [-2, 1.5, 2];
 
@@ -133,16 +129,13 @@ export default function About() {
             willChange: "transform, opacity",
           });
 
-          if (headerChars.length) {
-            gsap.set(headerChars, { willChange: "transform, opacity" });
-          }
-
           const tl = gsap.timeline({
+            defaults: { ease: "power3.out" },
             scrollTrigger: {
               trigger: sectionRef.current,
               start: "top top",
-              end: isDesktop ? "+=200%" : "+=140%",
-              scrub: true, // 1:1 manual control
+              end: isDesktop ? "+=240%" : "+=160%",
+              scrub: isDesktop ? 1.15 : 1,
               pin: true,
               pinSpacing: true,
               anticipatePin: 1,
@@ -151,38 +144,14 @@ export default function About() {
             },
           });
 
-          // 1. Header Animation (Chars enter) - Ease: None for manual feel
-          tl.fromTo(headerChars,
-            { opacity: 0, y: 30, rotateX: 30, filter: "blur(8px)" },
-            {
-              opacity: 1,
-              y: 0,
-              rotateX: 0,
-              filter: "blur(0px)",
-              stagger: 0.02,
-              duration: 1,
-              ease: "none" // Manual speed mapping
-            },
-            0.05
-          );
-
-          if (headerPara) {
-            tl.fromTo(headerPara,
-              { opacity: 0, y: 20 },
-              { opacity: 1, y: 0, duration: 0.8, ease: "none" },
-              0.2
-            );
-          }
-
-          // 2. Cards Animation (Enter) - Direct and scroll-linked
           tl.fromTo(
             cards,
             {
               autoAlpha: 0,
-              y: isDesktop ? 300 : 150,
-              scale: 0.9,
-              rotateX: 15,
-              rotateZ: (index) => (isDesktop ? desktopRotations[index] * 1.5 : mobileRotations[index]),
+              y: isDesktop ? 260 : 120,
+              scale: 0.82,
+              rotateX: 22,
+              rotateZ: (index) => (isDesktop ? desktopRotations[index] * 1.8 : mobileRotations[index]),
             },
             {
               autoAlpha: 1,
@@ -190,48 +159,36 @@ export default function About() {
               scale: 1,
               rotateX: 0,
               rotateZ: (index) => (isDesktop ? desktopRotations[index] : mobileRotations[index]),
-              duration: 1.5,
-              stagger: 0.04,
-              ease: "none",
-            },
-            0.1
-          );
-
-          // 3. Static Hold / Minimal Movement (Replaces Wobble)
-          tl.to(
-            cards,
-            {
-              y: -20,
               duration: 1,
-              ease: "none",
+              stagger: isDesktop ? 0.12 : 0.08,
             },
-            "+=0.2"
-          );
-
-          // 4. Combined Exit
-          tl.to([headerChars, headerPara], {
-            opacity: 0,
-            y: -60,
-            stagger: 0.01,
-            duration: 0.8,
-            ease: "none"
-          }, "+=0.3");
-
-          tl.to(
+            0.42
+          )
+          .to(
             cards,
             {
-              y: isDesktop ? -200 : -100,
+              y: (index) => (isDesktop ? [18, -34, 18][index] : [0, -10, 0][index]),
+              rotateY: (index) => (isDesktop ? [-8, 0, 8][index] : 0),
+              rotateZ: (index) => (isDesktop ? [-1.25, 1.5, 1.25][index] : mobileRotations[index]),
+              scale: (index) => (index === 1 ? 1.035 : 0.96),
+              duration: 1.25,
+              ease: "none",
+            },
+            1.25
+          )
+          .to(
+            cards,
+            {
+              y: isDesktop ? -150 : -60,
               autoAlpha: 0,
-              scale: 0.9,
-              duration: 1,
-              stagger: 0.04,
-              ease: "none",
+              scale: 0.92,
+              duration: isDesktop ? 0.7 : 0.4,
+              stagger: isDesktop ? 0.06 : 0.04,
+              ease: "power2.in",
             },
-            "<"
-          );
-
-          // Subtle section fade
-          tl.to(sectionRef.current, { opacity: 0, duration: 0.5, ease: "none" }, "+=0.1");
+            isDesktop ? 2.72 : 2.2
+          )
+          .to(sectionRef.current, { autoAlpha: 0, duration: 0.1 }, "+=0");
         }
       );
 
@@ -247,38 +204,59 @@ export default function About() {
       id="about"
       className="relative min-h-screen w-full overflow-hidden px-5 py-16 text-black bg-transparent"
     >
+      <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-background to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background to-transparent" />
+
       <div className="relative z-10 mx-auto flex min-h-fit md:min-h-[calc(100vh-8rem)] w-full max-w-6xl flex-col items-center justify-center py-10 md:py-0">
-        <div ref={headerRef} className="mb-10 text-center md:mb-14 flex flex-col items-center">
-          <div className="flex flex-wrap justify-center gap-x-[0.3em] mb-4">
-            <h2 className="flex flex-wrap justify-center gap-x-[0.4em] font-display font-black text-[10vw] md:text-[7vw] lg:text-[5.5rem] leading-[1.1] py-4 tracking-tight uppercase text-brand-deep items-center">
-              <span className="flex">
-                {"WHO".split("").map((char, i) => (
-                  <span key={i} className="char inline-block px-1">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.2 }}
+          className="mb-10 text-center md:mb-14 flex flex-col items-center"
+        >
+          <div className="flex flex-wrap justify-center gap-x-8 md:gap-x-12 mb-4 md:mb-6 pt-8 md:pt-12">
+            {"WHO WE ARE".split(" ").map((word, wordIdx) => (
+              <span key={wordIdx} className="inline-block whitespace-nowrap">
+                {word.split("").map((char, charIdx) => (
+                  <motion.span
+                    key={charIdx}
+                    variants={{
+                      hidden: { opacity: 0, y: 40, rotateX: 45, filter: "blur(10px)" },
+                      visible: { 
+                        opacity: 1, 
+                        y: 0, 
+                        rotateX: 0, 
+                        filter: "blur(0px)",
+                        transition: {
+                          duration: 0.8,
+                          ease: [0.22, 1, 0.36, 1],
+                          delay: wordIdx * 0.2 + charIdx * 0.03
+                        }
+                      }
+                    }}
+                    className={`${
+                      wordIdx === 0 || wordIdx === 2 
+                        ? "text-brand-sky" 
+                        : "text-orange-gradient"
+                    } font-serif font-black inline-block text-[12vw] md:text-[8vw] lg:text-[6.5rem] italic leading-[1.15] px-4 py-2 -mx-4 uppercase`}
+                  >
                     {char}
-                  </span>
+                  </motion.span>
                 ))}
               </span>
-              <span className="flex">
-                {"WE".split("").map((char, i) => (
-                  <span key={i} className="char inline-block px-1 text-orange-gradient">
-                    {char}
-                  </span>
-                ))}
-              </span>
-              <span className="flex font-serif italic ml-4">
-                {"ARE".split("").map((char, i) => (
-                  <span key={i} className="char inline-block px-1">
-                    {char}
-                  </span>
-                ))}
-              </span>
-            </h2>
+            ))}
           </div>
-          <p className="mx-auto mt-4 max-w-2xl font-body text-sm leading-7 text-brand-text md:text-base font-bold opacity-0">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="mx-auto mt-0 max-w-2xl font-body text-sm leading-7 text-black md:text-base font-bold"
+          >
             We don&apos;t post content. We engineer virality through strategy,
             production, and relentless creative iteration.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         <div className="grid w-full max-w-5xl grid-cols-1 gap-10 px-5 [perspective:1200px] md:grid-cols-3 md:gap-10 md:px-0">
           {pillars.map((pillar, index) => (
@@ -289,7 +267,7 @@ export default function About() {
               }}
               onMouseMove={(e) => handleMouseMove(e, index)}
               onMouseLeave={() => handleMouseLeave(index)}
-              className={`group relative min-h-[300px] overflow-hidden rounded-[2.5rem] border bg-white/60 ${pillar.accent} ${pillar.border} shadow-[0_15px_45px_rgba(77,184,229,0.1)] md:shadow-[0_30px_90px_rgba(77,184,229,0.2)] ${pillar.shadow} backdrop-blur-[10px] md:min-h-[340px] [transform-style:preserve-3d] transition-[background-color,border-color,box-shadow,backdrop-filter] duration-500`}
+              className={`group relative min-h-[300px] overflow-hidden rounded-[2.5rem] border bg-gradient-to-br ${pillar.accent} ${pillar.border} shadow-[0_15px_45px_rgba(0,0,0,0.15)] md:shadow-[0_30px_90px_rgba(0,0,0,0.38)] ${pillar.shadow} backdrop-blur-[7px] transition-[border-color,box-shadow,background-color] duration-500 md:min-h-[340px] [transform-style:preserve-3d]`}
             >
               <div className="card-glare pointer-events-none absolute inset-0 z-50 opacity-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.05)_0%,transparent_80%)] blur-2xl" />
               <div className={`absolute inset-0 ${pillar.tint} opacity-40 mix-blend-multiply transition-colors duration-500`} />
