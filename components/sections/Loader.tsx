@@ -96,7 +96,8 @@ const HeroAnimationLoader: React.FC<HeroAnimationLoaderProps> = ({ onComplete })
     if (img && img.complete) {
       const hRatio = canvas.width / img.width;
       const vRatio = canvas.height / img.height;
-      const ratio = Math.max(hRatio, vRatio);
+      // Scale by 1.1 to crop the "Veo" watermark in the corners
+      const ratio = Math.max(hRatio, vRatio) * 1.1;
       
       const w = img.width * ratio;
       const h = img.height * ratio;

@@ -89,11 +89,19 @@ export default function Footer() {
             </a>
           </div>
 
-          <div className="flex flex-col gap-4 md:col-span-2">
+          <div className="flex flex-col gap-4">
             <h4 className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 mb-2">Location</h4>
             <p className="text-white/70 font-body text-sm font-medium">
               New Delhi, India<br />
               Operating in Delhi
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <h4 className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 mb-2">Contact Us</h4>
+            <p className="text-white/70 font-body text-sm font-medium flex flex-col gap-2">
+              <a href="tel:+917701918603" className="hover:text-white transition-colors">Shubham: +91 77019 18603</a>
+              <a href="tel:+919205197949" className="hover:text-white transition-colors">Pushkar: +91 92051 97949</a>
             </p>
           </div>
         </div>
