@@ -83,7 +83,7 @@ export default function Results() {
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 md:gap-32">
         <div className="md:w-[380px] flex-shrink-0 results-heading translate-y-6">
           <h2 className="font-serif font-black text-5xl md:text-7xl uppercase leading-tight text-brand-deep">
-            The <span className="text-gradient inline-block py-2">Proof</span> Is In The <span className="font-handwritten text-4xl lowercase text-brand-sky inline-block py-2 ml-4 relative">numbers</span>
+            The <span className="text-gradient inline-block py-2">Proof</span> Is In The <span className="font-handwritten text-4xl lg:text-6xl lowercase text-brand-sky inline-block -top-3 ml-28 relative">numbers</span>
           </h2>
         </div>
 

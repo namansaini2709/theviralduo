@@ -6,16 +6,16 @@ import { useDynamicData } from "@/lib/DynamicDataContext";
 import { useState, useEffect, useRef } from "react";
 
 const BRANDS = [
-  { name: "FOF Fitness", logo: "/brands/FOF Fitnesa logo.jpeg" },
-  { name: "Global Holidays", logo: "/brands/Global Holidays.PNG" },
-  { name: "Make your trip possible", logo: "/brands/Make your trip possible.jpg" },
-  { name: "Sharma ji ke bhature", logo: "/brands/Sharma ji ke bhature.JPG" },
-  { name: "Shri radhey Krishna jewellers", logo: "/brands/Shri radhey Krishna  jewellers.JPG" },
-  { name: "VDMC", logo: "/brands/Vdmc logo.JPG" },
-  { name: "Anytime Fitness", logo: "/brands/anytime. fitness logos.JPG" },
-  { name: "Career Launcher", logo: "/brands/carrer launcher.JPG" },
-  { name: "MS Classes", logo: "/brands/ms classes.JPG" },
-  { name: "Saral Gym", logo: "/brands/saral gym logo.jpg" },
+  { name: "FOF Fitness", logo: "/brands/fof-fitness.jpeg" },
+  { name: "Global Holidays", logo: "/brands/global-holidays.png" },
+  { name: "Make your trip possible", logo: "/brands/make-your-trip.jpg" },
+  { name: "Sharma ji ke bhature", logo: "/brands/sharma-ji.jpg" },
+  { name: "Shri radhey Krishna jewellers", logo: "/brands/shri-radhey.jpg" },
+  { name: "VDMC", logo: "/brands/vdmc.jpg" },
+  { name: "Anytime Fitness", logo: "/brands/anytime-fitness.jpg" },
+  { name: "Career Launcher", logo: "/brands/career-launcher.jpg" },
+  { name: "MS Classes", logo: "/brands/ms-classes.jpg" },
+  { name: "Saral Gym", logo: "/brands/saral-gym.jpg" },
 ];
 
 export default function Brands() {

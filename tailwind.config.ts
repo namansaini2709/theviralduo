@@ -33,8 +33,14 @@ const config: Config = {
         marquee: "marquee 30s linear infinite",
         "pulse-subtle": "pulse-subtle 4s ease-in-out infinite",
         "grain": "grain 0.5s steps(1) infinite",
+        "bubble-wobble": "bubble-wobble 6s ease-in-out infinite",
       },
       keyframes: {
+        "bubble-wobble": {
+          "0%, 100%": { borderRadius: "50% 50% 50% 50% / 50% 50% 50% 50%" },
+          "33%": { borderRadius: "55% 45% 52% 48% / 48% 52% 50% 50%" },
+          "66%": { borderRadius: "48% 52% 45% 55% / 52% 48% 53% 47%" },
+        },
         marquee: {
           "0%": { transform: "translateX(0%)" },
           "100%": { transform: "translateX(-50%)" },

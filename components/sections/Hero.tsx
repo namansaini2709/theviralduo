@@ -1,30 +1,60 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Image from "next/image";
-import { Play } from "lucide-react";
-import { motion } from "framer-motion";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+import { ArrowDown, Play } from "lucide-react";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const stageRef = useRef<HTMLDivElement>(null);
-  const heroCardRef = useRef<HTMLDivElement>(null);
-  const wordRefs = useRef<(HTMLSpanElement | null)[]>([]);
-
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const orbRef = useRef<HTMLDivElement>(null);
+  const line1Ref = useRef<HTMLSpanElement>(null);
+  const line2Ref = useRef<HTMLSpanElement>(null);
+  const line3Ref = useRef<HTMLSpanElement>(null);
+  const bottomContentRef = useRef<HTMLDivElement>(null);
+  const scrollIndicatorRef = useRef<HTMLDivElement>(null);
+  
   useEffect(() => {
     const ctx = gsap.context(() => {
       const isMobile = window.innerWidth < 768;
-      
+
+      // 1. PERFORMANCE OPTIMIZED MOUSE FOLLOW (GSAP QUICKTO)
+      const xOrb = gsap.quickTo(orbRef.current, "x", { duration: 0.6, ease: "power2.out" });
+      const yOrb = gsap.quickTo(orbRef.current, "y", { duration: 0.6, ease: "power2.out" });
+      const xScene = gsap.quickTo(sceneRef.current, "rotationY", { duration: 1, ease: "power2.out" });
+      const yScene = gsap.quickTo(sceneRef.current, "rotationX", { duration: 1, ease: "power2.out" });
+
+      const handleMouseMove = (e: MouseEvent) => {
+        const x = (e.clientX / window.innerWidth - 0.5);
+        const y = (e.clientY / window.innerHeight - 0.5);
+        
+        xOrb(x * 60);
+        yOrb(y * 60);
+        xScene(x * 6);
+        yScene(-y * 6);
+      };
+
+      window.addEventListener("mousemove", handleMouseMove);
+
+      // 2. INITIAL STATE (Text visible behind orb)
+      gsap.set([line1Ref.current, line2Ref.current, line3Ref.current], {
+        z: -300,
+        scale: 0.6,
+        opacity: 1, // Make visible from the start
+        filter: "blur(8px)", // Reduced blur for depth-of-field look
+      });
+
+      // 3. ENTRANCE & SCROLL TIMELINE
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: "+=800", // Increased scroll distance for a smoother, longer sequence
-          scrub: 1.2,
+          end: "+=2000", 
+          scrub: 1,
           pin: true,
           pinSpacing: true,
           anticipatePin: 1,
@@ -33,67 +63,87 @@ export default function Hero() {
         }
       });
 
-      // Phase 1: Hero Card Transform and Fade Out
-      tl.to(heroCardRef.current, {
-        scale: isMobile ? 0.8 : 0.85,
-        y: isMobile ? -60 : -120,
-        opacity: 0,
-        filter: "blur(30px)",
-        duration: 1.5,
-        ease: "power2.inOut",
-      });
-
-      // Phase 2: "THE VIRAL DUO" appears one by one
-      tl.fromTo(wordRefs.current, 
-        { opacity: 0, y: 100, filter: "blur(10px)" },
-        {
-          opacity: 1,
-          y: 0,
-          filter: "blur(0px)",
-          stagger: 0.5,
-          duration: 1.2,
-          ease: "power3.out",
+      // Line 1: "WE CREATE" - Left Orbital Entry
+      tl.to(line1Ref.current, {
+        motionPath: {
+          path: [
+            { x: -400, y: 50, z: -300 },
+            { x: -200, y: -20, z: -150 },
+            { x: 0, y: 0, z: 400 }
+          ],
+          curviness: 1.5,
         },
-        "-=0.8" // Starts while card is still fading
-      );
-
-      // Phase 3: Hold the text (The "1.5 sec" equivalent)
-      tl.to({}, { duration: 1.5 });
-
-      // Phase 4: Words vanish one by one
-      tl.to(wordRefs.current, {
-        opacity: 0,
-        y: -100,
-        filter: "blur(15px)",
-        stagger: 0.3,
-        duration: 1,
-        ease: "power2.in",
-      });
-
-      // Phase 5: Hero Card comes back
-      tl.to(heroCardRef.current, {
-        scale: 1,
-        y: 0,
         opacity: 1,
+        scale: 1,
         filter: "blur(0px)",
         duration: 1.5,
-        ease: "power3.out",
-      }, "-=1"); // Overlap with words vanishing
+        ease: "power2.out"
+      }, 0);
 
-      // Phase 6: Inner stage moves up significantly and gets smaller
-      tl.to(stageRef.current, {
-        y: isMobile ? "-65vh" : "-75vh",
-        scale: 0.5,
-        duration: 2,
-        ease: "power2.inOut",
-      }, "+=0.5"); // Brief pause after card settles
+      // Line 2: "VIRAL" - Right Orbital Entry
+      tl.to(line2Ref.current, {
+        motionPath: {
+          path: [
+            { x: 400, y: -50, z: -300 },
+            { x: 200, y: 20, z: -150 },
+            { x: 0, y: 0, z: 400 }
+          ],
+          curviness: 1.5,
+        },
+        opacity: 1,
+        scale: 1,
+        filter: "blur(0px)",
+        duration: 1.5,
+        ease: "power2.out"
+      }, 0.2);
 
-      // Phase 7: Fade out only when it's mostly out of view (70% out)
-      tl.to(stageRef.current, {
+      // Line 3: "BRANDS" - Bottom Entry
+      tl.to(line3Ref.current, {
+        motionPath: {
+          path: [
+            { x: 0, y: 200, z: -300 },
+            { x: 0, y: 100, z: -150 },
+            { x: 0, y: 0, z: 400 }
+          ],
+          curviness: 1.2,
+        },
+        opacity: 1,
+        scale: 1,
+        filter: "blur(0px)",
+        duration: 1.5,
+        ease: "power2.out"
+      }, 0.4);
+
+      // EXIT ANIMATION (at the very end of the 2000px scroll)
+      tl.to(sceneRef.current, {
+        y: -100,
+        scale: 0.95,
         opacity: 0,
-        duration: 0.6,
-        ease: "none"
-      }, "-=0.6"); // Starts fading in the final 30% of the movement duration
+        duration: 1,
+        ease: "power1.inOut"
+      }, "+=0.5");
+
+      // 4. IDLE ANIMATIONS
+      // Floating & Breathing Orb
+      gsap.to(orbRef.current, {
+        y: "+=25",
+        x: "+=15",
+        scale: 1.05,
+        duration: 4,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+      });
+
+      // UI Entrance
+      gsap.fromTo([bottomContentRef.current, scrollIndicatorRef.current],
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 1.2, stagger: 0.2, ease: "power3.out", delay: 0.5 }
+      );
+
+      return () => {
+        window.removeEventListener("mousemove", handleMouseMove);
+      };
 
     }, containerRef);
 
@@ -103,70 +153,113 @@ export default function Hero() {
   return (
     <section 
       ref={containerRef} 
-      id="top"
-      className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-transparent"
+      className="relative w-full h-screen flex flex-col items-center justify-start overflow-hidden bg-transparent selection:bg-brand-pink selection:text-white [perspective:1200px]"
     >
-      {/* Inner stage - smaller than the section from all directions */}
+      {/* 3D SCENE CONTAINER */}
       <div 
-        ref={stageRef}
-        className="relative w-[88vw] h-[88vh] bg-white/40 border-2 border-brand-sky/20 rounded-[3rem] shadow-[0_20px_60px_rgba(77,184,229,0.15)] backdrop-blur-sm overflow-hidden flex items-center justify-center"
+        ref={sceneRef}
+        className="relative w-full h-full flex items-center justify-center [transform-style:preserve-3d] will-change-transform"
       >
-        
-        {/* Cinematic Words (appears after card vanishes) */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-40 px-6">
-          <div 
-            ref={el => { wordRefs.current[0] = el; }} 
-            className="font-serif font-black text-[4vw] md:text-[2vw] text-brand-deep uppercase tracking-[0.5em] mb-[-2vw]"
-            style={{ opacity: 0 }}
-          >
-            THE
-          </div>
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
-            {["VIRAL", "DUO"].map((word, i) => (
-              <span 
-                key={i} 
-                ref={el => { wordRefs.current[i+1] = el; }}
-                className="viral-text-style text-[15vw] md:text-[10vw] px-4 py-6"
-                style={{ opacity: 0 }}
-              >
-                {word}
-              </span>
-            ))}
-          </div>
+        {/* BACKGROUND LAYER */}
+        <div className="absolute inset-0 z-0 [transform:translateZ(-500px)] pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vw] bg-brand-sky/10 rounded-full blur-[150px]" />
+          <div className="absolute top-1/4 right-0 w-[60vw] h-[60vw] bg-brand-pink/5 rounded-full blur-[120px]" />
+          <div className="absolute inset-0 film-grain opacity-[0.04]" />
         </div>
 
-        {/* Hero Card */}
+        {/* MID LAYER: 3D CRYSTAL BUBBLE */}
         <div 
-          ref={heroCardRef}
-          className="relative z-50 w-full h-full bg-white flex flex-col items-center justify-center text-center space-y-8 p-10 md:p-20"
+          ref={orbRef}
+          className="absolute z-30 pointer-events-none [transform:translateZ(150px)] will-change-transform"
         >
-          {/* Logo */}
-          <div className="relative w-32 h-32 md:w-44 md:h-44 rounded-full overflow-hidden border-4 border-brand-sky shadow-xl">
-            <Image 
-              src="/logo-v2.png" 
-              alt="The Viral Duo" 
-              fill 
-              className="object-cover"
-              priority
-            />
+          <div className="relative w-[34vw] h-[34vw] min-w-[320px] min-h-[320px] rounded-full animate-bubble-wobble">
+            {/* 1. Main Glass Body with Refraction (More Bluish) */}
+            <div className="absolute inset-0 rounded-full backdrop-blur-[12px] border-[0.5px] border-brand-sky/40 bg-brand-sky/[0.05] shadow-[0_20px_50px_rgba(30,90,168,0.15),inset_0_0_50px_rgba(77,184,229,0.3)] overflow-hidden" />
+            
+            {/* 2. Iridescent Sheen (Shifted to Blue-Cyan Tones) */}
+            <div className="absolute inset-0 rounded-full bg-[conic-gradient(from_0deg,transparent,rgba(77,184,229,0.2),rgba(0,180,216,0.1),rgba(173,232,244,0.2),transparent)] opacity-70 animate-spin-slow mix-blend-screen" />
+            
+            {/* 3. Primary Specular Highlight */}
+            <div className="absolute top-[10%] left-[15%] w-[40%] h-[20%] bg-gradient-to-br from-white/70 to-transparent rounded-[100%] rotate-[-25deg] blur-[8px]" />
+            
+            {/* 4. Secondary Highlight */}
+            <div className="absolute top-[15%] right-[25%] w-[10%] h-[10%] bg-white/50 rounded-full blur-[4px]" />
+            
+            {/* 5. Rim Lighting (Deep Blue/Cyan Glow) */}
+            <div className="absolute inset-0 rounded-full shadow-[inset_0_-10px_40px_rgba(30,90,168,0.3),inset_0_10px_40px_rgba(77,184,229,0.2)]" />
+            
+            {/* 6. Fresnel Effect */}
+            <div className="absolute -inset-1 rounded-full border border-brand-sky/30 opacity-40 blur-[2.5px]" />
           </div>
+          
+          {/* External Soft Environment Shadow/Glow (Enhanced Blue) */}
+          <div className="absolute inset-0 bg-brand-deep/15 rounded-full blur-[100px] -z-10 animate-pulse-subtle" />
+        </div>
 
-          <div className="space-y-0 flex flex-col items-center">
-            <span className="font-serif font-black text-xl md:text-2xl text-brand-deep tracking-[0.4em] mb-1 opacity-80">THE</span>
-            <h1 className="viral-text-style text-5xl md:text-8xl px-6 py-4">
-              VIRAL DUO
-            </h1>
-          </div>
-
-          <button className="mt-4 group relative inline-flex items-center justify-center gap-3 px-10 py-5 font-bold text-white uppercase tracking-widest bg-gradient-brand rounded-full overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
-            <span className="relative z-10 flex items-center gap-3">
-              <Play fill="currentColor" size={20} />
-              Watch Showreel
+        {/* FOREGROUND LAYER: HEADLINE */}
+        <div 
+          className="relative z-40 flex flex-col items-center text-center [transform-style:preserve-3d] will-change-transform"
+        >
+          <h1 className="flex flex-col items-center leading-[0.85] tracking-[-0.04em] font-serif font-black uppercase">
+            <span 
+              ref={line1Ref}
+              className="block text-brand-deep text-[clamp(50px,10vw,140px)] will-change-transform"
+            >
+              WE CREATE
             </span>
+            <span 
+              ref={line2Ref}
+              className="block text-gradient text-[clamp(60px,14vw,180px)] drop-shadow-[0_0_40px_rgba(255,77,109,0.3)] will-change-transform"
+            >
+              VIRAL
+            </span>
+            <span 
+              ref={line3Ref}
+              className="block text-brand-deep text-[clamp(60px,12vw,160px)] will-change-transform"
+            >
+              BRANDS
+            </span>
+          </h1>
+        </div>
+      </div>
+
+      {/* OVERLAY UI (Fixed relative to section) */}
+      <div className="absolute inset-0 z-50 pointer-events-none flex flex-col justify-end h-screen">
+        {/* BOTTOM UI */}
+        <div 
+          ref={bottomContentRef}
+          className="w-full px-8 md:px-16 pb-12 flex flex-col md:flex-row items-end justify-between gap-8 pointer-events-auto"
+        >
+          <div className="max-w-[320px] text-left">
+            <div className="w-12 h-[2px] bg-brand-sky mb-4" />
+            <p className="text-brand-subtext font-medium text-[11px] leading-relaxed uppercase tracking-[0.2em]">
+              A high-end cinematic marketing agency that builds brands that can't be ignored.
+            </p>
+          </div>
+
+          <button className="group relative flex items-center gap-5 px-10 py-5 bg-white/90 backdrop-blur-md border border-white/20 rounded-2xl shadow-2xl hover:shadow-[0_20px_50px_rgba(77,184,229,0.2)] hover:-translate-y-2 transition-all duration-500 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-brand opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
+            <div className="w-14 h-14 bg-gradient-brand rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-500">
+              <Play fill="currentColor" size={24} className="ml-1" />
+            </div>
+            <div className="flex flex-col items-start">
+              <span className="text-[9px] font-black text-brand-sky uppercase tracking-[0.3em]">Cinematic</span>
+              <span className="text-sm font-black text-brand-deep uppercase tracking-[0.1em]">Watch Showreel</span>
+            </div>
           </button>
         </div>
 
+        {/* SCROLL INDICATOR */}
+        <div 
+          ref={scrollIndicatorRef}
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+        >
+          <div className="w-[1px] h-16 bg-gradient-to-b from-brand-sky via-brand-sky/50 to-transparent" />
+          <ArrowDown size={14} className="text-brand-sky animate-bounce" />
+        </div>
       </div>
     </section>
   );
 }
+
+
