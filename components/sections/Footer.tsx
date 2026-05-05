@@ -26,7 +26,7 @@ export default function Footer() {
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               className="font-serif text-5xl md:text-8xl font-black italic tracking-tighter leading-[0.9] mb-6"
             >
-              READY TO GO <span className="text-gradient">VIRAL?</span>
+              READY TO GO <span className="text-gradient pr-4">VIRAL?</span>
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
