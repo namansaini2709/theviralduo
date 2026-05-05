@@ -93,12 +93,26 @@ export default function Footer() {
             </a>
           </div>
 
-          <div className="flex flex-col gap-4 md:col-span-2">
+          <div className="flex flex-col gap-4">
             <h4 className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 mb-2">Location</h4>
             <p className="text-white/70 font-body text-sm font-medium">
               New Delhi, India<br />
               Operating in Delhi
             </p>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <h4 className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 mb-2">Contact Us</h4>
+            <div className="flex flex-col gap-2">
+              <p className="text-white/70 font-body text-sm font-medium">
+                <span className="text-white/40 text-[10px] uppercase tracking-widest font-bold block mb-0.5">Shubham</span>
+                +91 77019 18603
+              </p>
+              <p className="text-white/70 font-body text-sm font-medium">
+                <span className="text-white/40 text-[10px] uppercase tracking-widest font-bold block mb-0.5">Pushkar</span>
+                +91 92051 97949
+              </p>
+            </div>
           </div>
         </div>
 
