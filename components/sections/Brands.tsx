@@ -37,7 +37,7 @@ export default function Brands() {
     if (pages.length <= 1) return;
     const interval = setInterval(() => {
       setCurrentPage((prev) => (prev + 1) % pages.length);
-    }, 5000);
+    }, 10000);
     return () => clearInterval(interval);
   }, [pages.length]);
 
@@ -133,6 +133,7 @@ export default function Brands() {
               {/* Only show CTA on the last page if there's room, or add it to the last page */}
               {currentPage === pages.length - 1 && pages[currentPage].length < 10 && (
                  <motion.div
+                    onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
                     className="group relative flex flex-col items-center justify-center p-6 bg-brand-deep text-white rounded-[2.5rem] aspect-square shadow-xl cursor-pointer overflow-hidden"
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-brand-orange to-brand-pink opacity-0 group-hover:opacity-20 transition-opacity" />
