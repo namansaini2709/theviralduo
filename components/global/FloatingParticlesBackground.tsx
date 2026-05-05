@@ -40,7 +40,7 @@ export default function FloatingParticlesBackground() {
     window.addEventListener("mousemove", onMouseMove);
 
     // Continuous floating animation
-    Array.from(elements).forEach((el) => {
+    Array.from(elements).forEach((el, i) => {
       gsap.to(el, {
         y: `+=${Math.random() * 100 + 50}`,
         rotation: Math.random() * 20 - 10,

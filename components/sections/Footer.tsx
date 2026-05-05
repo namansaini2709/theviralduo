@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import Image from "next/image";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -25,16 +24,16 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="font-serif text-4xl md:text-8xl font-black italic tracking-tighter leading-[0.95] md:leading-[0.9] mb-6"
+              className="font-serif text-5xl md:text-8xl font-black italic tracking-tighter leading-[0.9] mb-6"
             >
-              READY TO GO <span className="text-gradient inline-block px-2 md:px-4">VIRAL?</span>
+              READY TO GO <span className="text-gradient">VIRAL?</span>
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="font-body text-white/60 font-medium text-base md:text-xl max-w-md"
+              className="font-body text-white/60 font-medium text-lg md:text-xl max-w-md"
             >
               Stop posting content. Start engineering attention. Drop us a line and let&apos;s build something massive.
             </motion.p>
@@ -51,15 +50,12 @@ export default function Footer() {
               href="mailto:hello@viralduo.com"
               className="group flex flex-col items-center gap-2 transition-transform duration-300 hover:scale-105"
             >
-              <Image 
+              <img 
                 src="https://cdn-icons-gif.flaticon.com/8717/8717939.gif" 
                 alt="Email Icon" 
-                width={112}
-                height={112}
                 className="w-20 h-20 md:w-28 md:h-28 transition-all duration-300"
-                unoptimized
               />
-              <span className="font-serif font-bold text-xs tracking-[0.4em] text-white/40 group-hover:text-white transition-colors duration-300">EMAIL US</span>
+              <span className="font-display font-bold text-xs tracking-[0.4em] text-white/40 group-hover:text-white transition-colors duration-300">EMAIL US</span>
             </a>
           </motion.div>
 
@@ -118,7 +114,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-white/5">
-          <p className="font-serif font-black text-2xl tracking-tighter text-white">
+          <p className="font-display font-black text-2xl tracking-tighter text-white">
             VIRAL<span className="text-gradient">DUO</span>
           </p>
           <div className="flex flex-col md:flex-row items-center gap-2 md:gap-6">

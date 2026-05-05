@@ -2,12 +2,15 @@
 
 import { useState, useEffect } from 'react';
 import { motion, useSpring, useMotionValue } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 import './CustomCursor.css';
 
 export default function CustomCursor() {
   const [isMobile, setIsMobile] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const pathname = usePathname();
+  const isAdmin = pathname?.startsWith('/admin');
 
   useEffect(() => {
     const checkMobile = () => {
@@ -15,8 +18,35 @@ export default function CustomCursor() {
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+
+    // Manage cursor visibility
+    const isAdmin = window.location.pathname.startsWith('/admin');
+    const shouldHideCursor = !isAdmin && !isMobile;
+    
+    const styleId = 'cursor-hide-style';
+    let styleTag = document.getElementById(styleId);
+
+    const cleanup = () => {
+      const tag = document.getElementById(styleId);
+      if (tag) tag.remove();
+    };
+
+    if (shouldHideCursor) {
+      if (!styleTag) {
+        styleTag = document.createElement('style');
+        styleTag.id = styleId;
+        styleTag.innerHTML = `* { cursor: none !important; }`;
+        document.head.appendChild(styleTag);
+      }
+    } else {
+      cleanup();
+    }
+
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      cleanup();
+    };
+  }, [pathname, isMobile]);
 
   // Use MotionValues for high-performance tracking without re-renders
   const mouseX = useMotionValue(0);
@@ -66,7 +96,7 @@ export default function CustomCursor() {
     };
   }, [mouseX, mouseY, isVisible]);
 
-  if (isMobile || !isVisible) return null;
+  if (isMobile || !isVisible || isAdmin) return null;
 
   return (
     <>

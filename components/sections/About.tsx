@@ -39,12 +39,6 @@ const pillars = [
   },
 ];
 
-const ABOUT_PARAGRAPHS = [
-  "We’re a new-age digital growth agency built for brands that want attention — and know how to use it. In today’s fast-scrolling world, being seen isn’t enough. You need to be remembered. That’s where we come in.",
-  "We specialize in turning ordinary content into high-performing digital assets. Every post, every reel, every campaign we create is designed with one goal in mind — to capture attention and convert it into real business results. Not vanity metrics. Not empty reach. Actual growth.",
-  "What makes us different is how we blend creativity with strategy. We don’t just follow trends — we understand why they work, and we adapt them to fit your brand perfectly. From viral-style content to performance-driven ad campaigns, everything we do is intentional, data-backed, and built to scale."
-];
-
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -140,7 +134,7 @@ export default function About() {
             scrollTrigger: {
               trigger: sectionRef.current,
               start: "top top",
-              end: isDesktop ? "+=450%" : "+=350%", // Much longer for paragraphs
+              end: isDesktop ? "+=240%" : "+=160%",
               scrub: isDesktop ? 1.15 : 1,
               pin: true,
               pinSpacing: true,
@@ -193,35 +187,8 @@ export default function About() {
               ease: "power2.in",
             },
             isDesktop ? 2.72 : 2.2
-          );
-
-          // Paragraphs Sequence
-          const paragraphs = gsap.utils.toArray(".about-paragraph") as HTMLElement[];
-          
-          paragraphs.forEach((p, i) => {
-            const fromVars: gsap.TweenVars = { autoAlpha: 0 };
-            
-            if (i === 0) fromVars.x = 100; // From Right
-            if (i === 1) fromVars.x = -100; // From Left
-            if (i === 2) { fromVars.scale = 0; fromVars.y = 50; } // Pop Up
-            if (i === 3) fromVars.y = -80; // From Top
-
-            tl.fromTo(p, 
-              fromVars,
-              { 
-                autoAlpha: 1, 
-                x: 0, 
-                y: 0, 
-                scale: 1, 
-                duration: 1.5,
-                ease: "power3.out" 
-              },
-              `+=0.5`
-            );
-            tl.to({}, { duration: 2.5 }); // Stay for 2.5s (scroll duration)
-          });
-
-          tl.to(sectionRef.current, { autoAlpha: 0, duration: 0.5 }, "+=1");
+          )
+          .to(sectionRef.current, { autoAlpha: 0, duration: 0.1 }, "+=0");
         }
       );
 
@@ -361,32 +328,6 @@ export default function About() {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Narrative Paragraphs */}
-        <div className="absolute top-[45%] md:top-[42%] left-1/2 -translate-x-1/2 w-full max-w-6xl pointer-events-none px-6">
-          <div className="flex flex-col items-center gap-6 md:gap-0">
-            {/* Top Row: Left and Right */}
-            <div className="flex flex-col md:flex-row justify-between w-full gap-6 md:gap-16">
-              <div className="about-paragraph opacity-0 bg-brand-soft/60 backdrop-blur-md p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] border border-black/5 shadow-[0_15px_45px_rgba(0,0,0,0.08)] md:max-w-[44%]">
-                <p className="font-body text-[12px] md:text-[13px] lg:text-[15px] leading-relaxed text-brand-deep font-bold text-center md:text-left">
-                  {ABOUT_PARAGRAPHS[0]}
-                </p>
-              </div>
-              <div className="about-paragraph opacity-0 bg-brand-soft/60 backdrop-blur-md p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] border border-black/5 shadow-[0_15px_45px_rgba(0,0,0,0.08)] md:max-w-[44%]">
-                <p className="font-body text-[12px] md:text-[13px] lg:text-[15px] leading-relaxed text-brand-deep font-bold text-center md:text-right">
-                  {ABOUT_PARAGRAPHS[1]}
-                </p>
-              </div>
-            </div>
-
-            {/* Middle: Centered and slightly lower */}
-            <div className="about-paragraph opacity-0 mt-6 md:mt-14 bg-brand-soft/60 backdrop-blur-md p-6 md:p-10 rounded-[2rem] md:rounded-[2.5rem] border border-black/5 shadow-[0_15px_45px_rgba(0,0,0,0.08)] max-w-full md:max-w-[65%] text-center">
-              <p className="font-body text-[12px] md:text-[13px] lg:text-[15px] leading-relaxed text-brand-deep font-bold">
-                {ABOUT_PARAGRAPHS[2]}
-              </p>
-            </div>
-          </div>
         </div>
       </div>
     </section>

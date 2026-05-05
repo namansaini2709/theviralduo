@@ -1,25 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { useDynamicData, type Work, type Feedback } from "@/lib/DynamicDataContext";
+import { useDynamicData } from "@/lib/DynamicDataContext";
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
-  const { 
-    addWork, removeWork, updateWork, 
-    addFeedback, updateFeedback, removeFeedback, 
-    restoreFromTrash, permanentlyDelete,
-    updateStats, resetData, data 
-  } = useDynamicData();
-  
-  const [editingWorkId, setEditingWorkId] = useState<number | string | null>(null);
-  const [editingFeedbackId, setEditingFeedbackId] = useState<number | string | null>(null);
-
-  const [mounted, setMounted] = useState(false);
+  const { addWork, updateWork, removeWork, addFeedback, updateFeedback, removeFeedback, addBrand, updateBrand, removeBrand, addResult, updateResult, removeResult, moveWork, moveFeedback, moveBrand, moveResult, restoreItem, permanentlyDeleteItem, resetData, resetToDefaults, data } = useDynamicData();
   
   React.useEffect(() => {
-    setMounted(true);
     if (sessionStorage.getItem("viralDuoAdminSession") === "true") {
       setIsAuthenticated(true);
     }
@@ -38,50 +27,32 @@ export default function AdminPage() {
   const [logoLink, setLogoLink] = useState("");
 
   // Feedback form state
-  const [title, setTitle] = useState("");
-  const [quote, setQuote] = useState("");
-  const [feedbackBody, setFeedbackBody] = useState("");
+  const [headline, setHeadline] = useState("");
+  const [testimonial, setTestimonial] = useState("");
   const [image, setImage] = useState("");
   const [feedbackColor, setFeedbackColor] = useState("#F5F0E8");
-  const [name, setName] = useState("");
+  const [clientName, setClientName] = useState("");
   const [points, setPoints] = useState("");
   const [stars, setStars] = useState("5");
 
-  if (!mounted) return null;
+  // Editing state
+  const [editingWorkId, setEditingWorkId] = useState<number | null>(null);
+  const [editingFeedbackId, setEditingFeedbackId] = useState<number | null>(null);
+  const [editingBrandId, setEditingBrandId] = useState<number | null>(null);
+  const [editingStatId, setEditingStatId] = useState<number | null>(null);
 
-  const handleEditWork = (item: Work) => {
-    setEditingWorkId(item.id);
-    setClient(item.client || "");
-    setPlatform(item.platform || "");
-    setViews(item.views || "");
-    setColor(item.color || "#E63946");
-    setThumbnail(item.thumbnail || "");
-    setLogo(item.logo || "");
-    setVideo(item.video || "");
-    setLink(item.link || "");
-    setWatchMoreLink(item.watchMoreLink || "");
-    setLogoLink(item.logoLink || "");
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  // Brands form state
+  const [brandName, setBrandName] = useState("");
+  const [brandLogo, setBrandLogo] = useState("");
 
-  const handleEditFeedback = (item: Feedback) => {
-    setEditingFeedbackId(item.id);
-    setTitle(item.title || "");
-    setQuote(item.quote || "");
-    setFeedbackBody(item.feedback || "");
-    setImage(item.image || "");
-    setFeedbackColor(item.color || "#F5F0E8");
-    setName(item.name || item.title || "");
-    setPoints(item.points || "");
-    setStars(item.stars || "5");
-    // Scroll to the feedback section
-    const feedbackForm = document.getElementById('feedback-form');
-    feedbackForm?.scrollIntoView({ behavior: 'smooth' });
-  };
+  // Results form state
+  const [statValue, setStatValue] = useState("");
+  const [statSuffix, setStatSuffix] = useState("");
+  const [statLabel, setStatLabel] = useState("");
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password.trim() === "admin123") {
+    if (password === "admin123") {
       setIsAuthenticated(true);
       sessionStorage.setItem("viralDuoAdminSession", "true");
     } else {
@@ -109,7 +80,7 @@ export default function AdminPage() {
       thumbnailPosition: "center",
     };
 
-    if (editingWorkId !== null) {
+    if (editingWorkId) {
       updateWork(projectData);
       setEditingWorkId(null);
     } else {
@@ -125,40 +96,123 @@ export default function AdminPage() {
     setLink("");
     setWatchMoreLink("");
     setLogoLink("");
-    alert(editingWorkId ? "Project updated successfully!" : "Project added successfully!");
+    alert(editingWorkId ? "Project updated!" : "Project added successfully!");
+  };
+
+  const startEditProject = (project: any) => {
+    setEditingWorkId(project.id);
+    setClient(project.client || "");
+    setPlatform(project.platform || "");
+    setViews(project.views || "");
+    setColor(project.color || "#E63946");
+    setThumbnail(project.thumbnail || "");
+    setLogo(project.logo || "");
+    setVideo(project.video || "");
+    setLink(project.link || "");
+    setWatchMoreLink(project.watchMoreLink || "");
+    setLogoLink(project.logoLink || "");
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleAddFeedback = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!quote || !name) return alert("Quote and name are required");
+    if (!headline || !clientName || !testimonial) return alert("Headline, Client Name, and Testimonial are required");
 
     const feedbackData = {
       id: editingFeedbackId || Date.now(),
-      title: title || name,
-      quote,
-      feedback: feedbackBody || quote,
+      title: clientName,
+      quote: headline,
+      feedback: testimonial,
       image: image || "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80",
       color: feedbackColor,
-      name,
       points,
       stars,
     };
 
-    if (editingFeedbackId !== null) {
+    if (editingFeedbackId) {
       updateFeedback(feedbackData);
       setEditingFeedbackId(null);
     } else {
       addFeedback(feedbackData);
     }
 
-    setTitle("");
-    setQuote("");
-    setFeedbackBody("");
+    setHeadline("");
+    setTestimonial("");
     setImage("");
-    setName("");
+    setClientName("");
     setPoints("");
     setStars("5");
-    alert(editingFeedbackId ? "Feedback updated successfully!" : "Feedback added successfully!");
+    alert(editingFeedbackId ? "Feedback updated!" : "Feedback added successfully!");
+  };
+
+  const startEditFeedback = (item: any) => {
+    setEditingFeedbackId(item.id);
+    setHeadline(item.quote || "");
+    setTestimonial(item.feedback || "");
+    setClientName(item.title || "");
+    setPoints(item.points || "");
+    setStars(item.stars || "5");
+    setImage(item.image || "");
+    setFeedbackColor(item.color || "#F5F0E8");
+  };
+
+  const handleAddBrand = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!brandName || !brandLogo) return alert("Name and Logo are required");
+
+    const brandData = {
+      id: editingBrandId || Date.now(),
+      name: brandName,
+      logo: brandLogo,
+    };
+
+    if (editingBrandId) {
+      updateBrand(brandData);
+      setEditingBrandId(null);
+    } else {
+      addBrand(brandData);
+    }
+
+    setBrandName("");
+    setBrandLogo("");
+    alert(editingBrandId ? "Brand updated!" : "Brand added!");
+  };
+
+  const startEditBrand = (brand: any) => {
+    setEditingBrandId(brand.id);
+    setBrandName(brand.name);
+    setBrandLogo(brand.logo);
+  };
+
+  const handleAddResult = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!statValue || !statLabel) return alert("Value and Label are required");
+
+    const statData = {
+      id: editingStatId || Date.now(),
+      value: Number(statValue),
+      suffix: statSuffix,
+      label: statLabel,
+    };
+
+    if (editingStatId) {
+      updateResult(statData);
+      setEditingStatId(null);
+    } else {
+      addResult(statData);
+    }
+
+    setStatValue("");
+    setStatSuffix("");
+    setStatLabel("");
+    alert(editingStatId ? "Stat updated!" : "Stat added!");
+  };
+
+  const startEditResult = (stat: any) => {
+    setEditingStatId(stat.id);
+    setStatValue(stat.value.toString());
+    setStatSuffix(stat.suffix);
+    setStatLabel(stat.label);
   };
 
   if (!isAuthenticated) {
@@ -182,108 +236,42 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white p-8 md:p-12 overflow-y-auto">
+    <div className="min-h-screen bg-black text-white p-4 md:p-8 font-sans selection:bg-white/20" style={{ cursor: 'default' }}>
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-12">
           <div>
-            <h1 className="text-4xl font-display font-black">Control Panel</h1>
-            <p className="text-white/50 mt-2">Manage dynamic content for the Viral Duo website</p>
+            <h1 className="text-4xl md:text-6xl font-serif font-black uppercase tracking-tighter">Admin Panel</h1>
+            <p className="text-white/50 font-mono text-sm mt-2 uppercase tracking-widest">Control the viral experience</p>
           </div>
           <div className="flex gap-4">
             <button 
               onClick={() => {
-                sessionStorage.removeItem("viralDuoAdminSession");
-                setIsAuthenticated(false);
+                if (confirm("This will restore all original data and projects. Your custom changes might be overwritten. Proceed?")) {
+                  resetToDefaults();
+                }
               }}
-              className="px-4 py-2 border border-white/20 text-white/50 rounded-lg hover:bg-white/5 transition-colors"
+              className="px-4 py-2 bg-blue-600/20 text-blue-400 border border-blue-500/30 rounded-lg text-xs font-bold hover:bg-blue-600/30 transition-all uppercase tracking-widest"
+            >
+              Reset to Original
+            </button>
+            <button 
+              onClick={() => {
+                sessionStorage.removeItem("viralDuoAdminSession");
+                window.location.reload();
+              }}
+              className="px-4 py-2 bg-red-600/20 text-red-400 border border-red-500/30 rounded-lg text-xs font-bold hover:bg-red-600/30 transition-all uppercase tracking-widest"
             >
               Logout
             </button>
-            <button 
-              onClick={() => {
-                if (window.confirm("Are you sure you want to delete ALL dynamic data? This cannot be undone.")) {
-                  resetData();
-                }
-              }}
-              className="px-4 py-2 border border-red-500/50 text-red-400 rounded-lg hover:bg-red-500/10 transition-colors"
-            >
-              Reset All Data
-            </button>
-          </div>
-        </div>
-
-        {/* Stats Section */}
-        <div className="mb-12 bg-[#111] p-6 md:p-8 rounded-2xl border border-white/10">
-          <div className="flex justify-between items-center mb-6">
-            <div>
-              <h2 className="text-2xl font-display">Metrics & Proof</h2>
-              <p className="text-xs text-white/40 mt-1">Update the counter values and labels in the Results section.</p>
-            </div>
-            <button 
-              onClick={() => {
-                updateStats(data.stats);
-                alert("Stats updated successfully!");
-              }}
-              className="bg-brand-sky hover:bg-brand-sky/80 text-white px-6 py-2 rounded-lg font-bold transition-colors"
-            >
-              Save Metrics
-            </button>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {(data?.stats || []).map((stat, idx) => (
-              <div key={idx} className="space-y-4 p-4 bg-black/30 rounded-xl border border-white/5">
-                <div className="flex justify-between items-center">
-                  <span className="text-[10px] uppercase font-bold text-white/30 tracking-widest">Metric #{idx + 1}</span>
-                </div>
-                <div>
-                  <label className="block text-[10px] text-white/50 mb-1 uppercase">Value (Number Only)</label>
-                  <input 
-                    type="number" 
-                    value={stat.value} 
-                    onChange={(e) => {
-                      const newStats = [...data.stats];
-                      newStats[idx].value = Number(e.target.value);
-                      updateStats(newStats);
-                    }} 
-                    className="w-full bg-black border border-white/20 p-2 rounded text-sm font-mono" 
-                  />
-                </div>
-                <div>
-                  <label className="block text-[10px] text-white/50 mb-1 uppercase">Suffix (e.g. M+, X, %)</label>
-                  <input 
-                    value={stat.suffix} 
-                    onChange={(e) => {
-                      const newStats = [...data.stats];
-                      newStats[idx].suffix = e.target.value;
-                      updateStats(newStats);
-                    }} 
-                    className="w-full bg-black border border-white/20 p-2 rounded text-sm" 
-                  />
-                </div>
-                <div>
-                  <label className="block text-[10px] text-white/50 mb-1 uppercase">Label</label>
-                  <input 
-                    value={stat.label} 
-                    onChange={(e) => {
-                      const newStats = [...data.stats];
-                      newStats[idx].label = e.target.value;
-                      updateStats(newStats);
-                    }} 
-                    className="w-full bg-black border border-white/20 p-2 rounded text-sm" 
-                  />
-                </div>
-              </div>
-            ))}
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Projects Section */}
           <div className="space-y-8">
-            <div id="project-form" className="bg-[#111] p-6 md:p-8 rounded-2xl border border-white/10">
+            <div className="bg-[#111] p-6 md:p-8 rounded-2xl border border-white/10">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-display">{editingWorkId ? "Update Project" : "Add New Project"}</h2>
+                <h2 className="text-2xl font-display">{editingWorkId ? "Edit Project" : "Add New Project"}</h2>
                 {editingWorkId && (
                   <button 
                     onClick={() => {
@@ -295,17 +283,14 @@ export default function AdminPage() {
                       setLogo("");
                       setVideo("");
                       setLink("");
-                      setWatchMoreLink("");
-                      setLogoLink("");
                     }}
-                    className="text-xs text-white/40 hover:text-white"
+                    className="text-xs text-white/50 hover:text-white"
                   >
                     Cancel Edit
                   </button>
                 )}
               </div>
               <form onSubmit={handleAddProject} className="space-y-4">
-                {/* ... fields ... (keep existing) */}
                 <div>
                   <label className="block text-xs text-white/50 mb-1">Client Name*</label>
                   <input required value={client} onChange={(e) => setClient(e.target.value)} className="w-full bg-black border border-white/20 p-2 rounded text-sm" />
@@ -379,95 +364,88 @@ export default function AdminPage() {
                   <label className="block text-xs text-white/50 mb-1">Logo Link (e.g. Instagram)</label>
                   <input value={logoLink} onChange={(e) => setLogoLink(e.target.value)} placeholder="https://" className="w-full bg-black border border-white/20 p-2 rounded text-sm" />
                 </div>
-                <button type="submit" className={`w-full mt-4 font-bold p-3 rounded transition-colors ${editingWorkId ? "bg-brand-sky text-white hover:bg-brand-sky/80" : "bg-white text-black hover:bg-gray-200"}`}>
-                  {editingWorkId ? "Update Project" : "Append Project"}
+                <button type="submit" className="w-full mt-4 bg-white text-black font-bold p-3 rounded hover:bg-gray-200 transition-colors">
+                  {editingWorkId ? "Save Changes" : "Append Project"}
                 </button>
               </form>
             </div>
 
-            <div className="bg-[#111] p-6 md:p-8 rounded-2xl border border-white/10">
-              <h2 className="text-xl font-display mb-6">Manage Projects ({data?.work?.length || 0})</h2>
-              <div className="space-y-3">
-                {(data?.work || []).map((item) => (
-                  <div key={item.id} className={`flex items-center justify-between p-3 rounded-lg border transition-colors ${editingWorkId === item.id ? "bg-brand-sky/20 border-brand-sky" : "bg-black/50 border-white/5"}`}>
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded bg-cover bg-center" style={{ backgroundImage: `url(${item.thumbnail})` }} />
-                      <div>
-                        <p className="text-sm font-bold">{item.client}</p>
-                        <p className="text-xs text-white/40">{item.platform}</p>
+            {data.work.length > 0 && (
+              <div className="bg-[#111] p-6 md:p-8 rounded-2xl border border-white/10">
+                <h2 className="text-xl font-display mb-6">Added Projects ({data.work.length})</h2>
+                <div className="space-y-3">
+                  {data.work.map((item) => (
+                    <div key={item.id} className="flex items-center justify-between p-3 bg-black/50 rounded-lg border border-white/5">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded bg-cover bg-center" style={{ backgroundImage: `url(${item.thumbnail})` }} />
+                        <div>
+                          <p className="text-sm font-bold">{item.client}</p>
+                          <p className="text-xs text-white/40">{item.platform}</p>
+                        </div>
+                      </div>
+                      <div className="flex gap-1">
+                        <div className="flex flex-col gap-1 mr-2">
+                          <button onClick={() => moveWork(item.id, 'up')} className="text-[10px] bg-white/5 hover:bg-white/10 px-1 rounded">▲</button>
+                          <button onClick={() => moveWork(item.id, 'down')} className="text-[10px] bg-white/5 hover:bg-white/10 px-1 rounded">▼</button>
+                        </div>
+                        <button 
+                          onClick={() => startEditProject(item)}
+                          className="text-xs text-blue-400 hover:text-blue-300 p-2"
+                        >
+                          Edit
+                        </button>
+                        <button 
+                          onClick={() => removeWork(item.id)}
+                          className="text-xs text-red-500 hover:text-red-400 p-2"
+                        >
+                          Delete
+                        </button>
                       </div>
                     </div>
-                    <div className="flex gap-2">
-                      <button 
-                        onClick={() => handleEditWork(item)}
-                        className="text-xs text-brand-sky hover:text-white p-2"
-                      >
-                        Edit
-                      </button>
-                      <button 
-                        onClick={() => removeWork(item.id)}
-                        className="text-xs text-red-500 hover:text-red-400 p-2"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Feedback Section */}
           <div className="space-y-8">
-            <div id="feedback-form" className="bg-[#111] p-6 md:p-8 rounded-2xl border border-white/10">
+            <div className="bg-[#111] p-6 md:p-8 rounded-2xl border border-white/10">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-display">{editingFeedbackId ? "Update Feedback" : "Add Feedback"}</h2>
+                <h2 className="text-2xl font-display">{editingFeedbackId ? "Edit Feedback" : "Add Feedback"}</h2>
                 {editingFeedbackId && (
                   <button 
                     onClick={() => {
                       setEditingFeedbackId(null);
-                      setTitle("");
-                      setQuote("");
-                      setFeedbackBody("");
-                      setImage("");
-                      setName("");
+                      setHeadline("");
+                      setTestimonial("");
+                      setClientName("");
                       setPoints("");
-                      setStars("5");
+                      setImage("");
                     }}
-                    className="text-xs text-white/40 hover:text-white"
+                    className="text-xs text-white/50 hover:text-white"
                   >
                     Cancel Edit
                   </button>
                 )}
               </div>
               <form onSubmit={handleAddFeedback} className="space-y-4">
-                {/* ... fields ... (keep existing) */}
                 <div>
-                  <label className="block text-xs text-white/50 mb-1">Quote (Short Impact)*</label>
-                  <textarea required value={quote} onChange={(e) => setQuote(e.target.value)} rows={2} className="w-full bg-black border border-white/20 p-2 rounded text-sm" placeholder="e.g. Poore India mein aag laga di!" />
+                  <label className="block text-xs text-white/50 mb-1">Italic Headline*</label>
+                  <input required value={headline} onChange={(e) => setHeadline(e.target.value)} placeholder="e.g. Desi travelers ke liye best content creator." className="w-full bg-black border border-white/20 p-2 rounded text-sm" />
                 </div>
                 <div>
-                  <label className="block text-xs text-white/50 mb-1">Full Feedback Body (Detailed)</label>
-                  <textarea value={feedbackBody} onChange={(e) => setFeedbackBody(e.target.value)} rows={3} className="w-full bg-black border border-white/20 p-2 rounded text-sm" placeholder="Detailed testimonial text..." />
+                  <label className="block text-xs text-white/50 mb-1">Main Testimonial*</label>
+                  <textarea required value={testimonial} onChange={(e) => setTestimonial(e.target.value)} rows={3} placeholder="The long paragraph content..." className="w-full bg-black border border-white/20 p-2 rounded text-sm" />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs text-white/50 mb-1">Client Name*</label>
-                    <input required value={name} onChange={(e) => setName(e.target.value)} className="w-full bg-black border border-white/20 p-2 rounded text-sm" />
+                    <input required value={clientName} onChange={(e) => setClientName(e.target.value)} placeholder="e.g. SHARMA JI KE BHATURE" className="w-full bg-black border border-white/20 p-2 rounded text-sm" />
                   </div>
                   <div>
-                    <label className="block text-xs text-white/50 mb-1">Key Points*</label>
+                    <label className="block text-xs text-white/50 mb-1">Key Points* (comma separated)</label>
                     <input required value={points} onChange={(e) => setPoints(e.target.value)} placeholder="e.g. ROI, Viral, Scaling" className="w-full bg-black border border-white/20 p-2 rounded text-sm" />
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs text-white/50 mb-1">Brand Name/Title</label>
-                    <input value={title} onChange={(e) => setTitle(e.target.value)} className="w-full bg-black border border-white/20 p-2 rounded text-sm" />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-white/50 mb-1">Card Color</label>
-                    <input type="color" value={feedbackColor} onChange={(e) => setFeedbackColor(e.target.value)} className="w-full h-[38px] bg-black border border-white/20 p-1 rounded cursor-pointer" />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
@@ -482,7 +460,7 @@ export default function AdminPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs text-white/50 mb-1">Feedbacker Picture</label>
+                    <label className="block text-xs text-white/50 mb-1">Feedbacker Picture (Logo)</label>
                     <div className="flex gap-2">
                       <input value={image} onChange={(e) => setImage(e.target.value)} placeholder="Image URL" className="flex-1 bg-black border border-white/20 p-2 rounded text-sm" />
                       <label className="cursor-pointer bg-white/10 hover:bg-white/20 px-3 py-2 rounded text-xs flex items-center transition-colors">
@@ -495,85 +473,198 @@ export default function AdminPage() {
                     </div>
                   </div>
                 </div>
-                <button type="submit" className={`w-full mt-4 font-bold p-3 rounded transition-colors ${editingFeedbackId ? "bg-brand-sky text-white hover:bg-brand-sky/80" : "bg-white text-black hover:bg-gray-200"}`}>
-                  {editingFeedbackId ? "Update Feedback" : "Append Feedback"}
+                <button type="submit" className="w-full mt-4 bg-white text-black font-bold p-3 rounded hover:bg-gray-200 transition-colors">
+                  {editingFeedbackId ? "Save Changes" : "Append Feedback"}
                 </button>
               </form>
             </div>
 
-            <div className="bg-[#111] p-6 md:p-8 rounded-2xl border border-white/10">
-              <h2 className="text-xl font-display mb-6">Manage Feedback ({data?.feedback?.length || 0})</h2>
-              <div className="space-y-3">
-                {(data?.feedback || []).map((item, idx) => (
-                  <div key={item.id || idx} className={`flex items-center justify-between p-3 rounded-lg border transition-colors ${editingFeedbackId === item.id ? "bg-brand-sky/20 border-brand-sky" : "bg-black/50 border-white/5"}`}>
-                    <div>
-                      <p className="text-sm font-bold">{item.name || item.title}</p>
-                      <p className="text-xs text-white/40 truncate max-w-[200px]">&quot;{item.quote}&quot;</p>
+            {data.feedback.length > 0 && (
+              <div className="bg-[#111] p-6 md:p-8 rounded-2xl border border-white/10">
+                <h2 className="text-xl font-display mb-6">Added Feedback ({data.feedback.length})</h2>
+                <div className="space-y-3">
+                  {data.feedback.map((item) => (
+                    <div key={item.id} className="flex items-center justify-between p-3 bg-black/50 rounded-lg border border-white/5">
+                      <div>
+                        <p className="text-sm font-bold">{item.title}</p>
+                        <p className="text-xs text-white/40 truncate max-w-[200px]">&quot;{item.quote}&quot;</p>
+                      </div>
+                      <div className="flex gap-1">
+                        <div className="flex flex-col gap-1 mr-2">
+                          <button onClick={() => moveFeedback(item.id, 'up')} className="text-[10px] bg-white/5 hover:bg-white/10 px-1 rounded">▲</button>
+                          <button onClick={() => moveFeedback(item.id, 'down')} className="text-[10px] bg-white/5 hover:bg-white/10 px-1 rounded">▼</button>
+                        </div>
+                        <button 
+                          onClick={() => startEditFeedback(item)}
+                          className="text-xs text-blue-400 hover:text-blue-300 p-2"
+                        >
+                          Edit
+                        </button>
+                        <button 
+                          onClick={() => removeFeedback(item.id)}
+                          className="text-xs text-red-500 hover:text-red-400 p-2"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </div>
-                    <div className="flex gap-2">
-                      <button 
-                        onClick={() => handleEditFeedback(item)}
-                        className="text-xs text-brand-sky hover:text-white p-2"
-                      >
-                        Edit
-                      </button>
-                      <button 
-                        onClick={() => removeFeedback(item.id)}
-                        className="text-xs text-red-500 hover:text-red-400 p-2"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
 
-        {/* Trash Bin Section */}
-        {data?.trash && data.trash.length > 0 && (
-          <div className="mt-16 bg-[#111] p-6 md:p-8 rounded-2xl border border-red-500/20">
-            <div className="flex justify-between items-center mb-6">
-              <div>
-                <h2 className="text-2xl font-display text-red-400">Trash Bin</h2>
-                <p className="text-xs text-white/40 mt-1">Items deleted from the lists above are moved here for safety.</p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-12">
+          {/* Brands Section */}
+          <div className="space-y-8">
+            <div className="bg-[#111] p-6 md:p-8 rounded-2xl border border-white/10">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-display">{editingBrandId ? "Edit Brand" : "Add Brand"}</h2>
+                {editingBrandId && (
+                  <button onClick={() => { setEditingBrandId(null); setBrandName(""); setBrandLogo(""); }} className="text-xs text-white/50 hover:text-white">Cancel</button>
+                )}
               </div>
-              <span className="bg-red-500/10 text-red-400 text-[10px] px-2 py-1 rounded uppercase font-bold tracking-widest">
-                {data.trash.length} Items
-              </span>
+              <form onSubmit={handleAddBrand} className="space-y-4">
+                <div>
+                  <label className="block text-xs text-white/50 mb-1">Brand Name*</label>
+                  <input required value={brandName} onChange={(e) => setBrandName(e.target.value)} className="w-full bg-black border border-white/20 p-2 rounded text-sm" />
+                </div>
+                <div>
+                  <label className="block text-xs text-white/50 mb-1">Logo URL*</label>
+                  <input required value={brandLogo} onChange={(e) => setBrandLogo(e.target.value)} className="w-full bg-black border border-white/20 p-2 rounded text-sm" />
+                </div>
+                <button type="submit" className="w-full mt-4 bg-white text-black font-bold p-3 rounded hover:bg-gray-200 transition-colors">
+                  {editingBrandId ? "Save Changes" : "Append Brand"}
+                </button>
+              </form>
+            </div>
+
+            {data.brands.length > 0 && (
+              <div className="bg-[#111] p-6 md:p-8 rounded-2xl border border-white/10">
+                <h2 className="text-xl font-display mb-6">Current Brands ({data.brands.length})</h2>
+                <div className="grid grid-cols-2 gap-3">
+                  {data.brands.map((brand) => (
+                    <div key={brand.id} className="p-3 bg-black/50 rounded-lg border border-white/5 flex flex-col items-center gap-2">
+                      <div className="w-12 h-12 relative grayscale group-hover:grayscale-0 transition-all">
+                        <img src={brand.logo} alt={brand.name} className="w-full h-full object-contain" />
+                      </div>
+                      <p className="text-[10px] font-bold uppercase truncate w-full text-center">{brand.name}</p>
+                      <div className="flex gap-2 w-full">
+                        <div className="flex flex-1 gap-1">
+                          <button onClick={() => moveBrand(brand.id, 'up')} className="flex-1 text-[10px] bg-white/5 rounded">▲</button>
+                          <button onClick={() => moveBrand(brand.id, 'down')} className="flex-1 text-[10px] bg-white/5 rounded">▼</button>
+                        </div>
+                        <button onClick={() => startEditBrand(brand)} className="flex-1 text-[10px] text-blue-400 bg-white/5 p-1 rounded">Edit</button>
+                        <button onClick={() => removeBrand(brand.id)} className="flex-1 text-[10px] text-red-500 bg-white/5 p-1 rounded">Del</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Results Section */}
+          <div className="space-y-8">
+            <div className="bg-[#111] p-6 md:p-8 rounded-2xl border border-white/10">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-display">{editingStatId ? "Edit Stat" : "Add Stat"}</h2>
+                {editingStatId && (
+                  <button onClick={() => { setEditingStatId(null); setStatValue(""); setStatSuffix(""); setStatLabel(""); }} className="text-xs text-white/50 hover:text-white">Cancel</button>
+                )}
+              </div>
+              <form onSubmit={handleAddResult} className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs text-white/50 mb-1">Value* (Number)</label>
+                    <input required type="number" value={statValue} onChange={(e) => setStatValue(e.target.value)} className="w-full bg-black border border-white/20 p-2 rounded text-sm" />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-white/50 mb-1">Suffix (e.g. M+, X, %)</label>
+                    <input value={statSuffix} onChange={(e) => setStatSuffix(e.target.value)} className="w-full bg-black border border-white/20 p-2 rounded text-sm" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs text-white/50 mb-1">Label*</label>
+                  <input required value={statLabel} onChange={(e) => setStatLabel(e.target.value)} placeholder="e.g. Views Generated" className="w-full bg-black border border-white/20 p-2 rounded text-sm" />
+                </div>
+                <button type="submit" className="w-full mt-4 bg-white text-black font-bold p-3 rounded hover:bg-gray-200 transition-colors">
+                  {editingStatId ? "Save Changes" : "Append Stat"}
+                </button>
+              </form>
+            </div>
+
+            {data.results.length > 0 && (
+              <div className="bg-[#111] p-6 md:p-8 rounded-2xl border border-white/10">
+                <h2 className="text-xl font-display mb-6">Current Stats ({data.results.length})</h2>
+                <div className="space-y-3">
+                  {data.results.map((stat) => (
+                    <div key={stat.id} className="flex items-center justify-between p-3 bg-black/50 rounded-lg border border-white/5">
+                      <div>
+                        <p className="text-sm font-bold">{stat.value}{stat.suffix}</p>
+                        <p className="text-[10px] text-white/40 uppercase tracking-tighter">{stat.label}</p>
+                      </div>
+                      <div className="flex gap-1">
+                        <div className="flex flex-col gap-1 mr-2">
+                          <button onClick={() => moveResult(stat.id, 'up')} className="text-[10px] bg-white/5 hover:bg-white/10 px-1 rounded">▲</button>
+                          <button onClick={() => moveResult(stat.id, 'down')} className="text-[10px] bg-white/5 hover:bg-white/10 px-1 rounded">▼</button>
+                        </div>
+                        <button onClick={() => startEditResult(stat)} className="text-xs text-blue-400 p-2">Edit</button>
+                        <button onClick={() => removeResult(stat.id)} className="text-xs text-red-500 p-2">Delete</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+        
+        {/* Trash Bin Section */}
+        {data.trash.length > 0 && (
+          <div className="mt-12 pt-12 border-t border-white/10">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-display flex items-center gap-3">
+                <span className="p-2 bg-red-500/10 rounded-lg">🗑️</span>
+                Trash Bin ({data.trash.length})
+              </h2>
+              <p className="text-white/30 text-xs italic">Items here can be restored or deleted forever</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-              {(data?.trash || []).map((item: any) => (
-                <div key={item.id} className="p-4 bg-black/50 rounded-xl border border-white/5 flex flex-col gap-4">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <span className={`text-[9px] px-1.5 py-0.5 rounded uppercase font-bold tracking-tighter ${item.trashType === 'work' ? 'bg-brand-sky/10 text-brand-sky' : 'bg-brand-pink/10 text-brand-pink'}`}>
-                        {item.trashType === 'work' ? 'Project' : 'Feedback'}
+              {data.trash.map((item) => (
+                <div key={item.id} className="bg-[#111] p-4 rounded-xl border border-white/5 flex flex-col justify-between">
+                  <div>
+                    <div className="flex justify-between items-start mb-2">
+                      <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded ${
+                        item.__type === 'work' ? 'bg-blue-500/20 text-blue-400' : 
+                        item.__type === 'feedback' ? 'bg-purple-500/20 text-purple-400' :
+                        item.__type === 'brand' ? 'bg-orange-500/20 text-orange-400' :
+                        'bg-green-500/20 text-green-400'
+                      }`}>
+                        {item.__type}
                       </span>
-                      <h4 className="text-sm font-bold mt-2">{item.client || item.name || item.title}</h4>
+                      <span className="text-[10px] text-white/20 font-mono">ID: {item.id}</span>
                     </div>
-                    {item.thumbnail && (
-                      <div className="w-10 h-10 rounded bg-cover bg-center border border-white/10" style={{ backgroundImage: `url(${item.thumbnail})` }} />
-                    )}
+                    <p className="text-sm font-bold truncate">{item.client || item.title || item.name || item.label}</p>
+                    <p className="text-xs text-white/40 line-clamp-2 mt-1 italic">&quot;{item.platform || item.quote || item.feedback || item.logo || `${item.value}${item.suffix}`}&quot;</p>
                   </div>
                   
-                  <div className="flex gap-2 mt-auto">
+                  <div className="flex gap-2 mt-4">
                     <button 
-                      onClick={() => restoreFromTrash(item.id)}
-                      className="flex-1 py-2 bg-white/5 hover:bg-white/10 text-white text-[10px] font-bold uppercase tracking-widest rounded transition-colors"
+                      onClick={() => restoreItem(item.id)}
+                      className="flex-1 text-xs bg-white/5 hover:bg-white/10 text-white p-2 rounded transition-colors"
                     >
                       Restore
                     </button>
                     <button 
                       onClick={() => {
-                        if (window.confirm("This will delete this item forever. Are you sure?")) {
-                          permanentlyDelete(item.id);
+                        if (window.confirm("Delete this item permanently?")) {
+                          permanentlyDeleteItem(item.id);
                         }
                       }}
-                      className="flex-1 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-[10px] font-bold uppercase tracking-widest rounded transition-colors"
+                      className="flex-1 text-xs bg-red-500/10 hover:bg-red-500/20 text-red-400 p-2 rounded transition-colors"
                     >
                       Delete Forever
                     </button>

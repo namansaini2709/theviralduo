@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+import { useDynamicData } from "@/lib/DynamicDataContext";
 
 const BRANDS = [
   { name: "FOF Fitness", logo: "/brands/FOF Fitnesa logo.jpeg" },
@@ -19,6 +20,8 @@ const BRANDS = [
 ];
 
 export default function Brands() {
+  const { data } = useDynamicData();
+  const brandsList = (data?.brands && data.brands.length > 0) ? data.brands : BRANDS;
   const containerRef = useRef<HTMLDivElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
 
@@ -35,7 +38,6 @@ export default function Brands() {
         scrollTrigger: {
           trigger: ".brands-heading",
           start: "top 85%",
-          toggleActions: "restart reset restart reset",
         }
       });
 
@@ -48,7 +50,6 @@ export default function Brands() {
         scrollTrigger: {
           trigger: ".brands-subheading",
           start: "top 85%",
-          toggleActions: "restart reset restart reset",
         }
       });
 
@@ -65,7 +66,6 @@ export default function Brands() {
           scrollTrigger: {
             trigger: ".brands-subheading",
             start: "top 85%",
-            toggleActions: "restart reset restart reset",
           }
         });
       }
@@ -87,20 +87,20 @@ export default function Brands() {
   }, []);
 
   return (
-    <section ref={containerRef} className="py-16 md:py-20 bg-brand-soft overflow-hidden relative border-y border-brand-border/30">
+    <section ref={containerRef} className="py-20 bg-brand-soft overflow-hidden relative border-y border-brand-border/30">
       {/* Subtle background text */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none pointer-events-none">
-        <span className="text-[35vw] md:text-[20vw] font-serif font-black text-black/[0.02] uppercase whitespace-nowrap">
-          TRUSTED
+        <span className="text-[20vw] font-serif font-black text-black/[0.02] uppercase whitespace-nowrap">
+          TRUSTED BY
         </span>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 mb-12 md:mb-16 text-center relative z-10">
-        <h2 className="brands-heading font-serif font-black text-3xl md:text-6xl text-brand-deep uppercase tracking-tight">
-          BRANDS <span className="text-orange-gradient italic px-2 md:px-4">TRUST</span> US
+      <div className="max-w-7xl mx-auto px-6 mb-16 text-center relative z-10">
+        <h2 className="brands-heading font-serif font-black text-4xl md:text-6xl text-brand-deep uppercase tracking-tight">
+          BRANDS <span className="text-orange-gradient italic px-4">TRUST</span> US
         </h2>
-        <div className="relative inline-block mt-3 md:mt-4 group">
-          <p className="brands-subheading font-mono uppercase tracking-widest text-[10px] md:text-base font-bold text-black/60">
+        <div className="relative inline-block mt-4 group">
+          <p className="brands-subheading font-mono uppercase tracking-widest text-sm md:text-base font-bold text-black/60">
             Your brand can be next here.
           </p>
           <svg className="absolute -bottom-3 left-0 w-full h-3 text-brand-orange/60" viewBox="0 0 200 20" preserveAspectRatio="none">
@@ -116,18 +116,18 @@ export default function Brands() {
         </div>
       </div>
 
-      <div className="relative w-full overflow-hidden py-6 md:py-10 bg-brand-soft/30 backdrop-blur-sm">
+      <div className="relative w-full overflow-hidden py-10 bg-brand-soft/30 backdrop-blur-sm">
         <div 
           ref={marqueeRef}
-          className="flex whitespace-nowrap gap-12 md:gap-32 items-center w-max"
+          className="flex whitespace-nowrap gap-16 md:gap-32 items-center w-max"
         >
           {/* Double the brands for seamless infinite scroll */}
-          {[...BRANDS, ...BRANDS].map((brand, i) => (
+          {[...brandsList, ...brandsList].map((brand, i) => (
             <div 
               key={i} 
               className="flex items-center gap-4 group cursor-pointer"
             >
-              <div className="relative w-20 h-20 md:w-32 md:h-32 transition-all duration-500">
+              <div className="relative w-24 h-24 md:w-32 md:h-32 transition-all duration-500">
                  <Image 
                    src={brand.logo}
                    alt={brand.name}
@@ -135,7 +135,7 @@ export default function Brands() {
                    className="object-contain"
                  />
               </div>
-              <span className="font-serif font-black text-xl md:text-4xl text-brand-deep uppercase italic drop-shadow-[0_0_15px_rgba(30,90,168,0.25)]">
+              <span className="font-serif font-black text-2xl md:text-4xl text-brand-deep uppercase italic drop-shadow-[0_0_15px_rgba(30,90,168,0.25)]">
                 {brand.name}
               </span>
             </div>

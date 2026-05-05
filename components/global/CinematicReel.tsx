@@ -1,10 +1,13 @@
 "use client";
 
+import { motion } from "framer-motion";
+
 export default function CinematicReel({ thumbnails = [] }: { thumbnails?: string[] }) {
   // Hexagonal radial layout angles (60° apart)
   const angles = [0, 60, 120, 180, 240, 300];
   const radius = 240; // Distance of cutouts from center
   const cutoutSize = 75; // Size of the cutouts
+  const innerCircleSize = 60; // Size of the layered depth circles
 
   return (
     <div className="relative w-full h-full flex items-center justify-center">
@@ -41,16 +44,13 @@ export default function CinematicReel({ thumbnails = [] }: { thumbnails?: string
         {/* Circular Text "OUR WORK" - Split into characters for staggered animation */}
         <text
           id="reelText"
-          className="font-display font-black uppercase text-[64px] tracking-[1em] opacity-80"
+          fill="#0a0a0a"
+          className="font-display font-black uppercase text-[64px] tracking-[1em] opacity-40"
         >
           <textPath href="#circumferencePath" startOffset="25%" textAnchor="middle">
             {/* Split "OUR WORK" into individual tspans for GSAP targeting */}
             {"OUR WORK".split("").map((char, i) => (
-              <tspan 
-                key={i} 
-                className="reel-char"
-                fill={i < 4 ? "#0084FF" : "#FF4D00"}
-              >
+              <tspan key={i} className="reel-char">
                 {char === " " ? "\u00A0" : char}
               </tspan>
             ))}
@@ -83,10 +83,9 @@ export default function CinematicReel({ thumbnails = [] }: { thumbnails?: string
           cx="500"
           cy="500"
           r="380"
-          fill="#E0F2FE"
-          stroke="#BAE6FD"
+          fill="#FAFAFA"
+          stroke="#E5E5E5"
           strokeWidth="2"
-          className="reel-disc-main"
         />
 
         {/* Radial Cutouts - Hexagonal Layout with Thumbnails */}
@@ -102,10 +101,9 @@ export default function CinematicReel({ thumbnails = [] }: { thumbnails?: string
                 cx={x}
                 cy={y}
                 r={cutoutSize}
-                fill="#F0F9FF"
-                stroke="#BAE6FD"
+                fill="#F5F5F5"
+                stroke="#E5E5E5"
                 strokeWidth="2"
-                className="reel-cutout"
               />
 
               {/* Thumbnail Image */}
