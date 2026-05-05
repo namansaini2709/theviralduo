@@ -87,40 +87,18 @@ export default function CinematicServices() {
         },
       });
 
-      // 1. Opening Text: "The Services We Provide"
-      gsap.set(openingTextRef.current, { opacity: 0, scale: 0.95 });
-      
-      tl.to(openingTextRef.current, {
-        opacity: 1,
-        scale: 1,
-        duration: 2,
-        ease: "power2.out",
-      });
-      
-      tl.to({}, { duration: 1.5 }); // Hold 1.5s (scroll duration)
-      
-      tl.to(openingTextRef.current, {
-        opacity: 0,
-        y: -100,
-        scale: 1.05,
-        duration: 1.5,
-        ease: "power2.inOut",
-      });
-
-      // 2. Tagline Entry Sequence
+      // 1. Tagline Entry Sequence: "If it's not Viral then it's not us"
       gsap.set(viralWordRef.current, { opacity: 0, x: -150, filter: "blur(10px)" });
       gsap.set([taglinePart1Ref.current, taglinePart2Ref.current], { opacity: 0, x: 150, filter: "blur(10px)" });
       
-      // Step 1: "Viral" comes from the left
       tl.to(viralWordRef.current, {
         opacity: 1,
         x: 0,
         filter: "blur(0px)",
         duration: 1.5,
         ease: "power3.out",
-      }, "-=0.5");
+      });
 
-      // Step 2: The other parts come from the right
       tl.to([taglinePart1Ref.current, taglinePart2Ref.current], {
         opacity: 1,
         x: 0,
@@ -128,9 +106,9 @@ export default function CinematicServices() {
         duration: 1.5,
         stagger: 0.2,
         ease: "power3.out",
-      });
+      }, "-=0.8");
 
-      // Step 3: Trigger the continuous jumping once settled
+      // Continuous jumping
       tl.add(() => {
         gsap.to(viralWordRef.current, {
           y: -20,
@@ -142,19 +120,37 @@ export default function CinematicServices() {
         });
       });
 
-      tl.to({}, { duration: 1 }); // Short hold
+      tl.to({}, { duration: 1.5 }); // Hold tagline
 
-      // 3. Tagline Transition (Move Up and Vanish)
       tl.to(taglineRef.current, {
+        opacity: 0,
+        y: -100,
+        scale: 1.05,
+        duration: 1.5,
+        ease: "power2.inOut",
+      });
+
+      // 2. Opening Text: "The Services We Provide"
+      gsap.set(openingTextRef.current, { opacity: 0, scale: 0.95 });
+      
+      tl.to(openingTextRef.current, {
+        opacity: 1,
+        scale: 1,
+        duration: 2,
+        ease: "power2.out",
+      });
+      
+      tl.to({}, { duration: 1.5 }); // Hold 1.5s
+      
+      tl.to(openingTextRef.current, {
+        opacity: 0,
         y: mobile ? "-41vh" : "-43vh",
-        maxWidth: "100%",
         scale: mobile ? 0.35 : 0.32,
-        opacity: 0, // Vanish as it moves up
         duration: 2.5,
         ease: "power2.inOut",
       });
 
-      // 3b. Sticky Header Reappears in one line at the top
+      // 3. Sticky Header Reappears
       gsap.set(stickyHeaderRef.current, { y: -50, opacity: 0 });
       tl.to(stickyHeaderRef.current, {
         opacity: 1,
