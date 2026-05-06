@@ -10,61 +10,20 @@ const collageStyle = {
   "--media-collage-shadow": "0 40px 100px rgba(0, 0, 0, 0.6)",
 } as CSSProperties;
 
-const feedbackItems = [
-  {
-    title: "Mindful Coffee",
-    quote: "Flawless execution, absolute growth.",
-    image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80",
-    color: "#4DB8E5",
-    feedback: "The Viral Duo didn't just post for us; they engineered a community. Our engagement rate tripled within the first month.",
-    points: "Engagement, Community, Scaling",
-    stars: "5"
-  },
-  {
-    title: "Tech Guru",
-    quote: "Viral Duo understands the algorithm.",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80",
-    color: "#FF4D6D",
-    feedback: "Technical precision met creative genius. They navigated the complex B2B space with ease and delivered results.",
-    points: "B2B, Lead Gen, Precision",
-    stars: "5"
-  },
-  {
-    title: "Rust Rooster",
-    quote: "The cinematic quality is unmatched.",
-    image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80",
-    color: "#FFD43B",
-    feedback: "Every frame they produced felt like a high-budget movie. They truly elevated our brand's visual identity.",
-    points: "Cinematic, Visuals, Luxury",
-    stars: "4"
-  },
-  {
-    title: "FitFlow",
-    quote: "3.1M views in 48 hours. Unreal.",
-    image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1200&q=80",
-    color: "#FFA726",
-    feedback: "Unprecedented reach. We went from a local gym to a global fitness brand almost overnight.",
-    points: "Viral, Global, Fitness",
-    stars: "5"
-  },
-  {
-    title: "Bloom",
-    quote: "Our sales doubled after the first reel.",
-    image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=1200&q=80",
-    color: "#1E5AA8",
-    feedback: "Direct ROI. Every piece of content they created led to measurable sales growth and brand loyalty.",
-    points: "Sales, ROI, Loyalty",
-    stars: "5"
-  }
-];
+const feedbackItems: any[] = [];
 
 export default function Polaroids() {
   const { data } = useDynamicData();
   const [mounted, setMounted] = React.useState(false);
   const [isHovering, setIsHovering] = React.useState(false);
+  const [isMobile, setIsMobile] = React.useState(false);
 
   React.useEffect(() => {
     setMounted(true);
+    
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
     
     // Prevent multiple script injections
     if (!document.getElementById("media-collage-script")) {
@@ -75,50 +34,57 @@ export default function Polaroids() {
       script.crossOrigin = "anonymous";
       document.head.appendChild(script);
     }
+
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   const sectionRef = React.useRef<HTMLElement>(null);
 
-  if (!mounted) return <section id="testimonials" className="min-h-[60vh] bg-transparent" />;
-
   const finalFeedback = [...feedbackItems, ...(data?.feedback || [])];
+
+  const mediaCollageItems = React.useMemo(() => {
+    if (finalFeedback.length === 0) return [];
+    // If mobile, don't duplicate items as we are using a simple horizontal slider
+    if (isMobile) return finalFeedback;
+    
+    // Duplicate items to ensure enough total items for the cylinder loop
+    // Aim for ~40 items total for a perfect 360 degree loop
+    return [...Array(Math.ceil(40 / finalFeedback.length))].flatMap(() => finalFeedback);
+  }, [finalFeedback, isMobile]);
 
   const mediaCollage = createElement(
     "media-collage",
     {
-      key: `collage-${finalFeedback.length}`, // Force re-mount when count changes
+      key: `collage-${JSON.stringify(finalFeedback)}-${isMobile}`, // Force re-mount when content or mode changes
       "aria-label": "Viral Duo feedback collage",
       "activation-mode": "threshold",
       "activation-threshold": "0",
-      "auto-scroll": "true",
+      "auto-scroll": isMobile ? "false" : "true", // Disable auto-scroll on mobile for better touch UX
       "scroll-speed": "1.0",
       style: collageStyle,
     },
-    // Duplicate items to ensure enough total items for the cylinder loop
-    // Aim for ~40 items total for a perfect 360 degree loop
-    finalFeedback.length > 0 
-      ? [...Array(Math.ceil(40 / finalFeedback.length))].flatMap(() => finalFeedback).map((item, index) =>
-          createElement("media-collage-item", {
-            key: `${item.title}-${index}-${item.stars}-${item.image?.length}`,
-            "data-title": item.title,
-            "data-subtitle": item.quote,
-            "data-color": item.color,
-            "data-feedback": item.feedback || item.quote,
-            "data-points": item.points || item.role || "",
-            "data-image": item.image || "",
-            "data-stars": item.stars || "5",
-          })
-        )
-      : []
+    mediaCollageItems.map((item, index) =>
+      createElement("media-collage-item", {
+        key: `${item.title}-${index}-${item.stars}-${item.image?.length}`,
+        "data-title": item.title,
+        "data-subtitle": item.quote,
+        "data-color": item.color,
+        "data-feedback": item.feedback || item.quote,
+        "data-points": item.points || item.role || "",
+        "data-image": item.image || "",
+        "data-stars": item.stars || "5",
+      })
+    )
   );
 
+  if (!mounted) return <section id="testimonials" className="min-h-[60vh] bg-transparent" />;
   if (finalFeedback.length === 0) return null;
 
   return (
     <section 
       id="testimonials" 
       ref={sectionRef}
-      className="py-12 md:py-24 min-h-fit md:min-h-[80vh] overflow-hidden relative isolate bg-transparent z-10 flex flex-col items-center justify-center"
+      className="py-12 md:py-24 min-h-fit md:min-h-[80vh] overflow-hidden relative isolate bg-brand-soft/30 z-10 flex flex-col items-center justify-center"
       onMouseMove={(e) => {
         if (!sectionRef.current) return;
         const rect = sectionRef.current.getBoundingClientRect();
@@ -144,7 +110,7 @@ export default function Polaroids() {
           <div className="h-px w-8 md:w-12 bg-black/20" />
           <p className="font-mono text-[9px] md:text-[10px] uppercase tracking-[0.3em] md:tracking-[0.5em] text-black/40">
             <span className="hidden md:inline">Scroll to unlock the cylinder</span>
-            <span className="md:hidden">Scroll to see the feedback</span>
+            <span className="md:hidden">Swipe to explore success stories</span>
           </p>
           <div className="h-px w-8 md:w-12 bg-black/20" />
         </div>

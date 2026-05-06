@@ -101,9 +101,7 @@
   line-height: 1.2;
 }
 
-* {
-  cursor: none;
-}
+
 
 html {
   scroll-behavior: auto !important;

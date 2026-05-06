@@ -289,144 +289,103 @@
             height: 100%;
             border-radius: inherit;
             overflow: hidden;
-            background: linear-gradient(135deg, #FFFFFF, #F9F9F9);
-            padding: 0;
+            background: #FFFFFF;
+            padding: clamp(0.75rem, 1.5vw, 1.25rem);
             display: flex;
-            flex-direction: row;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.15);
+            flex-direction: column;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.1);
             transform: translateZ(0.01px);
           }
 
-          .card-content::before {
-            content: "";
+          .quote-icon {
             position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 0% 0%, var(--card-bg, #000) 0%, transparent 70%);
+            top: 1.25rem;
+            right: 1.25rem;
+            width: clamp(30px, 4vw, 45px);
+            height: auto;
             opacity: 0.1;
-            pointer-events: none;
-            z-index: 1;
-          }
-
-          .card-part-left {
-            width: 35%;
-            height: 100%;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 1.5rem;
-            border-right: 1px solid rgba(0, 0, 0, 0.05);
-            z-index: 2;
-          }
-
-
-
-          .feedbacker-image {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: grayscale(1) brightness(0.9);
-            transition: filter 0.6s ease, transform 0.6s ease;
-            z-index: 1;
-          }
-
-          .card:hover .feedbacker-image {
-            filter: grayscale(0) brightness(1);
-            transform: scale(1.05);
+            color: #1E5AA8;
           }
 
           .stars-container {
-            position: absolute;
-            bottom: 1.2rem;
-            left: 1.2rem;
-            z-index: 20;
             display: flex;
-            gap: 4px;
-          }
-
-          .star-box {
-            background: rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            padding: 3px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(4px);
+            gap: 2px;
+            margin-bottom: 0.75rem;
           }
 
           .star {
-            width: 10px;
-            height: 10px;
-            fill: currentColor;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+            width: 12px;
+            height: 12px;
+            fill: #FFD43B;
           }
 
-          .card-part-right {
-            width: 65%;
-            height: 100%;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-            background: rgba(0, 0, 0, 0.01);
-            z-index: 2;
+          .feedback-headline {
+            color: #1E5AA8;
+            font: italic 700 clamp(0.8rem, 1vw, 0.95rem)/1.2 'Cooper', serif;
+            margin-bottom: 0.3rem;
+            letter-spacing: -0.01em;
           }
 
           .feedback-text {
-            color: #1a1a1a;
-            font: 400 0.95rem/1.6 'Cooper', ui-serif, Georgia, serif;
-            font-style: italic;
-            margin-bottom: 1rem;
-            opacity: 0.85;
-            position: relative;
-          }
-
-          .feedback-text::before {
-            content: '"';
-            position: absolute;
-            top: -1rem;
-            left: -1rem;
-            font-size: 3rem;
-            opacity: 0.2;
-            font-family: 'Cooper', serif;
+            color: #4A5568;
+            font: 400 clamp(0.64rem, 0.75vw, 0.72rem)/1.3 'ITC Avant Garde Gothic Std', sans-serif;
+            margin-bottom: 0.6rem;
+            overflow: visible;
           }
 
           .key-points {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 0.75rem;
+            margin-bottom: auto;
           }
 
           .point {
-            background: rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            color: var(--card-bg, #000);
+            background: #EBF8FF;
+            color: #4DB8E5;
+            font-family: 'ITC Avant Garde Gothic Std', sans-serif;
+            font-size: 0.55rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.3rem 0.6rem;
+            border-radius: 99px;
+            border: 1px solid rgba(77, 184, 229, 0.2);
+          }
+
+          .footer-client {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+          }
+
+          .client-logo-wrapper {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #F7FAFC;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            flex-shrink: 0;
+          }
+
+          .client-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+
+          .client-name {
+            color: #1E5AA8;
             font-family: 'ITC Avant Garde Gothic Std', sans-serif;
             font-size: 0.65rem;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
-          }
-
-          .author {
-            position: absolute;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            z-index: 20;
-            color: rgba(0, 0, 0, 0.4);
-            font-family: 'ITC Avant Garde Gothic Std', sans-serif;
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            font-weight: 800;
+            line-height: 1.2;
           }
 
           .card {
@@ -437,8 +396,8 @@
             position: absolute;
             left: 50%;
             top: 50%;
-            width: min(var(--active-w), calc(100% - 24px));
-            aspect-ratio: 1.5;
+            width: min(var(--active-w), calc(100% - 32px));
+            aspect-ratio: 0.8;
             
             /* CSS-based scroll offset calculation for better performance */
             --scroll-offset: calc(var(--index, 0) - var(--scroll-index, 0));
@@ -578,91 +537,123 @@
 
           @media (max-width: 760px) {
             :host {
-              --media-collage-radius: 20px;
+              --media-collage-radius: 32px;
             }
             
             .root {
               min-height: auto;
-              padding: 0;
-              overflow: visible !important;
+              padding: 40px 0;
+              overflow-x: auto !important;
+              overflow-y: hidden !important;
+              display: block !important;
+              scroll-snap-type: x mandatory;
+              -webkit-overflow-scrolling: touch;
+              scrollbar-width: none;
               height: auto !important;
+              mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
             }
 
             .stage {
               height: auto !important;
               min-height: 0;
               display: block !important;
-              padding: 0 16px 40px 16px;
+              padding: 0 0 20px 0;
               perspective: none;
-              width: 100% !important;
+              width: auto !important;
               transform: none !important;
             }
 
             .camera, .carousel {
               position: relative !important;
-              width: 100% !important;
+              width: auto !important;
               height: auto !important;
               transform: none !important;
               perspective: none;
               display: flex !important;
-              flex-direction: column !important;
-              gap: 32px;
+              flex-direction: row !important;
+              gap: 20px !important;
               left: 0 !important;
               top: 0 !important;
               inset: auto !important;
+              padding: 0 10vw !important;
             }
 
             .card {
               position: relative !important;
-              left: 0 !important;
-              top: 0 !important;
+              left: auto !important;
+              top: auto !important;
               transform: none !important;
-              width: 100% !important;
-              aspect-ratio: auto !important;
+              width: 60vw !important;
+              max-width: 210px;
+              aspect-ratio: 0.75 !important;
               opacity: 1 !important;
               margin: 0 !important;
               z-index: 1 !important;
+              scroll-snap-align: center;
+              flex-shrink: 0;
+              pointer-events: auto !important;
             }
 
             .card-inner {
               transform: none !important;
+              height: 100%;
             }
 
             .card-content {
               flex-direction: column !important;
-              height: auto !important;
-              min-height: 400px;
+              height: 100% !important;
+              min-height: 0 !important;
               position: relative !important;
-              box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+              box-shadow: 0 20px 50px rgba(0,0,0,0.12);
               background: #fff !important;
+              border-radius: 32px !important;
+              padding: 1rem !important;
             }
 
-            .card-part-left {
-              width: 100% !important;
-              height: 220px !important;
-              border-right: none !important;
-              border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            .quote-icon {
+              top: 1rem !important;
+              right: 1rem !important;
+              width: 32px !important;
             }
 
-            .card-part-right {
-              width: 100% !important;
-              height: auto !important;
-              padding: 2rem 1.5rem 3rem 1.5rem !important;
-              display: block !important;
+            .stars-container {
+              margin-bottom: 1rem !important;
+            }
+
+            .feedback-headline {
+              font-size: 0.85rem !important;
+              margin-bottom: 0.3rem !important;
             }
 
             .feedback-text {
-              font-size: 1rem !important;
-              line-height: 1.6 !important;
-              margin-bottom: 2rem !important;
-              opacity: 1 !important;
+              font-size: 0.68rem !important;
+              line-height: 1.3 !important;
+              margin-bottom: 0.75rem !important;
+              -webkit-line-clamp: none !important;
+              overflow: visible !important;
             }
 
-            .author {
-              position: absolute !important;
-              bottom: 1.5rem !important;
-              right: 1.5rem !important;
-              margin-top: 0 !important;
+            .key-points {
+              gap: 0.5rem !important;
+              margin-bottom: 1rem !important;
+            }
+
+            .point {
+              font-size: 0.6rem !important;
+              padding: 0.4rem 0.8rem !important;
+            }
+
+            .footer-client {
+              margin-top: auto !important;
+            }
+
+            .client-logo-wrapper {
+              width: 40px !important;
+              height: 40px !important;
+            }
+
+            .client-name {
+              font-size: 0.75rem !important;
             }
           }
         </style>
@@ -690,22 +681,17 @@
       const color = item.color || DEFAULT_ITEMS[index % DEFAULT_ITEMS.length].color;
 
       // Active state layout - Rigid 3D wheel physics
-      const activeW = "clamp(280px, 30vw, 420px)";
+      const activeW = "clamp(200px, 18vw, 260px)";
       const theta = 18; // degrees
       const radius = 1800; // cylinder push
       const fixedRotateY = `${index * theta}deg`;
 
       const stars = parseInt(item.stars || "5");
-      const starsHtml = Array(5).fill(0).map((_, i) => {
-        const isFilled = i < stars;
-        return `
-          <div class="star-box" style="opacity: 1">
-            <svg class="star" style="color: ${isFilled ? '#FFD700' : '#ff3b3b'}" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-            </svg>
-          </div>
-        `;
-      }).join('');
+      const starsHtml = Array(5).fill(0).map(() => `
+        <svg class="star" viewBox="0 0 24 24">
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+      `).join('');
 
       return `
         <article
@@ -716,23 +702,30 @@
             --active-w: ${activeW};
             --fixed-rotate-y: ${fixedRotateY};
             --radius: ${radius}px;
-            --card-bg: ${escapeAttr(color)};
           "
         >
           <div class="card-inner">
             <div class="card-content">
-              <div class="card-part-left">
-                <img src="${escapeAttr(item.image || item.src)}" class="feedbacker-image" alt="${escapeAttr(title)}" />
-                <div class="stars-container">${starsHtml}</div>
-
+              <svg class="quote-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H15.017C14.4647 8 14.017 8.44772 14.017 9V12C14.017 12.5523 13.5693 13 13.017 13H11.017C10.4647 13 10.017 12.5523 10.017 12V9C10.017 6.79086 11.8079 5 14.017 5H19.017C21.2261 5 23.017 6.79086 23.017 9V15C23.017 17.2091 21.2261 19 19.017 19H16.017C15.4647 19 15.017 19.4477 15.017 20V21H14.017ZM3.017 21L3.017 18C3.017 16.8954 3.91243 16 5.017 16H8.017C8.56928 16 9.017 15.5523 9.017 15V9C9.017 8.44772 8.56928 8 8.017 8H4.017C3.46472 8 3.017 8.44772 3.017 9V12C3.017 12.5523 2.56928 13 2.017 13H0.017C-0.535282 13 -1.017 12.5523 -1.017 12V9C-1.017 6.79086 0.773858 5 2.983 5H8.017C10.2261 5 12.017 6.79086 12.017 9V15C12.017 17.2091 10.2261 19 8.017 19H5.017C4.46472 19 4.017 19.4477 4.017 20V21H3.017Z"/>
+              </svg>
+              
+              <div class="stars-container">${starsHtml}</div>
+              
+              <h3 class="feedback-headline">${escapeAttr(subtitle)}</h3>
+              
+              <p class="feedback-text">${escapeAttr(item.feedback || "Exceptional performance and cinematic vision. The Viral Duo transformed our digital presence.")}</p>
+              
+              <div class="key-points">
+                ${(item.points || "Growth, Viral, Strategy").split(',').map(p => `<span class="point">${escapeAttr(p.trim())}</span>`).join('')}
               </div>
-              <div class="card-part-right">
-                <div class="feedback-text">${escapeAttr(item.feedback || "Exceptional performance and cinematic vision. The Viral Duo transformed our digital presence.")}</div>
-                <div class="key-points">
-                  ${(item.points || "Growth, Viral, Strategy").split(',').map(p => `<span class="point">${escapeAttr(p.trim())}</span>`).join('')}
+              
+              <div class="footer-client">
+                <div class="client-logo-wrapper">
+                  <img src="${escapeAttr(item.image || item.src)}" class="client-logo" alt="${escapeAttr(title)}" />
                 </div>
+                <div class="client-name">${escapeAttr(title)}</div>
               </div>
-              <div class="author" part="author">FEEDBACK BY ${escapeAttr(title)}</div>
             </div>
           </div>
         </article>

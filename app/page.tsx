@@ -40,7 +40,7 @@ export default function Home() {
     };
 
     window.addEventListener("page-transition", handleTransition);
-    
+
     // Global Refresh for all ScrollTriggers to fix overlapping
     const refreshAll = () => {
       import("gsap").then((gsap) => {
@@ -50,7 +50,7 @@ export default function Home() {
         });
       });
     };
-    
+
     const timer = setTimeout(refreshAll, 1500);
     window.addEventListener("resize", refreshAll);
 
@@ -69,32 +69,32 @@ export default function Home() {
       <Navigation />
       <Loader />
 
-      <main className="relative z-10 flex w-full flex-col overflow-x-hidden">
+      <main className="relative z-10 w-full overflow-x-hidden">
         {/* 1. Hero Section */}
         <Hero />
-        
+
         {/* 2. Who We Are Section */}
         <About />
-        
+
         {/* 3. Cinematic Services Section */}
         <div id="services-group">
           <CinematicServices />
           <Marquee />
         </div>
-        
+
         {/* 4. Our Work Section */}
         <MovieReel />
 
-        {/* 4.5. Brands We Worked With */}
-        <Brands />
-        
-        {/* 5. Feedback Section */}
-        <Polaroids />
-        
-        {/* 5.5. Results Section */}
+        {/* 5. Results Section */}
         <Results />
-        
-        {/* 6. Contact Section */}
+
+        {/* 6. Feedback Section */}
+        <Polaroids />
+
+        {/* 7. Brands We Worked With */}
+        <Brands />
+
+        {/* 8. Contact Section */}
         <Contact />
       </main>
 

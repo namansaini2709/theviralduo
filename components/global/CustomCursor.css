@@ -1,12 +1,4 @@
-/* Hide the default cursor globally */
-body {
-  cursor: none !important;
-}
-
-/* Make sure interactive elements also hide the default cursor */
-a, button, .interactive, [role="button"] {
-  cursor: none !important;
-}
+/* Cursor visibility is managed dynamically in CustomCursor.tsx */
 
 /* Main Red Dot Base Styles */
 .cursor-dot {

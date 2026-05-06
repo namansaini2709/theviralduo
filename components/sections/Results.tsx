@@ -3,14 +3,17 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useDynamicData } from "@/lib/DynamicDataContext";
 
 const STATS = [
-  { value: 10, suffix: "M+", label: "Views Generated" },
+  { value: 1, suffix: "M+", label: "Views Generated" },
   { value: 5, suffix: "X", label: "Average Growth" },
-  { value: 50, suffix: "+", label: "Brands Scaled" },
+  { value: 15, suffix: "+", label: "Brands Scaled" },
 ];
 
 export default function Results() {
+  const { data } = useDynamicData();
+  const resultsList = (data?.results && data.results.length > 0) ? data.results : STATS;
   const sectionRef = useRef<HTMLDivElement>(null);
   const countersRef = useRef<(HTMLSpanElement | null)[]>([]);
 
@@ -50,9 +53,9 @@ export default function Results() {
       });
 
       countersRef.current.forEach((counter, i) => {
-        if (!counter) return;
-        const targetValue = STATS[i].value;
-        
+        if (!counter || !resultsList[i]) return;
+        const targetValue = resultsList[i].value;
+
         gsap.to(counter, {
           innerHTML: targetValue,
           duration: 2.5,
@@ -80,13 +83,13 @@ export default function Results() {
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 md:gap-32">
         <div className="md:w-[380px] flex-shrink-0 results-heading translate-y-6">
           <h2 className="font-serif font-black text-5xl md:text-7xl uppercase leading-tight text-brand-deep">
-            The <span className="text-gradient inline-block py-2">Proof</span> Is In The <span className="font-handwritten text-4xl lowercase text-brand-sky inline-block py-2 ml-4 relative">numbers</span>
+            The <span className="text-gradient inline-block py-2">Proof</span> Is In The <span className="font-handwritten text-4xl lg:text-6xl lowercase text-brand-sky inline-block -top-3 ml-28 relative">numbers</span>
           </h2>
         </div>
-        
+
         <div className="flex-1 flex flex-col md:flex-row gap-6 md:gap-8 stats-container w-full">
-          {STATS.map((stat, i) => (
-            <div key={i} className="flex-1 stat-card flex flex-col items-center justify-center p-8 card-brand rounded-3xl transform hover:-translate-y-2 transition-transform duration-300 min-h-[220px]">
+          {resultsList.map((stat, i) => (
+            <div key={stat.id || i} className="flex-1 stat-card flex flex-col items-center justify-center p-8 card-brand rounded-3xl transform hover:-translate-y-2 transition-transform duration-300 min-h-[220px]">
               <div className="flex items-baseline font-serif font-black text-5xl lg:text-7xl text-brand-deep">
                 <span ref={(el) => { countersRef.current[i] = el; }}>0</span>
                 <span className="text-gradient">{stat.suffix}</span>

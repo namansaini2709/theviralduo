@@ -26,7 +26,7 @@ export default function Footer() {
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               className="font-serif text-5xl md:text-8xl font-black italic tracking-tighter leading-[0.9] mb-6"
             >
-              READY TO GO <span className="text-gradient">VIRAL?</span>
+              READY TO GO <span className="text-gradient pr-4">VIRAL?</span>
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
@@ -55,7 +55,7 @@ export default function Footer() {
                 alt="Email Icon" 
                 className="w-20 h-20 md:w-28 md:h-28 transition-all duration-300"
               />
-              <span className="font-serif font-bold text-xs tracking-[0.4em] text-white/40 group-hover:text-white transition-colors duration-300">EMAIL US</span>
+              <span className="font-display font-bold text-xs tracking-[0.4em] text-white/40 group-hover:text-white transition-colors duration-300">EMAIL US</span>
             </a>
           </motion.div>
 
@@ -89,18 +89,32 @@ export default function Footer() {
             </a>
           </div>
 
-          <div className="flex flex-col gap-4 md:col-span-2">
+          <div className="flex flex-col gap-4">
             <h4 className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 mb-2">Location</h4>
             <p className="text-white/70 font-body text-sm font-medium">
               New Delhi, India<br />
               Operating in Delhi
             </p>
           </div>
+
+          <div className="flex flex-col gap-4">
+            <h4 className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 mb-2">Contact Us</h4>
+            <div className="flex flex-col gap-2">
+              <p className="text-white/70 font-body text-sm font-medium">
+                <span className="text-white/40 text-[10px] uppercase tracking-widest font-bold block mb-0.5">Shubham</span>
+                +91 77019 18603
+              </p>
+              <p className="text-white/70 font-body text-sm font-medium">
+                <span className="text-white/40 text-[10px] uppercase tracking-widest font-bold block mb-0.5">Pushkar</span>
+                +91 92051 97949
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-white/5">
-          <p className="font-serif font-black text-2xl tracking-tighter text-white">
+          <p className="font-display font-black text-2xl tracking-tighter text-white">
             VIRAL<span className="text-gradient">DUO</span>
           </p>
           <div className="flex flex-col md:flex-row items-center gap-2 md:gap-6">
