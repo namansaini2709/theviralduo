@@ -214,7 +214,7 @@ export default function CinematicServices() {
         ref={stickyHeaderRef} 
         className="fixed top-[84px] left-0 right-0 z-[60] flex justify-center pointer-events-none px-6"
       >
-        <h2 className="font-serif font-black text-2xl md:text-3xl text-brand-deep tracking-tight uppercase text-center bg-white/40 backdrop-blur-md px-8 py-3 rounded-full border border-black/5 shadow-sm">
+        <h2 className="font-serif font-black text-lg md:text-3xl text-brand-deep tracking-tight uppercase text-center bg-white/40 backdrop-blur-md px-6 md:px-8 py-2 md:py-3 rounded-full border border-black/5 shadow-sm">
           SERVICES <span className="text-orange-gradient">WE</span> PROVIDE
         </h2>
       </div>
@@ -222,10 +222,10 @@ export default function CinematicServices() {
       {/* Opening Text Container */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none px-6">
         <div ref={openingTextRef} className="text-center">
-          <h2 className="font-serif font-black text-[8vw] md:text-[6vw] text-brand-deep tracking-tight leading-none uppercase flex flex-wrap justify-center items-center gap-x-8 md:gap-x-12">
-            <span className="opacity-90 -translate-y-6 md:-translate-y-10">SERVICES</span>
-            <span className="text-[1.8em] md:text-[2.2em] leading-none text-orange-gradient">WE</span>
-            <span className="font-serif italic inline-block translate-y-6 md:translate-y-10 pr-10">PROVIDE</span>
+          <h2 className="font-serif font-black text-[10vw] md:text-[6vw] text-brand-deep tracking-tight leading-none uppercase flex flex-wrap justify-center items-center gap-x-4 md:gap-x-12">
+            <span className="opacity-90 -translate-y-4 md:-translate-y-10">SERVICES</span>
+            <span className="text-[1.5em] md:text-[2.2em] leading-none text-orange-gradient">WE</span>
+            <span className="font-serif italic inline-block translate-y-4 md:translate-y-10 pr-6 md:pr-10">PROVIDE</span>
           </h2>
         </div>
       </div>
@@ -233,10 +233,10 @@ export default function CinematicServices() {
       {/* Tagline Container */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none px-6">
         <div ref={taglineRef} className="flex flex-col items-center justify-center max-w-[400px] md:max-w-[800px] mx-auto overflow-visible">
-          <p className="font-serif font-black text-[8vw] md:text-[6vw] lg:text-[7.5rem] text-brand-deep tracking-tight flex flex-row flex-wrap justify-center items-center gap-x-6 gap-y-0 text-center leading-[1.1] py-10">
-            <span ref={taglinePart1Ref} className="whitespace-nowrap">IF IT&apos;s NOT</span>
-            <span ref={viralWordRef} className="text-orange-gradient whitespace-nowrap">Viral</span>
-            <span ref={taglinePart2Ref} className="whitespace-nowrap">THEN IT&apos;s NOT US</span>
+          <p className="font-serif font-black text-[10vw] md:text-[6vw] lg:text-[7.5rem] text-brand-deep tracking-tight flex flex-row flex-wrap justify-center items-center gap-x-4 md:gap-x-6 gap-y-0 text-center leading-[1.1] py-10">
+            <span ref={taglinePart1Ref} className="whitespace-nowrap uppercase">IF IT&apos;S NOT</span>
+            <span ref={viralWordRef} className="text-orange-gradient whitespace-nowrap italic pr-8">Viral</span>
+            <span ref={taglinePart2Ref} className="whitespace-nowrap uppercase">THEN IT&apos;S NOT US</span>
           </p>
         </div>
       </div>
@@ -246,7 +246,7 @@ export default function CinematicServices() {
         ref={cardsContainerRef}
         className="absolute inset-0 flex items-center justify-center z-10 px-6 pt-24"
       >
-        <div className="relative w-full max-w-[1400px] h-[60vh] md:h-[500px] flex items-center justify-center gap-4">
+        <div className="relative w-full max-w-[1400px] h-[65vh] md:h-[500px] flex items-center justify-center gap-4">
           {SERVICES_DATA.map((service, index) => {
             const isHovered = hoveredIndex === index;
             const isAnyHovered = hoveredIndex !== null;
@@ -262,7 +262,7 @@ export default function CinematicServices() {
                 `}
                 style={{
                   zIndex: isHovered ? 50 : 10 + index,
-                  transform: isMobile && !isHovered ? `translateY(${index * 15}px) scale(${1 - index * 0.05})` : 'none',
+                  transform: isMobile && !isHovered ? `translateY(${index * 20}px) scale(${1 - index * 0.04})` : 'none',
                   flex: isMobile ? 'none' : (isHovered ? "2.5" : (isAnyHovered ? "0.6" : "1")),
                   opacity: isMobile && isAnyHovered && !isHovered ? 0 : 1
                 }}

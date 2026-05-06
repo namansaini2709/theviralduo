@@ -44,57 +44,6 @@ export default function About() {
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, index: number) => {
-    const card = cardsRef.current[index];
-    if (!card) return;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    
-    // Tilt from opposite direction logic (Tilting AWAY from mouse)
-    const rX = (centerY - y) / 12;
-    const rY = (x - centerX) / 12;
-
-    gsap.to(card, {
-      rotateX: rX,
-      rotateY: rY,
-      duration: 0.6,
-      ease: "power2.out",
-      overwrite: "auto",
-    });
-
-    const glare = card.querySelector(".card-glare") as HTMLDivElement;
-    if (glare) {
-      gsap.to(glare, {
-        opacity: 0.5,
-        x: x - rect.width / 2,
-        y: y - rect.height / 2,
-        duration: 0.4,
-      });
-    }
-  };
-
-  const handleMouseLeave = (index: number) => {
-    const card = cardsRef.current[index];
-    if (!card) return;
-    gsap.to(card, {
-      rotateX: 0,
-      rotateY: 0,
-      duration: 1,
-      ease: "power4.out",
-      overwrite: "auto",
-    });
-    
-    const glare = card.querySelector(".card-glare") as HTMLDivElement;
-    if (glare) {
-      gsap.to(glare, {
-        opacity: 0,
-        duration: 0.4,
-      });
-    }
-  };
 
   useEffect(() => {
     videoRefs.current.forEach((video) => {
@@ -120,12 +69,15 @@ export default function About() {
         ({ conditions }) => {
           const isDesktop = Boolean(conditions?.desktop);
           const cards = cardsRef.current.filter(Boolean) as HTMLDivElement[];
-          const desktopRotations = [-3.5, 2.5, 3.5];
-          const mobileRotations = [-2, 1.5, 2];
-
+          
           gsap.set(cards, {
             transformPerspective: 1200,
             transformOrigin: "50% 80%",
+            autoAlpha: 1,
+            y: 0,
+            scale: 1,
+            rotateX: 0,
+            rotateZ: (index) => 0,
             willChange: "transform, opacity",
           });
 
@@ -144,51 +96,9 @@ export default function About() {
             },
           });
 
-          tl.fromTo(
-            cards,
-            {
-              autoAlpha: 0,
-              y: isDesktop ? 260 : 120,
-              scale: 0.82,
-              rotateX: 22,
-              rotateZ: (index) => (isDesktop ? desktopRotations[index] * 1.8 : mobileRotations[index]),
-            },
-            {
-              autoAlpha: 1,
-              y: 0,
-              scale: 1,
-              rotateX: 0,
-              rotateZ: (index) => (isDesktop ? desktopRotations[index] : mobileRotations[index]),
-              duration: 1,
-              stagger: isDesktop ? 0.12 : 0.08,
-            },
-            0.42
-          )
-          .to(
-            cards,
-            {
-              y: (index) => (isDesktop ? [18, -34, 18][index] : [0, -10, 0][index]),
-              rotateY: (index) => (isDesktop ? [-8, 0, 8][index] : 0),
-              rotateZ: (index) => (isDesktop ? [-1.25, 1.5, 1.25][index] : mobileRotations[index]),
-              scale: (index) => (index === 1 ? 1.035 : 0.96),
-              duration: 1.25,
-              ease: "none",
-            },
-            1.25
-          )
-          .to(
-            cards,
-            {
-              y: isDesktop ? -150 : -60,
-              autoAlpha: 0,
-              scale: 0.92,
-              duration: isDesktop ? 0.7 : 0.4,
-              stagger: isDesktop ? 0.06 : 0.04,
-              ease: "power2.in",
-            },
-            isDesktop ? 2.72 : 2.2
-          )
-          .to(sectionRef.current, { autoAlpha: 0, duration: 0.1 }, "+=0");
+          // Removed card entrance, drift, and exit animations as requested
+          tl.to(sectionRef.current, { autoAlpha: 0, duration: 0.1 }, "+=2"); // Keep pinning logic but no card movement
+
         }
       );
 
@@ -202,11 +112,8 @@ export default function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="relative min-h-screen w-full overflow-hidden px-5 py-16 text-black bg-transparent"
+      className="relative min-h-screen w-full overflow-hidden px-5 pt-24 pb-16 text-black bg-transparent"
     >
-      <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-background to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background to-transparent" />
-
       <div className="relative z-10 mx-auto flex min-h-fit md:min-h-[calc(100vh-8rem)] w-full max-w-6xl flex-col items-center justify-center py-10 md:py-0">
         <motion.div 
           initial="hidden"
@@ -214,7 +121,7 @@ export default function About() {
           viewport={{ once: false, amount: 0.2 }}
           className="mb-10 text-center md:mb-14 flex flex-col items-center"
         >
-          <div className="flex flex-wrap justify-center gap-x-8 md:gap-x-12 mb-4 md:mb-6 pt-8 md:pt-12">
+          <div className="flex flex-wrap justify-center gap-x-8 md:gap-x-12 mb-4 md:mb-6 pt-0">
             {"WHO WE ARE".split(" ").map((word, wordIdx) => (
               <span key={wordIdx} className="inline-block whitespace-nowrap">
                 {word.split("").map((char, charIdx) => (
@@ -265,8 +172,6 @@ export default function About() {
               ref={(el) => {
                 cardsRef.current[index] = el;
               }}
-              onMouseMove={(e) => handleMouseMove(e, index)}
-              onMouseLeave={() => handleMouseLeave(index)}
               className={`group relative min-h-[300px] overflow-hidden rounded-[2.5rem] border bg-gradient-to-br ${pillar.accent} ${pillar.border} shadow-[0_15px_45px_rgba(0,0,0,0.15)] md:shadow-[0_30px_90px_rgba(0,0,0,0.38)] ${pillar.shadow} backdrop-blur-[7px] transition-[border-color,box-shadow,background-color] duration-500 md:min-h-[340px] [transform-style:preserve-3d]`}
             >
               <div className="card-glare pointer-events-none absolute inset-0 z-50 opacity-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.05)_0%,transparent_80%)] blur-2xl" />

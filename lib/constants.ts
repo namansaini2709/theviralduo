@@ -8,7 +8,7 @@ export const DEFAULT_PROJECTS = [
     gradient: "from-purple-900/50 to-black",
     thumbnail: "/assets/projects/anytime-fitness.jpg",
     video: "/assets/projects/anytime-fitness.mp4",
-    logo: "/assets/projects/anytime-fitness-logo.jpg",
+    logo: "/logos/anytime. fitness logos.JPG",
     logoLink: "https://www.instagram.com/anytimefitnessin?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
   },
   {
@@ -20,7 +20,7 @@ export const DEFAULT_PROJECTS = [
     gradient: "from-yellow-900/50 to-black",
     thumbnail: "/assets/projects/skb-thumb.jpg",
     video: "/assets/projects/skb-video.mp4",
-    logo: "/assets/projects/sharma-ke-bhature-logo.jpg",
+    logo: "/logos/Sharma ji ke bhature.JPG",
     logoLink: "https://www.instagram.com/sharmajikebhature?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
   },
   {
@@ -32,7 +32,7 @@ export const DEFAULT_PROJECTS = [
     gradient: "from-teal-900/50 to-black",
     thumbnail: "/assets/projects/global-holidays-thumb.jpg",
     video: "/assets/projects/global-holidays-video.mp4",
-    logo: "/assets/projects/global-holidays-logo.png",
+    logo: "/logos/Global Holidays.PNG",
     logoLink: "https://www.instagram.com/globalholidays_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
   },
   {
@@ -44,7 +44,7 @@ export const DEFAULT_PROJECTS = [
     gradient: "from-orange-900/50 to-black",
     thumbnail: "/assets/projects/make-your-trip-possible.jpg",
     video: "/assets/projects/make-your-trips-possible.mp4",
-    logo: "/assets/projects/make-your-trip-possible-logo.jpg",
+    logo: "/logos/Make your trip possible.jpg",
     logoLink: "https://www.instagram.com/makeyourtrippossible?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
   },
   {
@@ -56,7 +56,7 @@ export const DEFAULT_PROJECTS = [
     gradient: "from-red-900/50 to-black",
     thumbnail: "/assets/projects/fof-fitness.png",
     video: "/assets/projects/fof-fitness.mp4",
-    logo: "/assets/projects/fof-fitness-logo.jpeg",
+    logo: "/logos/FOF Fitnesa logo.jpeg",
     logoLink: "https://www.instagram.com/fof_fitness?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
   },
   {
@@ -68,7 +68,7 @@ export const DEFAULT_PROJECTS = [
     gradient: "from-purple-900/50 to-black",
     thumbnail: "/assets/projects/radhe-krishna-thumb.jpg",
     video: "/assets/projects/radhe-krishna-video.mp4",
-    logo: "/assets/projects/radhe-krishna-logo.jpg",
+    logo: "/logos/Shri radhey Krishna  jewellers.JPG",
     logoLink: "https://www.instagram.com/shri_radhey_krishna_jewellers?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
   },
   {
@@ -80,7 +80,7 @@ export const DEFAULT_PROJECTS = [
     gradient: "from-blue-900/50 to-black",
     thumbnail: "/assets/projects/vdmc-thumb.png",
     video: "/assets/projects/vdmc.mp4",
-    logo: "/assets/projects/vdmc-logo.jpg",
+    logo: "/logos/Vdmc logo.JPG",
     logoLink: "https://www.instagram.com/vdmc_official?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
   },
   {
@@ -92,7 +92,7 @@ export const DEFAULT_PROJECTS = [
     gradient: "from-indigo-900/50 to-black",
     thumbnail: "/assets/projects/career-launcher-thumb.jpg",
     video: "/assets/projects/career-launcher-video.mp4",
-    logo: "/assets/projects/career-launcher-logo.jpg",
+    logo: "/logos/carrer launcher.JPG",
     logoLink: "https://www.instagram.com/careerlauncher?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
   },
   {
@@ -104,7 +104,7 @@ export const DEFAULT_PROJECTS = [
     gradient: "from-red-900/50 to-black",
     thumbnail: "/assets/projects/saral-gym-thumb.jpg",
     video: "/assets/projects/saral-gym.mp4",
-    logo: "/assets/projects/saral-gym-logo.jpg",
+    logo: "/logos/saral gym logo.jpg",
     logoLink: "https://www.instagram.com/_saralgym_/",
   }
 ];

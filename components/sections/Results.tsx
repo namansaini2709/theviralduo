@@ -79,22 +79,23 @@ export default function Results() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="results" className="py-24 px-6 md:px-20 bg-brand-soft border-y border-brand-border z-10 relative overflow-x-hidden">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 md:gap-32">
-        <div className="md:w-[380px] flex-shrink-0 results-heading translate-y-6">
-          <h2 className="font-serif font-black text-5xl md:text-7xl uppercase leading-tight text-brand-deep">
-            The <span className="text-gradient inline-block py-2">Proof</span> Is In The <span className="font-handwritten text-4xl lg:text-6xl lowercase text-brand-sky inline-block -top-3 ml-28 relative">numbers</span>
+    <section ref={sectionRef} id="results" className="py-20 md:py-24 px-6 md:px-20 bg-brand-soft border-y border-brand-border z-10 relative overflow-x-hidden">
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-32">
+        <div className="w-full lg:w-[420px] flex-shrink-0 results-heading text-center lg:text-left">
+          <h2 className="font-serif font-black text-4xl md:text-5xl lg:text-7xl uppercase leading-[0.9] text-brand-deep">
+            The <span className="text-gradient inline-block py-2">Proof</span> <br className="hidden md:block" /> Is In The <br /> 
+            <span className="font-handwritten text-4xl md:text-5xl lg:text-7xl lowercase text-brand-sky inline-block mt-2 lg:mt-0 lg:ml-20">numbers</span>
           </h2>
         </div>
 
-        <div className="flex-1 flex flex-col md:flex-row gap-6 md:gap-8 stats-container w-full">
+        <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8 stats-container w-full">
           {resultsList.map((stat, i) => (
-            <div key={stat.id || i} className="flex-1 stat-card flex flex-col items-center justify-center p-8 card-brand rounded-3xl transform hover:-translate-y-2 transition-transform duration-300 min-h-[220px]">
-              <div className="flex items-baseline font-serif font-black text-5xl lg:text-7xl text-brand-deep">
+            <div key={stat.id || i} className="stat-card flex flex-col items-center justify-center p-6 md:p-8 card-brand rounded-3xl transform hover:-translate-y-2 transition-transform duration-300 min-h-[180px] md:min-h-[220px]">
+              <div className="flex items-baseline font-serif font-black text-4xl md:text-5xl lg:text-7xl text-brand-deep">
                 <span ref={(el) => { countersRef.current[i] = el; }}>0</span>
                 <span className="text-gradient">{stat.suffix}</span>
               </div>
-              <p className="mt-4 font-mono uppercase tracking-widest text-[10px] font-bold text-black/70 text-center">
+              <p className="mt-2 md:mt-4 font-mono uppercase tracking-widest text-[9px] md:text-[10px] font-bold text-black/70 text-center">
                 {stat.label}
               </p>
             </div>

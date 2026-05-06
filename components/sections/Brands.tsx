@@ -55,20 +55,20 @@ export default function Brands() {
         </span>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 mb-12 text-center relative z-10">
-        <h2 className="brands-heading font-serif font-black text-4xl md:text-6xl text-brand-deep uppercase tracking-tight">
-          BRANDS <span className="text-orange-gradient italic px-4">TRUST</span> US
+      <div className="max-w-7xl mx-auto px-6 mb-10 md:mb-12 text-center relative z-10">
+        <h2 className="brands-heading font-serif font-black text-3xl md:text-6xl text-brand-deep uppercase tracking-tight flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4">
+          <span>BRANDS</span> <span className="text-orange-gradient italic px-4">TRUST</span> <span>US</span>
         </h2>
-        <div className="relative inline-block mt-4 group">
-          <p className="brands-subheading font-mono uppercase tracking-widest text-sm md:text-base font-bold text-black/60">
+        <div className="relative inline-block mt-3 md:mt-4 group">
+          <p className="brands-subheading font-mono uppercase tracking-widest text-[9px] md:text-base font-bold text-black/60">
             Your brand can be next here.
           </p>
           <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-brand-orange/40" />
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10 w-full overflow-hidden">
-        <div className="relative min-h-[450px] md:min-h-[500px] cursor-grab active:cursor-grabbing">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10 w-full overflow-hidden">
+        <div className="relative min-h-[380px] md:min-h-[500px] cursor-grab active:cursor-grabbing">
           <AnimatePresence initial={false} mode="wait">
             <motion.div
               key={currentPage}
@@ -87,7 +87,7 @@ export default function Brands() {
                   paginate(-1);
                 }
               }}
-              className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6"
+              className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-6"
             >
               {pages[currentPage]?.map((brand, i) => (
                 <motion.div
@@ -97,7 +97,7 @@ export default function Brands() {
                     scale: 1.02,
                     backgroundColor: "rgba(255, 255, 255, 0.6)"
                   }}
-                  className="group relative flex flex-col items-center justify-center p-6 bg-white/40 backdrop-blur-xl border border-white/20 rounded-[2.5rem] aspect-square transition-all duration-300 shadow-lg hover:shadow-2xl hover:border-brand-sky/30"
+                  className="group relative flex flex-col items-center justify-center p-4 md:p-6 bg-white/40 backdrop-blur-xl border border-white/20 rounded-[2rem] md:rounded-[2.5rem] aspect-square transition-all duration-300 shadow-lg hover:shadow-2xl hover:border-brand-sky/30"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-brand-sky/5 to-transparent rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity" />
                   

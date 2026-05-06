@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Heart, MessageCircle, Share2, TrendingUp } from "lucide-react";
 
 const ICONS = [Heart, MessageCircle, Share2, TrendingUp];
@@ -24,7 +25,7 @@ export default function FloatingParticlesBackground() {
     if (!containerRef.current) return;
     const elements = containerRef.current.children;
     
-    // Parallax on mouse move
+    // 1. Parallax on mouse move
     const onMouseMove = (e: MouseEvent) => {
       const x = (e.clientX / window.innerWidth - 0.5) * 40;
       const y = (e.clientY / window.innerHeight - 0.5) * 40;
@@ -39,10 +40,23 @@ export default function FloatingParticlesBackground() {
 
     window.addEventListener("mousemove", onMouseMove);
 
-    // Continuous floating animation
+    // 2. Scroll-based Parallax (The "No Break" Secret)
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.to(elements, {
+      y: (index) => (index % 2 === 0 ? -150 : -250), // Subtle upward drift on scroll
+      ease: "none",
+      scrollTrigger: {
+        trigger: document.body,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1.5,
+      }
+    });
+
+    // 3. Continuous floating animation (Idle)
     Array.from(elements).forEach((el, i) => {
       gsap.to(el, {
-        y: `+=${Math.random() * 100 + 50}`,
+        y: `+=${Math.random() * 80 + 40}`,
         rotation: Math.random() * 20 - 10,
         duration: Math.random() * 10 + 10,
         repeat: -1,

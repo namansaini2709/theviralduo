@@ -4,8 +4,7 @@ import FloatingParticlesBackground from "@/components/global/FloatingParticlesBa
 import ScrollProgress from "@/components/global/ScrollProgress";
 import Navigation from "@/components/global/Navigation";
 import Loader from "@/components/sections/Loader";
-import Hero from "@/components/sections/Hero";
-import About from "@/components/sections/About";
+import CombinedHeroAbout from "@/components/sections/CombinedHeroAbout";
 import CinematicServices from "@/components/sections/CinematicServices";
 import Marquee from "@/components/sections/Marquee";
 import MovieReel from "@/components/sections/MovieReel";
@@ -70,11 +69,8 @@ export default function Home() {
       <Loader />
 
       <main className="relative z-10 w-full overflow-x-hidden">
-        {/* 1. Hero Section */}
-        <Hero />
-
-        {/* 2. Who We Are Section */}
-        <About />
+        {/* 1 & 2. Hero & About Combined Section */}
+        <CombinedHeroAbout />
 
         {/* 3. Cinematic Services Section */}
         <div id="services-group">

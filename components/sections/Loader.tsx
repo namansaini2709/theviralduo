@@ -170,17 +170,19 @@ const HeroAnimationLoader: React.FC<HeroAnimationLoaderProps> = ({ onComplete })
         <motion.div
            initial={{ opacity: 0, y: 20 }}
            animate={{ opacity: isLoaded ? 0 : 1, y: 0 }}
-           className="font-display font-black text-4xl md:text-6xl uppercase tracking-tighter"
+           className="font-display font-black text-3xl md:text-6xl uppercase tracking-tighter text-center px-6"
         >
-          <span className="text-[#FF8C42]">THE</span>
-          <span className="text-white">VIRAL</span>
-          <span className="text-[#00E5FF]">DUO</span>
+          <div className="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-4">
+            <span className="text-[#FF8C42]">THE</span>
+            <span className="text-white">VIRAL</span>
+            <span className="text-[#00E5FF]">DUO</span>
+          </div>
         </motion.div>
       </div>
 
       <button 
         onClick={onComplete}
-        className="absolute bottom-10 right-10 z-30 font-mono text-[10px] text-white/20 hover:text-white uppercase tracking-[0.4em] transition-colors"
+        className="absolute bottom-12 left-1/2 -translate-x-1/2 md:bottom-10 md:right-10 md:left-auto md:translate-x-0 z-30 font-mono text-[10px] text-white/40 hover:text-white uppercase tracking-[0.4em] transition-colors bg-white/5 backdrop-blur-sm px-6 py-2 rounded-full border border-white/10"
       >
         Skip Experience
       </button>
